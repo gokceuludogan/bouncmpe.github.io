@@ -1,0 +1,33 @@
+{{ $ctx := newScratch }}
+
+{{ $tag := .Get "tag" }}
+{{ $columns := .Get "cols" | default "2" }}
+
+{{ $ctx.Set "tag" $tag }}
+{{ $ctx.Set "members" slice }}
+{{ range $key, $value := site.Data.bouncmpe.people }}
+{{if intersect $value.tags (slice $tag) }}
+{{ $ctx.Set "members" ($ctx.Get "members" | append $value) }}
+{{ end }}
+{{ end }}
+{{ $members := $ctx.Get "members" }}
+
+<div class="row row-cols-1 row-cols-lg-{{ $columns }} g-2 my-4">
+{{ range $members }}
+<div class="col">
+
+    <div class="card border-1 h-100 rounded-5">
+      <div class="card-body">
+          <div class="d-flex">
+              <div class="flex-shrink-0">
+              </div>
+              <div class="flex-grow-0">
+                  <h4>{{ .name | title }}</h4>
+                  <p>{{ .position | i18n | title }}</p>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{{ end }}
+</div>

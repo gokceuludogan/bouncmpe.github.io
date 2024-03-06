@@ -1,0 +1,13 @@
+{{ $events := where site.RegularPages.ByExpiryDate "Section" "events" }}
+{{ if $events }}
+<section id="eventbar">
+    <h1 class="display-6 my-4">{{ i18n "upcoming-events" | title }}</h1>
+    <div class="row row-cols-1 g-4">
+        {{ range (first 6 $events) }}
+            <div class="col">
+                {{ partial "bouncmpe/eventbar-card.html" . }}
+            </div>
+        {{end}}
+    </div>
+</section>
+{{ end }}

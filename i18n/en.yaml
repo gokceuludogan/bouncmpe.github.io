@@ -1,0 +1,125 @@
+homepage:
+  other: "home"
+
+cmpe-long:
+  other: department of computer engineering
+
+copyright:
+  other: copyright
+
+date:
+  other: date
+
+start-time:
+  other: start time
+
+duration:
+  other: duration
+
+news:
+  other: news
+
+latest-news:
+  other: latest news
+
+more-news:
+  other: "more news"
+
+events:
+  other: events
+
+upcoming-events:
+  other: upcoming events
+
+latest-stories:
+  other: latest stories
+
+upcoming:
+  other: upcoming
+
+links:
+  other: links
+
+who:
+  other: who
+
+when:
+  other: when
+
+where:
+  other: where
+
+phd-candidate:
+  other: PhD Candidate
+
+thesis-defender:
+  other: thesis defender
+
+more-actions:
+  other: more actions
+
+edit-this-content:
+  other: edit this content
+
+on-this-page:
+  other: "on this page"
+
+phd-thesis-defense:
+  other: "PhD Thesis Defense"
+
+ms-thesis-defense:
+  other: "MS Thesis Defense"
+
+seminar:
+  other: "Seminar"
+
+read-full-text:
+  other: "read full text"
+
+go-to-event-page:
+  other: "go to event page"
+
+add-calendar:
+  other: "add to my calendar"
+
+full-professor:
+  other: Full Professor
+
+associate-professor:
+  other: Associate Professor
+
+assistant-professor:
+  other: Assistant Professor
+
+doctor:
+  other: Ph.D.
+
+faculty-members:
+  other: Faculty Members
+
+emeritus-members:
+  other: Emeritus Faculty Members
+
+other-faculty-members:
+  other: Other Faculty Members
+
+former-faculty-members:
+  other: Former Faculty Members
+
+course-description:
+  other: description
+
+course-prerequisites:
+  other: prerequisites
+
+course-no-prerequsites:
+  other: no prerequisites
+
+course-hours:
+  other: catalogue hours
+
+course-credits:
+  other: credits
+
+course-ects:
+  other: ects

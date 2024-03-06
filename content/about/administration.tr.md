@@ -1,0 +1,4 @@
+---
+title: Yönetim
+metadata: none
+---

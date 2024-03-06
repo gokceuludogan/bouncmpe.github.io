@@ -1,0 +1,20 @@
+---
+title: CMPE460
+description: Introduction to Computer Graphics
+metadata: none
+thumbnail: https://picsum.photos/seed/cmpe460/1400
+aliases:
+  - /courses/cmpe460
+---
+
+## Catalog Description
+
+## Course Learning Objectives
+
+## Current Instructor
+
+{{< people tag="cmpe460" cols="2">}}
+
+## Previous Instructors
+
+{{< people_alt tag="former-cmpe460" cols="3">}}

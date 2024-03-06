@@ -1,0 +1,15 @@
+baseURL: 'https://bouncmpe.github.io'
+languageCode: en-us
+
+defaultContentLanguage: en
+defaultContentLanguageInSubdir: false
+
+enableRobotsTXT: true
+enableInlineShortcodes: true
+enableGitInfo: false
+
+externalLinks:
+  cue: true
+  tab: true
+
+paginate: 16

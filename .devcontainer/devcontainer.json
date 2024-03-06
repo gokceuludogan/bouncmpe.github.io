@@ -1,0 +1,35 @@
+{
+  "name": "Hugo Devel",
+  "dockerFile": "Dockerfile",
+  "runArgs": [
+    "--cap-add=SYS_PTRACE",
+    "--security-opt",
+    "seccomp=unconfined",
+    "--rm"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.makefile-tools",
+        "GitHub.copilot",
+        "esbenp.prettier-vscode",
+        "DavidAnson.vscode-markdownlint"
+      ]
+    },
+    "settings": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "[markdown]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnPaste": true,
+        "editor.wordWrap": "bounded",
+        "editor.wordWrapColumn": 80
+      },
+      "editor.codeActionsOnSave": {
+        "source.fixAll.markdownlint": true
+      },
+      "terminal.integrated.defaultProfile.linux": "bash"
+    },
+    "postCreateCommand": "pre-commit install"
+  },
+  "remoteUser": "bouncmpe"
+}

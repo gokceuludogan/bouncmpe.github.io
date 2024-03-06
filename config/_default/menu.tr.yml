@@ -1,0 +1,105 @@
+main:
+  - name: Hakkında
+    url: /about/
+    identifier: about
+    weight: 100
+
+  - name: Kişiler
+    url: /people/
+    identifier: people
+    weight: 200
+  - name: Öğretim Üyeleri
+    url: /people/faculty
+    parent: people
+    identifier: faculty
+    weight: 201
+  - name: Akademik Personel
+    url: /people/academic-staff
+    parent: people
+    identifier: academic-staff
+    weight: 202
+  - name: İdari ve Yardımcı Personel
+    url: /people/support-staff
+    parent: people
+    identifier: support-staff
+    weight: 203
+  - name: Öğrenciler
+    url: /people/students
+    parent: people
+    identifier: students
+    weight: 204
+
+  - name: Lisans
+    url: /undergraduate/
+    identifier: undergraduate
+    weight: 300
+  - name: Genel Bakış
+    url: /undergraduate/overview
+    parent: undergraduate
+    identifier: undergraduate-overview
+    weight: 301
+  - name: Ders Programı
+    url: /undergraduate/curriculum
+    parent: undergraduate
+    identifier: undergraduate-curriculum
+    weight: 302
+  - name: Temel Dersler
+    url: /undergraduate/courses
+    parent: undergraduate
+    identifier: undergraduate-courses
+    weight: 303
+  - name: Seçmeli Dersler
+    url: /undergraduate/electives
+    parent: undergraduate
+    identifier: undergraduate-electives
+    weight: 304
+  - name: Çift Anadal Programı
+    url: /undergraduate/double-major
+    parent: undergraduate
+    identifier: undergraduate-double-major
+    weight: 305
+  - name: Yandal Programı
+    url: /undergraduate/minor-degree
+    parent: undergraduate
+    identifier: undergraduate-minor-degree
+    weight: 306
+  - name: Değişim Programları
+    url: /undergraduate/exchange
+    parent: undergraduate
+    identifier: undergraduate-exchange
+    weight: 307
+  - name: Endüstri Stajı
+    url: /undergraduate/training
+    parent: undergraduate
+    identifier: undergraduate-training
+    weight: 308
+  - name: Bitirme Projeleri
+    url: /undergraduate/projects
+    parent: undergraduate
+    identifier: undergraduate-projects
+    weight: 309
+
+  - name: Lisansüstü
+    url: /graduate/
+    identifier: graduate
+    weight: 400
+  - name: Genel Bakış
+    url: /graduate/overview
+    parent: graduate
+    identifier: graduate-overview
+    weight: 401
+
+  - name: Araştırma
+    url: /research/
+    identifier: research
+    weight: 500
+
+  - name: Düzenlemeler
+    url: /docs/
+    identifier: docs
+    weight: 700
+
+  - name: İletişim
+    url: /contact/
+    identifier: contact
+    weight: 800

@@ -1,0 +1,18 @@
+{{ $image_path := .Params.thumbnail.url | default "/images/thumbnail.svg" }}
+{{ $image_settings := site.Params.news.image_settings | default "700x300 webp q90 Smart"}}
+
+{{ $image_resource := .Resources.Get .Params.thumbnail.url }}
+
+{{ if $image_resource }}
+{{ $retouched := $image_resource.Fill $image_settings }}
+{{ $image_path = $retouched.RelPermalink }}
+{{ end }}
+
+<div class="card border-1 h-100 rounded-5">
+  <a href="{{ .RelPermalink }}" class="stretched-link">
+  <img src="{{ $image_path }}" class="card-img-top rounded-top-5 py-0" alt="...">
+  </a>
+  <div class="card-body bg-body-secondary rounded-bottom-5 text-body py-0">
+    <h5 class="card-title mt-3 mb-4">{{- title .Title -}}</h5>
+  </div>
+</div>

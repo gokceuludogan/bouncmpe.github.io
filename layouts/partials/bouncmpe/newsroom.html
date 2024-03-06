@@ -1,0 +1,63 @@
+{{ $news := where site.RegularPages.ByDate.Reverse "Section" "news" }}
+{{ $featured := where $news "Params.featured" "eq" true }}
+
+{{ if $news }}
+    <section id="newsroom">
+        <h1 class="display-6 my-4">{{ i18n "latest-stories" | title }}</h1>
+        {{if $featured }}
+        <section id="newsroom-carousel" class="carousel slide carousel-fade mb-4">
+            <div class="carousel-inner">
+            {{ range $index, $element := first 3 $featured }}
+                {{ $image_path := .Params.thumbnail.url }}
+                {{ $image_settings := site.Params.news.image_settings | default "900x500 webp q90 Smart"}}
+                {{ $image_resource := .Resources.Get $image_path }}
+
+                {{ if $image_resource }}
+                {{ $retouched := $image_resource.Fill $image_settings }}
+                {{ $image_path = $retouched.RelPermalink }}
+                {{ end }}
+                <div class="carousel-item rounded-5 {{if eq $index 1}}active{{ end }}">
+                    <a href="{{ .RelPermalink }}" class="stretched-link">
+                        <img src="{{ $image_path }}" class="d-block w-100 rounded-5" alt="Carousel item">
+                    </a>
+                    <div class="carousel-caption d-none d-md-block bg-body-secondary text-body rounded-5 px-3">
+                        <h4 class="m-2">{{- title .Title -}}</h4>
+                    </div>
+                </div>
+            {{ end }}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#newsroom-carousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#newsroom-carousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+        </section>
+        {{ end }}
+        <!-- <section id="tier1" class="row mb-4">
+            <div class=" col">
+                {{ range $index, $element := first 1 $news }}
+                    {{ partial "bouncmpe/newsroom-card.html" . }}
+
+                {{ end }}
+            </div>
+        </section> -->
+        <section id="tier2" class="row row-cols-1 row-cols-md-2 g-4 mb-4">
+            {{ range $index, $element := first 4 $news }}
+                <div class=" col">
+                    {{ partial "bouncmpe/newsroom-card.html" . }}
+                </div>
+            {{ end }}
+        </section>
+
+        <section id="tier3" class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+            {{ range $index, $element := first 6 (after 5 $news) }}
+                <div class=" col">
+                    {{ partial "bouncmpe/newsroom-card.html" . }}
+                </div>
+            {{ end }}
+        </section>
+    </section>
+{{ end }}

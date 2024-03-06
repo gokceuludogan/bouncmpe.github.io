@@ -1,0 +1,110 @@
+main:
+  - name: About
+    url: /about/
+    identifier: about
+    weight: 100
+
+  - name: People
+    url: /people/
+    identifier: people
+    weight: 200
+  - name: Faculty
+    url: /people/faculty
+    parent: people
+    identifier: faculty
+    weight: 201
+  - name: Academic Staff
+    url: /people/academic-staff
+    parent: people
+    identifier: academic-staff
+    weight: 202
+  - name: Support Staff
+    url: /people/support-staff
+    parent: people
+    identifier: support-staff
+    weight: 203
+  - name: Students
+    url: /people/students
+    parent: people
+    identifier: students
+    weight: 204
+
+  - name: Undergraduate
+    url: /undergraduate/
+    identifier: undergraduate
+    weight: 300
+  - name: Overview
+    url: /undergraduate/overview
+    parent: undergraduate
+    identifier: undergraduate-overview
+    weight: 301
+  - name: Curriculum
+    url: /undergraduate/curriculum
+    parent: undergraduate
+    identifier: undergraduate-curriculum
+    weight: 302
+  - name: Core Courses
+    url: /undergraduate/courses
+    parent: undergraduate
+    identifier: undergraduate-courses
+    weight: 303
+  - name: Elective Courses
+    url: /undergraduate/electives
+    parent: undergraduate
+    identifier: undergraduate-electives
+    weight: 304
+  - name: Double Major Program
+    url: /undergraduate/double-major
+    parent: undergraduate
+    identifier: undergraduate-double-major
+    weight: 305
+  - name: Minor Degree Program
+    url: /undergraduate/minor-degree
+    parent: undergraduate
+    identifier: undergraduate-minor-degree
+    weight: 306
+  - name: Exchange Programs
+    url: /undergraduate/exchange
+    parent: undergraduate
+    identifier: undergraduate-exchange
+    weight: 307
+  - name: Summer Training
+    url: /undergraduate/training
+    parent: undergraduate
+    identifier: undergraduate-training
+    weight: 308
+  - name: Senior Projects
+    url: /undergraduate/projects
+    parent: undergraduate
+    identifier: undergraduate-projects
+    weight: 309
+  - name: Senior Projects
+    url: /undergraduate/projects
+    parent: undergraduate
+    identifier: undergraduate-projects
+    weight: 309
+
+  - name: Graduate
+    url: /graduate/
+    identifier: graduate
+    weight: 400
+  - name: Program Overview
+    url: /graduate/overview
+    parent: graduate
+    identifier: graduate-overview
+    weight: 410
+
+  - name: Research
+    url: /research/
+    identifier: research
+    weight: 500
+
+  - name: Docs
+    url: /docs/
+    identifier: docs
+    weight: 700
+
+  - name: Contact
+    url: /contact/
+    identifier: contact
+    weight: 800

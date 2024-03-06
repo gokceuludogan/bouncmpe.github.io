@@ -1,0 +1,144 @@
+homepage:
+  other: "anasayfa"
+
+cmpe-long:
+  other: bilgisayar mühendisliği bölümü
+
+copyright:
+  other: telif hakkı
+
+date:
+  other: tarih
+
+start-time:
+  other: başlama vakti
+
+duration:
+  other: süre
+
+news:
+  other: haberler
+
+upcoming:
+  other: "yakında"
+
+latest-news:
+  other: en yeni haberler
+
+upcoming-events:
+  other: gelecek etkinlikler
+
+latest-stories:
+  other: en yeni haberler
+
+who:
+  other: kim
+
+when:
+  other: ne zaman
+
+where:
+  other: nerede
+
+links:
+  other: bağlantılar
+
+phd-candidate:
+  other: doktora adayı
+
+thesis-defender:
+  other: tez sahibi
+
+add-calendar:
+  other: "takvimime ekle"
+
+edit-this-content:
+  other: bu içeriği düzenle
+
+on-this-page:
+  other: içindekiler
+
+more-news:
+  other: diğer haberler
+
+phd-thesis-defense:
+  other: doktora tezi savunması
+
+ms-thesis-defense:
+  other: yüksek lisans tezi savunması
+
+seminar:
+  other: seminer
+
+read-full-text:
+  other: "hepsini oku"
+
+go-to-event-page:
+  other: "etkinlik detayları"
+
+full-professor:
+  other: "profesör"
+
+associate-professor:
+  other: "doçent"
+
+assistant-professor:
+  other: "doktor öğretim üyesi"
+
+doctor:
+  other: doktor
+
+faculty-members:
+  other: tam zamanlı öğretim üyeleri
+
+emeritus-members:
+  other: emeritus öğretim üyeleri
+
+other-faculty-members:
+  other: diğer öğretim üyeleri
+
+former-faculty-members:
+  other: geçmiş öğretim üyeleri
+
+course-description:
+  other: ders tanımı
+
+course-prerequisites:
+  other: önkoşul dersleri
+
+course-no-prerequsites:
+  other: önkoşul yok
+
+course-hours:
+  other: katalog saatleri
+
+course-credits:
+  other: ders kredisi
+
+course-ects:
+  other: AKTS kredisi
+
+long_month_1:
+  other: ocak
+long_month_2:
+  other: şubat
+long_month_3:
+  other: mart
+long_month_4:
+  other: nisan
+long_month_5:
+  other: mayıs
+long_month_6:
+  other: haziran
+long_month_7:
+  other: temmuz
+long_month_8:
+  other: ağustos
+long_month_9:
+  other: eylül
+long_month_10:
+  other: ekim
+long_month_11:
+  other: kasım
+long_month_12:
+  other: aralık

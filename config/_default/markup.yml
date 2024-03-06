@@ -1,0 +1,15 @@
+defaultMarkdownHandler: goldmark
+
+goldmark:
+  extensions:
+    definitionList: true
+    footnote: true
+    linkify: true
+    strikethrough: true
+    table: true
+    taskList: true
+  renderer:
+    unsafe: true
+  parser:
+    autoHeadingID: true
+    autoHeadingIDType: github

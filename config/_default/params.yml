@@ -1,0 +1,98 @@
+main:
+  endorse: false
+  footerBelowFold: true
+  enableDarkMode: false
+  modes: ["light"]
+
+navigation:
+  logo: /images/logo.png
+  search: true
+  size: lg
+  #color: primary
+  # horizontal: true
+  toc: false
+  sidebar: false
+
+sharing:
+  enabled: false
+  webshare: true
+
+# Boğaziçi Dark Blue: "#1e4a8b"
+# Boğaziçi Light Blue: "#8cc8ea"
+style:
+  primary: "#1e4a8b"
+
+banner:
+  enabled: false
+  partial: "bouncmpe/banner/default"
+
+eventbar:
+  enabled: true
+  title: "Upcoming Events"
+  limit: 3
+  layout: card
+
+newsroom:
+  enabled: true
+  title: "Newsroom"
+  limit: 3
+  layout: card
+
+social:
+  - name: "GitHub"
+    icon: "git"
+    url: "https://github.com/bouncmpe"
+    weight: 20
+
+mermaid:
+  align: center
+
+sections:
+  about:
+    title:
+    layout: card
+    sort: weight
+    style: rounded-1 px-4 pb-3 my-0
+    header: none
+    footer: none
+    padding: 2
+    cols: 3
+    orientation: stacked
+    fullCover: true
+    reverse: false
+    nested: false
+  people:
+    title:
+    layout: card
+    sort: weight
+    style: border-0 px-4 pb-3 my-0 card-zoom
+    header: none
+    footer: none
+    padding: 2
+    cols: 2
+    orientation: stacked
+    fullCover: true
+    reverse: false
+    nested: false
+  undergraduate:
+    sort: weight
+    style: rounded-1 card-zoom
+    header: none
+    footer: none
+    padding: 3
+    cols: 4
+    orientation: stacked
+    color: body-tertiary
+    reverse: false
+    nested: false
+  research:
+    sort: weight
+    style: rounded-5
+    header: none
+    footer: none
+    padding: 3
+    cols: 4
+    orientation: horizontal
+    color: body-tertiary
+    reverse: false
+    nested: false
