@@ -9,7 +9,7 @@ aliases:
 
 ## Catalog Description
 
-## Course Learning Objectives
+## Course Learning Outcome
 
 ## Current Instructor
 
