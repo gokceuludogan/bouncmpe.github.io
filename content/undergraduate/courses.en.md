@@ -6,9 +6,8 @@ toc: false
 weight: 2
 ---
 
-{{< card-group padding="3" gutter="3" class="rounded-1 card-zoom" header="none">}}
-
 <!-- prettier-ignore-start -->
+{{< card-group padding="3" gutter="3" class="rounded-1 card-zoom" header="none">}}
 {{< card path="courses/cmpe150" />}}
 {{< card path="courses/cmpe160" />}}
 {{< card path="courses/cmpe220" />}}
@@ -36,6 +35,5 @@ weight: 2
 {{< card path="courses/cmpe478" />}}
 {{< card path="courses/cmpe480" />}}
 {{< card path="courses/cmpe492" />}}
-<!-- prettier-ignore-end -->
-
 {{< /card-group >}}
+<!-- prettier-ignore-end -->
