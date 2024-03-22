@@ -4,7 +4,7 @@ description: Computer Networks
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe475/1400
 aliases:
-  - /courses/cmpe475
+  - undergraduate/courses/cmpe475
 ---
 
 ## Catalog Description

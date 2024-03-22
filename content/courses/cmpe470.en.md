@@ -4,7 +4,7 @@ description: Computer Performance Evaluation
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe470/1400
 aliases:
-  - /courses/cmpe470
+  - undergraduate/courses/cmpe470
 ---
 
 ## Catalog Description

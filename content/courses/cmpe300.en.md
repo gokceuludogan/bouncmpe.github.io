@@ -4,7 +4,7 @@ description: Analysis of Algorithms
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe300/1400
 aliases:
-  - /courses/cmpe300
+  - undergraduate/courses/cmpe300
 ---
 
 ## Catalog Description

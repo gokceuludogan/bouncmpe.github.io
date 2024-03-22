@@ -4,7 +4,7 @@ description: Introduction to Signal Processing for Computer Engineers
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe362/1400
 aliases:
-  - /courses/cmpe362
+  - undergraduate/courses/cmpe362
 ---
 
 ## Catalog Description

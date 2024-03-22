@@ -4,7 +4,7 @@ description: Introduction to Probability and Statistics for Computer Engineers
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe343/1400
 aliases:
-  - /courses/cmpe343
+  - undergraduate/courses/cmpe343
 ---
 
 ## Catalog Description

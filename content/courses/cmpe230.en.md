@@ -4,7 +4,7 @@ description: Systems Programming
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe230/1400
 aliases:
-  - /courses/cmpe230
+  - undergraduate/courses/cmpe230
 ---
 
 ## Catalog Description

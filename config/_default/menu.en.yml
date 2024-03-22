@@ -43,7 +43,7 @@ main:
     parent: undergraduate
     identifier: undergraduate-curriculum
     weight: 302
-  - name: Core Courses
+  - name: Course List
     url: /undergraduate/courses
     parent: undergraduate
     identifier: undergraduate-courses

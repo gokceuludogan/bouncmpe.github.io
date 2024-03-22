@@ -4,7 +4,7 @@ description: Machine Learning
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe462/1400
 aliases:
-  - /courses/cmpe462
+  - undergraduate/courses/cmpe462
 ---
 
 ## Catalog Description

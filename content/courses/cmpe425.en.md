@@ -4,7 +4,7 @@ description: Compiler Design
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe425/1400
 aliases:
-  - /courses/cmpe425
+  - undergraduate/courses/cmpe425
 ---
 
 ## Catalog Description

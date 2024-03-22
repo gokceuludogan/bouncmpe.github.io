@@ -5,7 +5,7 @@ metadata: none
 thumbnail:
   url: https://picsum.photos/seed/cmpe150/1400
 aliases:
-  - /courses/cmpe150
+  - undergraduate/courses/cmpe150
 ---
 
 ## Catalog Description

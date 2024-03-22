@@ -4,7 +4,7 @@ description: Introduction to Object Oriented Programming
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe160/1400
 aliases:
-  - /courses/cmpe160
+  - undergraduate/courses/cmpe160
 ---
 
 ## Catalog Description

@@ -4,7 +4,7 @@ description: Discrete Computational Structures
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe220/1400
 aliases:
-  - /courses/cmpe220
+  - undergraduate/courses/cmpe220
 ---
 
 ## Catalog Description

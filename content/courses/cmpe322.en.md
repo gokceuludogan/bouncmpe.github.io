@@ -4,7 +4,7 @@ description: Operating Systems
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe322/1400
 aliases:
-  - /courses/cmpe322
+  - undergraduate/courses/cmpe322
 ---
 
 ## Catalog Description

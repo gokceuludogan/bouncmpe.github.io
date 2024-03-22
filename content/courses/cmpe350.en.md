@@ -4,7 +4,7 @@ description: Formal Languages and Automata Theory
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe350/1400
 aliases:
-  - /courses/cmpe350
+  - undergraduate/courses/cmpe350
 ---
 
 ## Catalog Description

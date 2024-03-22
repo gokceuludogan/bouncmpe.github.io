@@ -4,7 +4,7 @@ description: Data Structures and Algorithms
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe250/1400
 aliases:
-  - /courses/cmpe250
+  - undergraduate/courses/cmpe250
 ---
 
 ## Catalog Description

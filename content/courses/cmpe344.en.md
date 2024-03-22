@@ -4,7 +4,7 @@ description: Computer Organization
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe344/1400
 aliases:
-  - /courses/cmpe344
+  - undergraduate/courses/cmpe344
 ---
 
 ## Catalog Description

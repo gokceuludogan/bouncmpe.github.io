@@ -1,4 +1,4 @@
 ---
-title: Undergraduate Studies
-description:
+title: Undergraduate
+description: Undergraduate Program in Computer Engineering
 ---

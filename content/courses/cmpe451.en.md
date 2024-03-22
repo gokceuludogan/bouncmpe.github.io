@@ -4,7 +4,7 @@ description: Project Development in Software Engineering
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe451/1400
 aliases:
-  - /courses/cmpe451
+  - undergraduate/courses/cmpe451
 ---
 
 ## Catalog Description

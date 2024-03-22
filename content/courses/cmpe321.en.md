@@ -4,7 +4,7 @@ description: Introduction to Database Systems
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe321/1400
 aliases:
-  - /courses/cmpe321
+  - undergraduate/courses/cmpe321
 ---
 
 ## Catalog Description

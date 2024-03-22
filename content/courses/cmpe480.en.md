@@ -4,7 +4,7 @@ description: Introduction to Artificial Intelligence
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe480/1400
 aliases:
-  - /courses/cmpe480
+  - undergraduate/courses/cmpe480
 ---
 
 ## Catalog Description

@@ -74,6 +74,18 @@ sections:
     fullCover: true
     reverse: false
     nested: false
+  courses:
+    sort: weight
+    style: rounded-1 card-zoom
+    header: none
+    footer: none
+    padding: 3
+    cols: 4
+    orientation: stacked
+    color: body-tertiary
+    reverse: false
+    nested: false
+    fullCover: true
   undergraduate:
     sort: weight
     style: rounded-1 card-zoom

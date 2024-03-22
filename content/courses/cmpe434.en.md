@@ -4,7 +4,7 @@ description: Introduction to Robotics
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe434/1400
 aliases:
-  - /courses/cmpe434
+  - undergraduate/courses/cmpe434
 ---
 
 ## Catalog Description

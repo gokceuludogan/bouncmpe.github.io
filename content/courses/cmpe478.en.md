@@ -4,7 +4,7 @@ description: Parallel Processing
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe478/1400
 aliases:
-  - /courses/cmpe478
+  - undergraduate/courses/cmpe478
 ---
 
 ## Catalog Description

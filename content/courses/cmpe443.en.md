@@ -4,7 +4,7 @@ description: Principles of Embedded Systems Design
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe443/1400
 aliases:
-  - /courses/cmpe443
+  - undergraduate/courses/cmpe443
 ---
 
 ## Catalog Description

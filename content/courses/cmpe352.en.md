@@ -4,7 +4,7 @@ description: Fundamentals of Software Engineering
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe352/1400
 aliases:
-  - /courses/cmpe352
+  - undergraduate/courses/cmpe352
 ---
 
 ## Catalog Description

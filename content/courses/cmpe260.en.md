@@ -4,7 +4,7 @@ description: Principles of Programming Languages
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe260_/1400
 aliases:
-  - /courses/cmpe260
+  - undergraduate/courses/cmpe260
 ---
 
 ## Catalog Description

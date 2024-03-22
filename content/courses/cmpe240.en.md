@@ -1,10 +1,10 @@
 ---
 title: CMPE240
-description: Introduction to Robotics
+description: Digital Systems
 metadata: none
 thumbnail: https://picsum.photos/seed/cmpe240/1400
 aliases:
-  - /courses/cmpe240
+  - undergraduate/courses/cmpe240
 ---
 
 ## Catalog Description
