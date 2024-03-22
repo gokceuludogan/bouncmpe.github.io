@@ -15,10 +15,18 @@ class: rounded-5
 
 {{< people tag="emeritus" >}}
 
-## Other Members
+## Adjunct Members
+
+{{< people tag="adjunct-faculty" >}}
+
+## Part-time Members
 
 {{< people tag="parttime-faculty" >}}
 
 ## Former Members
 
 {{< people_alt tag="former-faculty" cols="3">}}
+
+## Former Part-time Members
+
+{{< people_alt tag="former-parttime-faculty" cols="3">}}
