@@ -2,6 +2,11 @@
   "email": "taylan.cemgil@bogazici.edu.tr",
   "name": "Ali Taylan Cemgil",
   "position": "full-professor",
-  "tags": ["former-faculty", "former-postdoc", "former-teaching-assistant"],
+  "tags": [
+    "former-faculty",
+    "former-postdoc",
+    "former-teaching-assistant",
+    "adjunct-faculty"
+  ],
   "type": "person"
 }
