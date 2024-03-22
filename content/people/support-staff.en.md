@@ -14,10 +14,6 @@ weight: 23
 
 {{< people tag="system-admin" >}}
 
-## Technical Staff
+## Technical and Building Staff
 
-{{< people tag="technical-staff" >}}
-
-## Building Staff
-
-{{< people tag="building-staff" >}}
+{{< people_alt tag="other-staff" >}}

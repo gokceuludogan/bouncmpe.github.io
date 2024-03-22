@@ -123,3 +123,12 @@ course-credits:
 
 course-ects:
   other: ects
+
+building-staff:
+  other: building staff
+
+technical-staff:
+  other: technical staff
+
+building-head:
+  other: head of building

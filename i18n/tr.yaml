@@ -100,6 +100,16 @@ other-faculty-members:
 former-faculty-members:
   other: geçmiş öğretim üyeleri
 
+building-staff:
+  other: bina görevlisi
+
+technical-staff:
+  other: teknik görevli
+
+building-head:
+  other: bina amiri
+
+
 course-description:
   other: ders tanımı
 
