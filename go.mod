@@ -1,5 +1,5 @@
-module github.com/bounverif/website
+module github.com/bounverif/bouncmpe.github.io
 
 go 1.20
 
-require github.com/gethinode/hinode v0.22.5 // indirect
+require github.com/gethinode/hinode v0.23.4 // indirect

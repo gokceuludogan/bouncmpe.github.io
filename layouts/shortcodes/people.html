@@ -26,14 +26,14 @@
     {{ end }}
     <div class="card mb-3 border-0 h-100">
         <div class="row g-0">
-          <div class="col-md-4 mb-0 d-sm-block">
+          <div class="col-4 mb-0">
             <img src="{{ $thumbnail }}" alt="{{ .name | anchorize }}" class="img-fluid rounded-5 shadow">
           </div>
-          <div class="col-md-8">
+          <div class="col-8">
             <div class="card-body">
-              <h3>{{ .name | title }}</h3>
+              <h4 class="mt-2">{{ .name | title }}</h4>
               {{ with .position }}
-              <p class="mb-1 lead">
+              <p class="mb-1">
                 {{ . | i18n | title }}
               </p>
               {{ end }}

@@ -128,6 +128,9 @@ course-credits:
 course-ects:
   other: AKTS kredisi
 
+home:
+  other: Anasayfa
+
 long_month_1:
   other: ocak
 long_month_2:
