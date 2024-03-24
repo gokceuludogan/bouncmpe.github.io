@@ -15,7 +15,7 @@ weight: 1
 | MATH101 | Calculus I | --- | 4 ||
 | PHYS121 | Introductory Mechanics & Thermodynamics | --- | 4 ||
 | CHEM105 | Fundamentals of Chemistry | --- | 4||
-| [CMPE150](/undergraduate/courses/cmpe150) | Introducution to Computing | --- | 3||
+| [CMPE150](/courses/cmpe150) | Introducution to Computing | --- | 3||
 | EC101 | Principles of Microeconomics | --- | 3||
 |||| **18** ||
 | <h4>Second Semester</h4>|
@@ -23,7 +23,7 @@ weight: 1
 | MATH102 | Calculus II | MATH101 | 4 ||
 | PHYS201 | Physics III | PHYS121 | 4 ||
 | HSS | Humanities and Social Sciences (Elective)| --- |  3-4 ||
-| [CMPE160](/undergraduate/courses/cmpe160) | Introduction to Object Oriented Programming | CMPE150 | 4 ||
+| [CMPE160](/courses/cmpe160) | Introduction to Object Oriented Programming | CMPE150 | 4 ||
 | EC102 | Principles of Macroeconomics | EC101 |  3 ||
 ||||  **18-19** ||
 | <h4>Third Semester</h4>|
@@ -31,41 +31,41 @@ weight: 1
 | MATH201 | Matrix Theory | --- | 4 ||
 | PHYS202 | Physics IV | PHYS201 | 4 ||
 | EE210 | Introduction to Electrical Engineering | --- | 3||
-| [CMPE220](/undergraduate/courses/cmpe220) | Discrete Computational Structures | --- | 3||
-| [CMPE250](/undergraduate/courses/cmpe250) | Data Structures and Algorithms | CMPE160 | 4||
+| [CMPE220](/courses/cmpe220) | Discrete Computational Structures | --- | 3||
+| [CMPE250](/courses/cmpe250) | Data Structures and Algorithms | CMPE160 | 4||
 | TK221 | Turkish for Native Speakers I | --- | 2 ||
 |||| **20** ||
 | <h4>Fourth Semester</h4>|
 | **Code** |**Course Title** | **Prerequisites** | **Credits** | **ECTS** |
 | MATH202 | Differential Equations | MATH201 | 4 ||
 | EE212 | Introduction to Electronic Engineering | EE210 | 3 ||
-| [CMPE230](/undergraduate/courses/cmpe230) | Systems Programming | CMPE160 | 4 ||
-| [CMPE240](/undergraduate/courses/cmpe240) | Digital Systems | --- | 4 ||
-| [CMPE260](/undergraduate/courses/cmpe260) | Principles of Programming Languages | CMPE250 | 3 ||
+| [CMPE230](/courses/cmpe230) | Systems Programming | CMPE160 | 4 ||
+| [CMPE240](/courses/cmpe240) | Digital Systems | --- | 4 ||
+| [CMPE260](/courses/cmpe260) | Principles of Programming Languages | CMPE250 | 3 ||
 | TK222 | Turkish for Native Speakers II || 2 ||
 |||| **20** ||
 | <h4>Fifth Semester</h4>|
 | **Code** |**Course Title** | **Prerequisites** | **Credits** | **ECTS** |
-| [CMPE300](/undergraduate/courses/cmpe300) | Analysis of Algorithms | CMPE250 | 3 ||
-| [CMPE322](/undergraduate/courses/cmpe322) | Operating Systems | CMPE250 | 4 ||
-| [CMPE343](/undergraduate/courses/cmpe343) | Introduction to Probability and Statistics for Computer Engineers | MATH101 | 3 ||
-| [CMPE344](/undergraduate/courses/cmpe344) | Computer Organization | CMPE240 | 4 ||
+| [CMPE300](/courses/cmpe300) | Analysis of Algorithms | CMPE250 | 3 ||
+| [CMPE322](/courses/cmpe322) | Operating Systems | CMPE250 | 4 ||
+| [CMPE343](/courses/cmpe343) | Introduction to Probability and Statistics for Computer Engineers | MATH101 | 3 ||
+| [CMPE344](/courses/cmpe344) | Computer Organization | CMPE240 | 4 ||
 | IE310 | Operations Research | MATH201 | 4 ||
 | HTR311 | History of the Turkish Republic II  || 2 ||
 |||| **20** ||
 | <h4>Sixth Semester</h4>|
 | **Code** |**Course Title** | **Prerequisites** | **Credits** | **ECTS** |
-| [CMPE321](/undergraduate/courses/cmpe321) | Introduction to Database Systems | CMPE250 | 4 ||
-| [CMPE350](/undergraduate/courses/cmpe350) | Formal Languages and Automata Theory | CMPE220 | 3 ||
-| [CMPE352](/undergraduate/courses/cmpe352) | Fundamentals of Software Engineering | --- | 2 ||
-| [CMPE362](/undergraduate/courses/cmpe362) | Introduction to Signal Processing | MATH201 | 3 ||
+| [CMPE321](/courses/cmpe321) | Introduction to Database Systems | CMPE250 | 4 ||
+| [CMPE350](/courses/cmpe350) | Formal Languages and Automata Theory | CMPE220 | 3 ||
+| [CMPE352](/courses/cmpe352) | Fundamentals of Software Engineering | --- | 2 ||
+| [CMPE362](/courses/cmpe362) | Introduction to Signal Processing | MATH201 | 3 ||
 | IE306 | Systems Simulation | CMPE343 | 4 ||
 | HTR312 | History of the Turkish Republic II || 2 ||
 |||| **18** ||
 | <h4>Seventh Semester</h4>|
 | **Code** |**Course Title** | **Prerequisites** | **Credits** | **ECTS** |
-| [CMPE443](/undergraduate/courses/cmpe443) | Principles of Embedded Systems Design | CMPE240 | 4 ||
-| [CMPE451](/undergraduate/courses/cmpe451) | Project Development in Software Engineering | CMPE321, CMPE352 | 2 ||
+| [CMPE443](/courses/cmpe443) | Principles of Embedded Systems Design | CMPE240 | 4 ||
+| [CMPE451](/courses/cmpe451) | Project Development in Software Engineering | CMPE321, CMPE352 | 2 ||
 | CC | Complemetary Course (Elective) || 3-4 ||
 | CC | Complemetary Course (Elective) || 3-4 ||
 | CC | Complemetary Course (Elective) || 3-4 ||
@@ -78,6 +78,7 @@ weight: 1
 | CC | Complemetary Course (Elective) || 3-4 ||
 | CC | Complemetary Course (Elective) || 3-4 ||
 |||| **16-19** ||
+
 {{< /table >}}
 <!-- prettier-ignore-end -->
 
@@ -202,24 +203,24 @@ CC4("CC"):::elective
 CC5("CC"):::elective
 CC6("CC"):::elective
 
-click CMPE150 href "/undergraduate/courses/cmpe150" "Course"
-click CMPE160 href "/undergraduate/courses/cmpe160" "Course"
-click CMPE220 href "/undergraduate/courses/cmpe220" "Course"
-click CMPE230 href "/undergraduate/courses/cmpe230" "Course"
-click CMPE240 href "/undergraduate/courses/cmpe240" "Course"
-click CMPE250 href "/undergraduate/courses/cmpe250" "Course"
-click CMPE260 href "/undergraduate/courses/cmpe260" "Course"
-click CMPE300 href "/undergraduate/courses/cmpe300" "Course"
-click CMPE321 href "/undergraduate/courses/cmpe321" "Course"
-click CMPE322 href "/undergraduate/courses/cmpe322" "Course"
-click CMPE343 href "/undergraduate/courses/cmpe343" "Course"
-click CMPE344 href "/undergraduate/courses/cmpe344" "Course"
-click CMPE350 href "/undergraduate/courses/cmpe350" "Course"
-click CMPE352 href "/undergraduate/courses/cmpe352" "Course"
-click CMPE362 href "/undergraduate/courses/cmpe362" "Course"
-click CMPE443 href "/undergraduate/courses/cmpe443" "Course"
-click CMPE451 href "/undergraduate/courses/cmpe451" "Course"
-click CMPE492 href "/undergraduate/courses/cmpe492" "Course"
+click CMPE150 href "/courses/cmpe150" "Course"
+click CMPE160 href "/courses/cmpe160" "Course"
+click CMPE220 href "/courses/cmpe220" "Course"
+click CMPE230 href "/courses/cmpe230" "Course"
+click CMPE240 href "/courses/cmpe240" "Course"
+click CMPE250 href "/courses/cmpe250" "Course"
+click CMPE260 href "/courses/cmpe260" "Course"
+click CMPE300 href "/courses/cmpe300" "Course"
+click CMPE321 href "/courses/cmpe321" "Course"
+click CMPE322 href "/courses/cmpe322" "Course"
+click CMPE343 href "/courses/cmpe343" "Course"
+click CMPE344 href "/courses/cmpe344" "Course"
+click CMPE350 href "/courses/cmpe350" "Course"
+click CMPE352 href "/courses/cmpe352" "Course"
+click CMPE362 href "/courses/cmpe362" "Course"
+click CMPE443 href "/courses/cmpe443" "Course"
+click CMPE451 href "/courses/cmpe451" "Course"
+click CMPE492 href "/courses/cmpe492" "Course"
 
 click CC1 href "/undergraduate/electives" "Undergraduate Electives"
 click CC2 href "/undergraduate/electives" "Undergraduate Electives"
