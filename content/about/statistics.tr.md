@@ -1,5 +1,6 @@
 ---
 title: İstatistikler
+weight: 3
 metadata: none
 ---
 

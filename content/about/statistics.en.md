@@ -1,6 +1,7 @@
 ---
 title: Department Statistics
-description: Description here!
+description: Enrollment and Graduation Statistics
+weight: 3
 metadata: none
 ---
 

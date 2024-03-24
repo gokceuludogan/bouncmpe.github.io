@@ -1,4 +1,5 @@
 ---
-title: Akademik Etik
+title: Akademik Ahlak
+weight: 8
 metadata: none
 ---

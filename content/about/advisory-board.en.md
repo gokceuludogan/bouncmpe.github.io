@@ -1,6 +1,7 @@
 ---
-title: Department Advisory Board
-description: Description here!
+title: Advisory Board
+description: Department Advisory Board
+weight: 6
 metadata: none
 ---
 

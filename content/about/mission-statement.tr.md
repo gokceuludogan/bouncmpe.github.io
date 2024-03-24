@@ -1,5 +1,5 @@
 ---
 title: Amaçlar
 metadata: none
-weight: 10
+weight: 1
 ---

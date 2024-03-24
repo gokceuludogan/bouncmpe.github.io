@@ -1,8 +1,8 @@
 ---
 title: Mission Statements
-description: Description here!
+description: Department Mission Statements
 metadata: none
-weight: 10
+weight: 1
 ---
 
 ## Boğaziçi University

@@ -1,6 +1,7 @@
 ---
-title: Department History
-description: Description here!
+title: History
+description: Department History
+weight: 2
 metadata: none
 ---
 

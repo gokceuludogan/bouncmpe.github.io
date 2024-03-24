@@ -1,5 +1,6 @@
 ---
 title: Governance
-description: Description here!
+description: Department Governance
+weight: 9
 metadata: none
 ---

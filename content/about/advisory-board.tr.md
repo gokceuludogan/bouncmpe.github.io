@@ -1,7 +1,7 @@
 ---
 title: Bölüm Danışma Kurulu
 metadata: none
-layout: list
+weight: 6
 ---
 
 {{< people tag="advisor" >}}
