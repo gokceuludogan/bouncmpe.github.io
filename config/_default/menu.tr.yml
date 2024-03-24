@@ -23,11 +23,11 @@ main:
     parent: people
     identifier: support-staff
     weight: 203
-  - name: Öğrenciler
-    url: /people/students
-    parent: people
-    identifier: students
-    weight: 204
+  # - name: Öğrenciler
+  #   url: /people/students
+  #   parent: people
+  #   identifier: students
+  #   weight: 204
 
   - name: Lisans
     url: /undergraduate/
@@ -89,10 +89,15 @@ main:
     identifier: graduate-overview
     weight: 401
 
+  - name: Dersler
+    url: /courses/
+    identifier: courses
+    weight: 500
+
   - name: Araştırma
     url: /research/
     identifier: research
-    weight: 500
+    weight: 600
 
   - name: Düzenlemeler
     url: /docs/

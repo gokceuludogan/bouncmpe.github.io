@@ -23,17 +23,17 @@ main:
     parent: people
     identifier: support-staff
     weight: 203
-  - name: Students
-    url: /people/students
-    parent: people
-    identifier: students
-    weight: 204
+  # - name: Students
+  #   url: /people/students
+  #   parent: people
+  #   identifier: students
+  #   weight: 204
 
   - name: Undergraduate
     url: /undergraduate/
     identifier: undergraduate
     weight: 300
-  - name: Overview
+  - name: Program Overview
     url: /undergraduate/overview
     parent: undergraduate
     identifier: undergraduate-overview
@@ -94,10 +94,15 @@ main:
     identifier: graduate-overview
     weight: 410
 
+  - name: Courses
+    url: /courses/
+    identifier: courses
+    weight: 500
+
   - name: Research
     url: /research/
     identifier: research
-    weight: 500
+    weight: 600
 
   - name: Docs
     url: /docs/
