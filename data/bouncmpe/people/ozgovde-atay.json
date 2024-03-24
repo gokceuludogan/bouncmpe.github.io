@@ -2,6 +2,12 @@
   "email": "ozgovde@bogazici.edu.tr",
   "name": "Atay Özgövde",
   "position": "assistant-professor",
-  "tags": ["faculty", "former-postdoc", "former-cmpe140", "cmpe250"],
+  "tags": [
+    "faculty",
+    "former-postdoc",
+    "former-cmpe140",
+    "cmpe250",
+    "advisor-1"
+  ],
   "type": "person"
 }
