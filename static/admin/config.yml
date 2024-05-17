@@ -1,0 +1,166 @@
+backend:
+  name: github
+  repo: bouncmpe/bouncmpe.github.io
+  branch: main
+  open_authoring: true
+
+local_backend: true
+publish_mode: editorial_workflow
+
+site_url: https://bouncmpe.github.io
+logo_url: https://bouncmpe.github.io/images/logo.png
+
+media_folder: /assets/uploads
+public_folder: /uploads
+
+slug:
+  encoding: "ascii"
+  clean_accents: true
+
+i18n:
+  structure: multiple_files
+  locales: [en, tr]
+  default_locale: en
+
+theme:
+  mode: dark
+
+collections:
+  - name: "news"
+    label: "Department News"
+    folder: "content/news"
+    identifier_field: title
+    slug: "{{year}}-{{month}}-{{day}}-news-{{slug}}"
+    path: "{{slug}}/index"
+    media_folder: /assets/uploads
+    public_folder: /uploads
+    create: true
+    i18n: true
+    editor:
+      preview: false
+    filter: { field: "type", value: "news" }
+    fields:
+      - label: Type
+        name: type
+        widget: hidden
+        default: news
+        i18n: duplicate
+      - label: Title
+        name: title
+        widget: string
+        i18n: true
+      - label: Description
+        name: description
+        widget: string
+        i18n: true
+        required: false
+      - label: Publish Date
+        name: date
+        widget: datetime
+        date_format: DD MMMM YYYY
+        time_format: false
+        format: YYYY-MM-DD
+        i18n: duplicate
+      - label: Thumbnail
+        name: thumbnail
+        widget: image
+        allow_multiple: false
+        i18n: duplicate
+        required: false
+      - label: Body
+        name: body
+        widget: markdown
+        default: ""
+        i18n: true
+
+  - name: event
+    label: Department Events
+    label_singular: Event
+    identifier_field: name
+    folder: content/events
+    slug: "{{expiryDate}}-{{type}}-{{name}}"
+    path: "{{slug}}/index"
+    create: true
+    i18n: true
+    editor:
+      preview: false
+    sortable_fields: ["expiryDate", "name"]
+    view_filters:
+      - label: PhD
+        field: type
+        pattern: phd-thesis-defense
+      - label: MS
+        field: type
+        pattern: ms-thesis-defense
+      - label: Seminar
+        field: type
+        pattern: seminar
+    view_groups:
+      - label: Month
+        field: expiryDate
+        pattern: \d{4}-\d{2}
+    fields:
+      - {
+          label: "Type",
+          name: "type",
+          widget: "select",
+          options:
+            [
+              { label: "MS Thesis Defense", value: "ms-thesis-defense" },
+              { label: "PhD Thesis Defense", value: "phd-thesis-defense" },
+              { label: "Seminar", value: "seminar" },
+            ],
+          default: "ms-thesis-defense",
+          i18n: "duplicate",
+        }
+      - { label: "Title", name: "title", widget: "string", i18n: true }
+      - { label: "Name", name: "name", widget: "string", i18n: "duplicate" }
+      - {
+          label: "Event Date",
+          name: "expiryDate",
+          widget: "datetime",
+          date_format: "DD MMMM YYYY",
+          time_format: false,
+          format: "YYYY-MM-DD",
+          i18n: "duplicate",
+        }
+      - {
+          label: "Start Time",
+          name: "startTime",
+          widget: "datetime",
+          date_format: false,
+          time_format: "h:mm A",
+          format: "HH:mm",
+          i18n: "duplicate",
+        }
+      - {
+          label: "Finish Time",
+          name: "finishTime",
+          widget: "datetime",
+          date_format: false,
+          time_format: "h:mm A",
+          format: "HH:mm",
+          i18n: "duplicate",
+        }
+      - {
+          label: "Location",
+          name: "location",
+          widget: "string",
+          i18n: "duplicate",
+          default: "Ali Vahit Şahiner (AVŞ) Seminar Room",
+        }
+      - {
+          label: "Meeting Link",
+          name: "meeting-link",
+          widget: "string",
+          i18n: "duplicate",
+          required: false,
+        }
+      - {
+          label: "Description",
+          name: "body",
+          widget: "markdown",
+          default: "",
+          i18n: true,
+          required: false
+        }
