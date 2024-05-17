@@ -1,6 +1,7 @@
 backend:
   name: github
   repo: bouncmpe/bouncmpe.github.io
+  site_domain: bouncmpe.github.io
   branch: main
   open_authoring: true
 
