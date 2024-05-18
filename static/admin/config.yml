@@ -3,14 +3,14 @@ backend:
   repo: bouncmpe/bouncmpe.github.io
   branch: main
   open_authoring: true
-  base_url: https://bouncmpe.github.io
+  base_url: https://bouncmpe.pages.dev
   auth_endpoint: /api/auth
 
 local_backend: true
 publish_mode: editorial_workflow
 
-site_url: https://bouncmpe.github.io
-logo_url: https://bouncmpe.github.io/images/logo.png
+site_url: https://bouncmpe.pages.dev
+logo_url: https://bouncmpe.pages.dev/images/logo.png
 
 media_folder: /assets/uploads
 public_folder: /uploads
