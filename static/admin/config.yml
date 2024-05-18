@@ -3,6 +3,8 @@ backend:
   repo: bouncmpe/bouncmpe.github.io
   branch: main
   open_authoring: true
+  base_url: https://bouncmpe.github.io
+  auth_endpoint: /api/auth
 
 local_backend: true
 publish_mode: editorial_workflow
