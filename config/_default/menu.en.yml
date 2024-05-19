@@ -43,11 +43,11 @@ main:
     parent: undergraduate
     identifier: undergraduate-curriculum
     weight: 302
-  - name: Course List
-    url: /undergraduate/courses
-    parent: undergraduate
-    identifier: undergraduate-courses
-    weight: 303
+  # - name: Course List
+  #   url: /undergraduate/courses
+  #   parent: undergraduate
+  #   identifier: undergraduate-courses
+  #   weight: 303
   - name: Elective Courses
     url: /undergraduate/electives
     parent: undergraduate
@@ -78,21 +78,26 @@ main:
     parent: undergraduate
     identifier: undergraduate-projects
     weight: 309
-  - name: Senior Projects
-    url: /undergraduate/projects
-    parent: undergraduate
-    identifier: undergraduate-projects
-    weight: 309
 
   - name: Graduate
     url: /graduate/
     identifier: graduate
     weight: 400
-  - name: Program Overview
-    url: /graduate/overview
+  - name: PhD Program Overview
+    url: /graduate/phd-program
     parent: graduate
-    identifier: graduate-overview
-    weight: 410
+    identifier: graduate-phd-program
+    weight: 411
+  - name: MS Program Overview
+    url: /graduate/ms-program
+    parent: graduate
+    identifier: graduate-ms-program
+    weight: 412
+  - name: Other Affiliated Programs
+    url: /graduate/affiliated-programs
+    parent: graduate
+    identifier: graduate-affiliated
+    weight: 413
 
   - name: Courses
     url: /courses/

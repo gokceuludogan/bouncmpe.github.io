@@ -13,4 +13,4 @@ externalLinks:
   tab: true
 
 paginate: 16
-timeout: 2m
+timeout: 300s
