@@ -55,7 +55,7 @@
         <section id="tier3" class="row row-cols-1 row-cols-md-3 g-4 mb-4">
             {{ range $index, $element := first 6 (after 5 $news) }}
                 <div class=" col">
-                    {{ partial "bouncmpe/newsroom-card.html" . }}
+                    {{ partial "bouncmpe/newsroom-card-alt.html" . }}
                 </div>
             {{ end }}
         </section>
