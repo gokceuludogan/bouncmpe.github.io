@@ -4,8 +4,9 @@ title: Arzucan Özgür'e Araştırmada Üstün Başarı Ödülü
 description: >
   Boğaziçi Üniversitesi Vakfı (BÜVAK) tarafından her yıl verilen Boğaziçi
   Üniversitesi Araştırmada Üstün Başarı Ödülü sahiplerini buldu.
+featured: false
 date: 2022-01-25
-thumbnail: https://picsum.photos/seed/picsum/1280/720
+thumbnail: uploads/arzucan-ozgur-1.png
 ---
 
 Boğaziçi Üniversitesi Vakfı (BÜVAK) her sene Boğaziçi Üniversitesi'nde kendi
