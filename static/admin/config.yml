@@ -8,12 +8,13 @@ backend:
   open_authoring: true
 
 local_backend: true
+publish_mode: editorial_workflow
 
 site_url: https://bouncmpe.pages.dev
 logo_url: https://bouncmpe.pages.dev/images/logo.png
 
 media_folder: /assets/uploads
-public_folder: /uploads
+public_folder: uploads
 
 slug:
   encoding: "ascii"
@@ -35,7 +36,7 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-news-{{slug}}"
     path: "{{slug}}/index"
     media_folder: /assets/uploads
-    public_folder: /uploads
+    public_folder: uploads
     create: true
     i18n: true
     editor:
@@ -56,6 +57,11 @@ collections:
         widget: string
         i18n: true
         required: false
+      - label: Featured
+        name: featured
+        i18n: duplicate
+        widget: boolean
+        default: false
       - label: Publish Date
         name: date
         widget: datetime
@@ -102,67 +108,60 @@ collections:
         field: expiryDate
         pattern: \d{4}-\d{2}
     fields:
-      - {
-          label: "Type",
-          name: "type",
-          widget: "select",
-          options:
-            [
-              { label: "MS Thesis Defense", value: "ms-thesis-defense" },
-              { label: "PhD Thesis Defense", value: "phd-thesis-defense" },
-              { label: "Seminar", value: "seminar" },
-            ],
-          default: "ms-thesis-defense",
-          i18n: "duplicate",
-        }
-      - { label: "Title", name: "title", widget: "string", i18n: true }
-      - { label: "Name", name: "name", widget: "string", i18n: "duplicate" }
-      - {
-          label: "Event Date",
-          name: "expiryDate",
-          widget: "datetime",
-          date_format: "DD MMMM YYYY",
-          time_format: false,
-          format: "YYYY-MM-DD",
-          i18n: "duplicate",
-        }
-      - {
-          label: "Start Time",
-          name: "startTime",
-          widget: "datetime",
-          date_format: false,
-          time_format: "h:mm A",
-          format: "HH:mm",
-          i18n: "duplicate",
-        }
-      - {
-          label: "Finish Time",
-          name: "finishTime",
-          widget: "datetime",
-          date_format: false,
-          time_format: "h:mm A",
-          format: "HH:mm",
-          i18n: "duplicate",
-        }
-      - {
-          label: "Location",
-          name: "location",
-          widget: "string",
-          i18n: "duplicate",
-          default: "Ali Vahit Şahiner (AVŞ) Seminar Room",
-        }
-      - {
-          label: "Meeting Link",
-          name: "meeting-link",
-          widget: "string",
-          i18n: "duplicate",
-          required: false,
-        }
-      - {
-          label: "Description",
-          name: "body",
-          widget: "markdown",
-          default: "",
-          i18n: true,
-          required: false
-        }
+      - label: Type
+        name: type
+        widget: select
+        options:
+          - label: MS Thesis Defense
+            value: ms-thesis-defense
+          - label: PhD Thesis Defense
+            value: phd-thesis-defense
+          - label: Seminar
+            value: seminar
+        default: ms-thesis-defense
+        i18n: duplicate
+      - label: Title
+        name: title
+        widget: string
+        i18n: true
+      - label: Name
+        name: name
+        widget: string
+        i18n: duplicate
+      - label: Event Date
+        name: expiryDate
+        widget: datetime
+        date_format: DD MMMM YYYY
+        time_format: false
+        format: YYYY-MM-DD
+        i18n: duplicate
+      - label: Start Time
+        name: startTime
+        widget: datetime
+        date_format: false
+        time_format: "h:mm A"
+        format: "HH:mm"
+        i18n: duplicate
+      - label: Finish Time
+        name: finishTime
+        widget: datetime
+        date_format: false
+        time_format: "h:mm A"
+        format: "HH:mm"
+        i18n: duplicate
+      - label: Location
+        name: location
+        widget: string
+        i18n: duplicate
+        default: Ali Vahit Şahiner (AVŞ) Seminar Room
+      - label: Meeting Link
+        name: meeting-link
+        widget: string
+        i18n: duplicate
+        required: false
+      - label: Description
+        name: body
+        widget: markdown
+        default: ""
+        i18n: true
+        required: false
