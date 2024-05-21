@@ -7,12 +7,12 @@ backend:
   squash_merges: true
   open_authoring: true
   commit_messages:
-    create: "content({{ collection | lower }}): create {{ slug }}"
-    update: "content({{ collection | lower }}): update {{ slug }}"
-    delete: "content({{ collection | lower }}): delete {{ slug }}"
-    uploadMedia: "media: upload media {{ path }}"
-    deleteMedia: "media: upload media {{ path }}"
-    open_authoring: "open-authoring: {{ message | lower }} by {{ author-login }}"
+    create: "content({{collection}}): create {{slug}}"
+    update: "content({{collection}}): update {{slug}}"
+    delete: "content({{collection}}): delete {{slug}}"
+    uploadMedia: "media: upload media {{path}}"
+    deleteMedia: "media: upload media {{path}}"
+    open_authoring: "open-authoring: {{message}} by {{author-login}}"
 
 local_backend: true
 publish_mode: editorial_workflow
