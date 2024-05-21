@@ -6,6 +6,13 @@ backend:
   auth_endpoint: /api/auth
   squash_merges: true
   open_authoring: true
+  commit_messages:
+    create: "content({{ collection | lower }}): create {{ slug }}"
+    update: "content({{ collection | lower }}): update {{ slug }}"
+    delete: "content({{ collection | lower }}): delete {{ slug }}"
+    uploadMedia: "media: upload media {{ path }}"
+    deleteMedia: "media: upload media {{ path }}"
+    open_authoring: "open-authoring: {{ message | lower }} by {{ author-login }}"
 
 local_backend: true
 publish_mode: editorial_workflow
@@ -33,7 +40,7 @@ collections:
     label: "Department News"
     folder: "content/news"
     identifier_field: title
-    slug: "{{year}}-{{month}}-{{day}}-news-{{slug}}"
+    slug: "{{year}}-{{month}}-{{day}}-news"
     path: "{{slug}}/index"
     media_folder: /assets/uploads
     public_folder: uploads
@@ -75,7 +82,7 @@ collections:
         allow_multiple: false
         i18n: duplicate
         required: false
-      - label: Body
+      - label: Text Body
         name: body
         widget: markdown
         default: ""
