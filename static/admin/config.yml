@@ -40,7 +40,7 @@ collections:
     label: "Department News"
     folder: "content/news"
     identifier_field: title
-    slug: "{{year}}-{{month}}-{{day}}-news"
+    slug: "{{year}}-{{month}}-{{day}}-news-{{slug}}"
     path: "{{slug}}/index"
     media_folder: /assets/uploads
     public_folder: uploads
@@ -72,7 +72,7 @@ collections:
       - label: Publish Date
         name: date
         widget: datetime
-        date_format: DD MMMM YYYY
+        date_format: YYYY-MM-DD
         time_format: false
         format: YYYY-MM-DD
         i18n: duplicate
@@ -82,6 +82,9 @@ collections:
         allow_multiple: false
         i18n: duplicate
         required: false
+        hint: >-
+          You may use [**Adobe Express Resizer**](https://www.adobe.com/express/feature/image/resize) for resizing images.
+          Use a 16:9 aspect ratio image for best results. Recommended size is 1280x720 pixels.
       - label: Text Body
         name: body
         widget: markdown
