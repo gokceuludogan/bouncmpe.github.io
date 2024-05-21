@@ -29,7 +29,7 @@
                     {{ $thumbnail = $retouched.RelPermalink }}
                 {{ end }}
 
-                <div class="carousel-item rounded-5 {{if eq $index 1}}active{{ end }}">
+                <div class="carousel-item rounded-5 {{if eq $index 0}}active{{ end }}">
                     <a href="{{ .RelPermalink }}" class="stretched-link">
                         <img src="{{ $thumbnail }}" class="d-block w-100 rounded-5" alt="Carousel item">
                     </a>
