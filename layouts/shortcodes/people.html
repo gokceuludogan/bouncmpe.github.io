@@ -24,14 +24,14 @@
     {{ $retouched := $image_resource.Fill $image_settings }}
     {{ $thumbnail = $retouched.RelPermalink }}
     {{ end }}
-    <div class="card mb-3 border-0 h-100">
+    <div class="card mb-3 border-0 h-100" style="max-width: 540px;">
         <div class="row g-0">
           <div class="col-4 mb-0">
             <img src="{{ $thumbnail }}" alt="{{ .name | anchorize }}" class="img-fluid rounded-5 shadow">
           </div>
-          <div class="col-8">
-            <div class="card-body">
-              <h4 class="mt-2">{{ .name | title }}</h4>
+          <div class="col-8 align-middle">
+            <div class="card-body align-middle">
+              <h4 class="mt-2" style="overflow-x: scroll; white-space: nowrap;">{{ .name | title }}</h4>
               {{ with .position }}
               <p class="mb-1">
                 {{ . | i18n | title }}
@@ -43,7 +43,7 @@
                 {{ . | title }}
               </p>
               {{ end }}
-              <p class="text-secondary">
+              <p class="text-secondary d-none d-lg-block" style="overflow-x: scroll; white-space: nowrap;">
               {{ with .email }}
                 <small class="text-muted">
                   {{ . | lower }}

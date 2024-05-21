@@ -7,18 +7,31 @@
         {{if $featured }}
         <section id="newsroom-carousel" class="carousel slide carousel-fade mb-4">
             <div class="carousel-inner">
-            {{ range $index, $element := first 3 $featured }}
-                {{ $image_path := .Params.thumbnail.url }}
-                {{ $image_settings := site.Params.news.image_settings | default "900x500 webp q90 Smart"}}
-                {{ $image_resource := .Resources.Get $image_path }}
+            {{ range $index, $page := first 3 $featured }}
+                {{- $thumbnail := "" -}}
+                {{- $image_settings := site.Params.news.image_settings | default "1400x700 webp q90 Smart" -}}
 
-                {{ if $image_resource }}
-                {{ $retouched := $image_resource.Fill $image_settings }}
-                {{ $image_path = $retouched.RelPermalink }}
+                {{- if reflect.IsMap $page.Params.thumbnail -}}
+                    {{ $thumbnail = $page.Params.thumbnail.url }}
+                {{ else }}
+                    {{ $thumbnail = $page.Params.thumbnail }}
                 {{ end }}
+
+                {{ with resources.GetRemote $thumbnail }}
+                    {{ if not .Err }}
+                        {{ $retouched := .Fill $image_settings }}
+                        {{ $thumbnail = $retouched.RelPermalink }}
+                    {{ end }}
+                {{ end }}
+
+                {{ with resources.Get $thumbnail }}
+                    {{ $retouched := .Fill $image_settings }}
+                    {{ $thumbnail = $retouched.RelPermalink }}
+                {{ end }}
+
                 <div class="carousel-item rounded-5 {{if eq $index 1}}active{{ end }}">
                     <a href="{{ .RelPermalink }}" class="stretched-link">
-                        <img src="{{ $image_path }}" class="d-block w-100 rounded-5" alt="Carousel item">
+                        <img src="{{ $thumbnail }}" class="d-block w-100 rounded-5" alt="Carousel item">
                     </a>
                     <div class="carousel-caption d-none d-md-block bg-body-secondary text-body rounded-5 px-3">
                         <h4 class="m-2">{{- title .Title -}}</h4>
