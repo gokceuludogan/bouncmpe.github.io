@@ -7,7 +7,7 @@
         {{if $featured }}
         <section id="newsroom-carousel" class="carousel slide carousel-fade mb-4 d-none d-md-block" >
             <div class="carousel-inner">
-            {{ range $index, $page := first 3 $featured }}
+            {{ range $index, $page := first 5 $featured }}
                 {{- $thumbnail := "" -}}
                 {{- $image_settings := site.Params.news.image_settings | default "1400x700 webp q90 Smart" -}}
 
@@ -58,7 +58,7 @@
             </div>
         </section> -->
         <section id="tier2" class="row row-cols-1 row-cols-md-2 g-4 mb-4">
-            {{ range $index, $element := first 4 $news }}
+            {{ range $index, $element := first 6 $news }}
                 <div class=" col">
                     {{ partial "bouncmpe/newsroom-card.html" . }}
                 </div>
@@ -66,7 +66,7 @@
         </section>
 
         <section id="tier3" class="row row-cols-1 row-cols-md-3 g-4 mb-4">
-            {{ range $index, $element := first 6 (after 5 $news) }}
+            {{ range $index, $element := first 9 (after 6 $news) }}
                 <div class=" col">
                     {{ partial "bouncmpe/newsroom-card-alt.html" . }}
                 </div>
