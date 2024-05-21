@@ -2,8 +2,7 @@
 type: news
 title: CMPE Graduation Ceremony 2023!
 date: 2023-07-06
-thumbnail:
-  url: https://picsum.photos/seed/grad2023/1400/600
+thumbnail: https://picsum.photos/seed/grad2023/1280/720
 featured: true
 ---
 

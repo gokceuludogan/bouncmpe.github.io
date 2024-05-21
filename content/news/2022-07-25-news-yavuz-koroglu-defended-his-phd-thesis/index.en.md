@@ -2,8 +2,7 @@
 type: news
 title: Yavuz Köroğlu defended his Phd thesis
 date: 2022-07-25
-thumbnail:
-  url: https://picsum.photos/seed/4/1400/600
+thumbnail: https://picsum.photos/seed/4/1280/720
 ---
 
 Underestimating the value of software testing had catastrophic results in recent

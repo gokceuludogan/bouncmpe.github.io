@@ -4,8 +4,7 @@ title: Lale Akarun'a Araştırmada Üstün Başarı Ödülü
 description: >
   Boğaziçi Üniversitesi Vakfı (BÜVAK) tarafından her yıl verilen Boğaziçi
   Üniversitesi Araştırmada Üstün Başarı Ödülü sahiplerini buldu.
-thumbnail:
-  url: https://picsum.photos/seed/picsum/1400/600
+thumbnail: https://picsum.photos/seed/picsum/1280/720
 date: 2022-01-24
 ---
 

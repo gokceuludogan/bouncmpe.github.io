@@ -5,8 +5,7 @@ description: >
   The Boğaziçi University Outstanding Achievement Award in Research, given
   annually by the Boğaziçi University Foundation (BÜVAK), has found its owners.
 date: 2022-01-25
-thumbnail:
-  url: https://picsum.photos/seed/picsum/1400/600
+thumbnail: https://picsum.photos/seed/picsum/1280/720
 ---
 
 Boğaziçi University Foundation (BÜVAK) rewards scientists who make a difference

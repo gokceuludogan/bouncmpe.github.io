@@ -2,8 +2,7 @@
 type: news
 title: CMPE Graduation Ceremony 2022!
 date: 2022-07-06
-thumbnail:
-  url: https://picsum.photos/seed/picsum/1400/600
+thumbnail: https://picsum.photos/seed/picsum/1280/720
 featured: true
 ---
 

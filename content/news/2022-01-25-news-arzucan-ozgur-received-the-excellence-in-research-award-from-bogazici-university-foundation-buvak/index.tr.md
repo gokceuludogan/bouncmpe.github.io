@@ -5,8 +5,7 @@ description: >
   Boğaziçi Üniversitesi Vakfı (BÜVAK) tarafından her yıl verilen Boğaziçi
   Üniversitesi Araştırmada Üstün Başarı Ödülü sahiplerini buldu.
 date: 2022-01-25
-thumbnail:
-  url: https://picsum.photos/seed/picsum/1400/600
+thumbnail: https://picsum.photos/seed/picsum/1280/720
 ---
 
 Boğaziçi Üniversitesi Vakfı (BÜVAK) her sene Boğaziçi Üniversitesi'nde kendi

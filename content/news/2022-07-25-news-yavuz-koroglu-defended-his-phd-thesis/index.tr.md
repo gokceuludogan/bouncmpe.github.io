@@ -2,8 +2,7 @@
 type: news
 title: Yavuz Köroğlu doktora tezini savundu
 date: 2022-07-25
-thumbnail:
-  url: https://picsum.photos/seed/4/1400/600
+thumbnail: https://picsum.photos/seed/4/1280/720
 ---
 
 Yazılım testinin değerini hafife almanın yakın tarihte yıkıcı sonuçları
