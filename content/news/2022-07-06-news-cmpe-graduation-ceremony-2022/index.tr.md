@@ -1,11 +1,11 @@
 ---
 type: news
 title: CMPE Mezuniyet Töreni 2022!
-date: 2022-07-06
-thumbnail: https://picsum.photos/seed/picsum/1280/720
+description: CMPE Mezuniyet Töreni 6 Temmuz 2022'de gerçekleştirildi.
 featured: true
+date: 2022-07-06
+thumbnail: uploads/cmpe-graduation-2022.png
 ---
-
 CMPE Mezuniyet Töreni 6 Temmuz 2022'de gerçekleştirildi. Sabah Albert Long
 Hall'da düzenlenen diploma töreninin ardından öğleden sonra yeni mezunlar,
 aileleri ve CMPE üyeleri, CMPE bahçesinde bir araya geldi.
