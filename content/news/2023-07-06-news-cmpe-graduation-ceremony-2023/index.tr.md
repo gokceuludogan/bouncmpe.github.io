@@ -1,12 +1,12 @@
 ---
 type: news
 title: CMPE Mezuniyet Töreni 2023!
-date: 2023-07-06
-thumbnail: https://picsum.photos/seed/grad2023/1280/720
+description: CMPE Mezuniyet Töreni 7 Temmuz 2023'de gerçekleştirildi.
 featured: true
+date: 2023-07-07
+thumbnail: uploads/cmpe-graduation-2023.png
 ---
-
-CMPE Mezuniyet Töreni 6 Temmuz 2023'de gerçekleştirildi. Sabah Albert Long
+CMPE Mezuniyet Töreni 7 Temmuz 2023'de gerçekleştirildi. Sabah Albert Long
 Hall'da düzenlenen diploma töreninin ardından öğleden sonra yeni mezunlar,
 aileleri ve CMPE üyeleri, CMPE bahçesinde bir araya geldi.
 
