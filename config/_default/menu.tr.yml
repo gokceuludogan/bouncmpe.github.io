@@ -99,12 +99,7 @@ main:
     identifier: research
     weight: 600
 
-  - name: Düzenlemeler
-    url: /docs/
-    identifier: docs
-    weight: 700
-
-  - name: İletişim
-    url: /contact/
-    identifier: contact
-    weight: 800
+  # - name: Düzenlemeler
+  #   url: /docs/
+  #   identifier: docs
+  #   weight: 700

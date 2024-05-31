@@ -23,6 +23,9 @@ sharing:
 # Boğaziçi Light Blue: "#8cc8ea"
 style:
   primary: "#1e4a8b"
+  fontSizeBase: "1.3rem"
+  themeFont: "Open Sans"
+  themeFontPath: "https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400..800;1,400..800&display=swap"
 
 banner:
   enabled: false

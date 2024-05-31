@@ -74,9 +74,9 @@ main:
     identifier: undergraduate-training
     weight: 308
   - name: Senior Projects
-    url: /undergraduate/projects
+    url: /undergraduate/senior-projects
     parent: undergraduate
-    identifier: undergraduate-projects
+    identifier: undergraduate-senior-projects
     weight: 309
 
   - name: Graduate
@@ -114,7 +114,3 @@ main:
     identifier: docs
     weight: 700
 
-  - name: Contact
-    url: /contact/
-    identifier: contact
-    weight: 800
