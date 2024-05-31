@@ -1,19 +1,19 @@
 ---
-title: Support Staff
-description: Computer Engineering Support Staff
+title: İdari ve Yardımcı Personel
+description: Bilgisayar Mühendisliği İdari ve Yardımcı Personeli
 metadata: none
 thumbnail: https://picsum.photos/seed/picsum/1400
 weight: 23
 ---
 
-## Administrative Staff
+## İdari
 
 {{< people tag="administrative-staff" >}}
 
-## System and Network Administrator
+## Sistem ve Ağ Yöneticisi
 
 {{< people tag="system-admin" >}}
 
-## Technical and Building Staff
+## Teknik ve Bina Personeli
 
 {{< people_alt tag="other-staff" >}}
