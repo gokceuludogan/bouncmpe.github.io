@@ -78,6 +78,11 @@ main:
     parent: undergraduate
     identifier: undergraduate-senior-projects
     weight: 309
+  - name: Graduation
+    url: /undergraduate/graduation
+    parent: undergraduate
+    identifier: undergraduate-graduation
+    weight: 310
 
   - name: Graduate
     url: /graduate/
@@ -108,5 +113,3 @@ main:
     url: /research/
     identifier: research
     weight: 600
-
-

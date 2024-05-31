@@ -74,10 +74,16 @@ main:
     identifier: undergraduate-training
     weight: 308
   - name: Bitirme Projeleri
-    url: /undergraduate/projects
+    url: /undergraduate/senior-projects
     parent: undergraduate
-    identifier: undergraduate-projects
+    identifier: undergraduate-senior-projects
     weight: 309
+  - name: Mezuniyet
+    url: /undergraduate/graduation
+    parent: undergraduate
+    identifier: undergraduate-graduation
+    weight: 310
+
 
   - name: Lisansüstü
     url: /graduate/
