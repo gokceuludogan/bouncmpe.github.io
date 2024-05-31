@@ -8,7 +8,7 @@ weight: -1
 The undergraduate program in Computer Engineering is designed so that students
 have a balanced background in computer hardware, software, and computer
 applications, and that they can adapt themselves to the rapidly changing
-technologies in their professional carreers. Emphasis is on the engineering
+technologies in their professional careers. Emphasis is on the engineering
 aspects of the field such as the analysis and design of both hardware and
 software systems.
 
