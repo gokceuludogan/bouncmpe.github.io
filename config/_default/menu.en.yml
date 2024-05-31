@@ -109,8 +109,4 @@ main:
     identifier: research
     weight: 600
 
-  - name: Docs
-    url: /docs/
-    identifier: docs
-    weight: 700
 
