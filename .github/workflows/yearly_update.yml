@@ -1,0 +1,40 @@
+name: Yearly Website Update
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 1 7 *
+
+jobs:
+  create_yearly_update:
+    name: Create team sync issue
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Create yearly website update
+        run: |
+          new_issue_url=$(gh issue create \
+            --title "$TITLE" \
+            --assignee "$ASSIGNEES" \
+            --label "$LABELS" \
+            --body "$BODY")
+          if [[ $PINNED == true ]]; then
+            gh issue pin "$new_issue_url"
+          fi
+   
+  env:
+    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    GH_REPO: ${{ github.repository }}
+    PINNED: true
+    TITLE: Yearly Website Update
+    ASSIGNEES: doganulus
+    LABELS: docs
+    BODY: |
+      ### Work Items
+
+      - [ ] Update promotional materials 
+      - [ ] Update enrolment and graduation statistics
+      - [ ] Update graduation photos
+      - [ ] Review mission statements and other policies
+
