@@ -6,13 +6,13 @@ on:
 
 jobs:
   create_yearly_update:
-    name: Create team sync issue
+    name: Create yearly update for the website
     runs-on: ubuntu-latest
     permissions:
       issues: write
 
     steps:
-      - name: Create yearly website update
+      - name: Create the issue
         run: |
           new_issue_url=$(gh issue create \
             --title "$TITLE" \
@@ -37,4 +37,3 @@ jobs:
       - [ ] Update enrolment and graduation statistics
       - [ ] Update graduation photos
       - [ ] Review mission statements and other policies
-
