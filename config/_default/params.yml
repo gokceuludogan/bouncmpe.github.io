@@ -4,6 +4,9 @@ main:
   enableDarkMode: false
   modes: ["light"]
 
+favicon:
+  logo: /images/logo.png
+
 navigation:
   logo: false
   search: true
@@ -23,7 +26,7 @@ sharing:
 # Boğaziçi Light Blue: "#8cc8ea"
 style:
   primary: "#1e4a8b"
-  fontSizeBase: "1.3rem"
+  fontSizeBase: "1.25rem"
   themeFont: "Open Sans"
   themeFontPath: "https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400..800;1,400..800&display=swap"
 
