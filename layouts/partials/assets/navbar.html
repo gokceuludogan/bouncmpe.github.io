@@ -154,7 +154,7 @@
     {{- end -}}
 {{- end -}}
 
-{{ if $logo }}{{ $logo = urls.JoinPath $baseURL $logo }}{{ end }}
+{{ if $logo }}{{ $logo = urls.JoinPath "/" $logo }}{{ end }}
 {{ if $logoLight }}{{ $logoLight = urls.JoinPath $baseURL $logoLight }}{{ end }}
 {{ if $logoDark }}{{ $logoDark = urls.JoinPath $baseURL $logoDark }}{{ end }}
 
@@ -214,7 +214,7 @@
                             <img src="{{if $absoluteURL }}{{ absURL $logoDark }}{{ else }}{{ $logoDark }}{{ end }}" class="d-none-inline-light" alt="{{ $title }} logo" height="30"{{ with $width }} width="{{ . }}"{{ end }}>
                         {{- else if $logo -}}
                             {{ $width := partial "utilities/GetWidth.html" (dict "path" $logo "height" 30) }}
-                            <img src="{{if $absoluteURL }}{{ absURL $logo }}{{ else }}{{ $logo }}{{ end }}" alt="{{ $title }} logo" height="30"{{ with $width }} width="{{ . }}"{{ end }}><small class="ps-4 d-none d-{{ $size }}-inline">{{ $title }}</small>
+                            <img src="{{if $absoluteURL }}{{ absURL $logo }}{{ else }}{{ $logo }}{{ end }}" alt="" height="30"{{ with $width }} width="{{ . }}"{{ end }}><small class="ps-4 d-none d-{{ $size }}-inline">{{ $title }}</small>
                         {{- else -}}
                             <div class="navbar-title fw-bold h-100">{{ $title }}</div>
                         {{- end -}}
