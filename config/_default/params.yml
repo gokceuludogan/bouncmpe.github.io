@@ -14,13 +14,13 @@ navigation:
   size: xl
   #color: primary
   # horizontal: true
-  toc: false
+  toc: true
   sidebar: true
   breadcrumb: false
 
 sharing:
   enabled: false
-  webshare: true
+  webshare: false
 
 # Boğaziçi Dark Blue: "#1e4a8b"
 # Boğaziçi Light Blue: "#8cc8ea"
