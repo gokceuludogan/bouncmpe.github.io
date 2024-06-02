@@ -6,12 +6,12 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-xl-4 order-xl-5 mb-5">
+        <div class="col-xl-4 order-xl-5 my-5">
             {{ if site.Params.eventbar.enabled }}
                 {{ partial "bouncmpe/eventbar.html" . }}
             {{ end }}
         </div>
-        <div class="col-xl-8">
+        <div class="col-xl-8 my-5">
             {{ if site.Params.newsroom.enabled }}
                 {{ partial "bouncmpe/newsroom.html" . }}
             {{ end }}
