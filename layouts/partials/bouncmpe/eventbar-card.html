@@ -11,10 +11,10 @@
 {{ $google_start_time_string := $event_start_time.Format "20060102T150405"}}
 {{ $google_finish_time_string := $event_finish_time.Format "20060102T150405"}}
 
-<div class="card h-100 rounded-0 m-0 border-1">
+<div class="card rounded-4 border-1 text-start px-0">
     <div class="card-header">
         <div class="row">
-            <div class="col-sm-8 text-start">
+            <div class="col-sm-8">
                 <small>{{- i18n .Type | upper -}}</small>
             </div>
             <div class="col-sm-4 text-end">
