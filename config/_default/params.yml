@@ -8,7 +8,7 @@ favicon:
   logo: /images/logo.png
 
 navigation:
-  logo: false
+  logo: /images/logo.svg
   search: true
   searchModal: true
   size: xl
