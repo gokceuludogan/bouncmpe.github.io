@@ -16,13 +16,13 @@
 {{ range $members }}
 <div class="col">
 
-    <div class="card border-1 h-100">
+    <div class="card border-1 rounded-0 h-100">
       <div class="card-body py-0">
           <div class="d-flex">
               <div class="flex-shrink-0">
               </div>
               <div class="flex-grow-0">
-                  <h5>{{ .name | title }}</h5>
+                  <h6>{{ .name | title }}</h6>
                   <p>{{ .position | i18n | title }}</p>
               </div>
           </div>
