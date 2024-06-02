@@ -18,7 +18,7 @@ local_backend: true
 publish_mode: editorial_workflow
 
 site_url: https://bouncmpe.pages.dev
-logo_url: https://bouncmpe.pages.dev/images/logo.png
+logo_url: https://bouncmpe.pages.dev/images/logo.svg
 
 media_folder: /assets/uploads
 public_folder: uploads
