@@ -22,18 +22,18 @@ jobs:
           if [[ $PINNED == true ]]; then
             gh issue pin "$new_issue_url"
           fi
-   
-  env:
-    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    GH_REPO: ${{ github.repository }}
-    PINNED: true
-    TITLE: Yearly Website Update
-    ASSIGNEES: doganulus
-    LABELS: docs
-    BODY: |
-      ### Work Items
 
-      - [ ] Update promotional materials 
-      - [ ] Update enrolment and graduation statistics
-      - [ ] Update graduation photos
-      - [ ] Review mission statements and other policies
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PINNED: true
+          TITLE: Yearly Website Update
+          ASSIGNEES: doganulus
+          LABELS: docs
+          BODY: |
+            ### Work Items
+
+            - [ ] Update promotional materials 
+            - [ ] Update enrolment and graduation statistics
+            - [ ] Update graduation photos
+            - [ ] Review mission statements and other policies
