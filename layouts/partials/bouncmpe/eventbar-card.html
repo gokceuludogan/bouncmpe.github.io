@@ -14,10 +14,10 @@
 <div class="card rounded-4 border-1 text-start px-0">
     <div class="card-header">
         <div class="row">
-            <div class="col-sm-8">
+            <div class="col-9">
                 <small>{{- i18n .Type | upper -}}</small>
             </div>
-            <div class="col-sm-4 text-end">
+            <div class="col-3 text-end">
                 <a href="http://www.google.com/calendar/event?action=TEMPLATE&text={{ i18n .Type | title }}: {{ .Params.speaker }}&dates={{ $google_start_time_string }}/{{ $google_finish_time_string }}&details={{$event_title}}&location={{$event_location}}&trp=false&sprop=&sprop=name:"
                 class="card-link text-end" target="_blank" rel="nofollow">
                     <img src="/icons/calendar-plus-fill.svg" alt="">

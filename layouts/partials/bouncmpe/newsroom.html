@@ -57,7 +57,7 @@
                 {{ end }}
             </div>
         </section> -->
-        <section id="tier2" class="row row-cols-1 row-cols-md-2 g-4 mb-4">
+        <section id="tier2" class="row row-cols-1 row-cols-md-2 g-4 mb-4 text-center">
             {{ range $index, $element := first 6 $news }}
                 <div class=" col">
                     {{ partial "bouncmpe/newsroom-card.html" . }}
@@ -65,7 +65,7 @@
             {{ end }}
         </section>
 
-        <section id="tier3" class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+        <section id="tier3" class="row row-cols-1 row-cols-md-3 g-4 mb-4 text-center">
             {{ range $index, $element := first 9 (after 6 $news) }}
                 <div class=" col">
                     {{ partial "bouncmpe/newsroom-card-alt.html" . }}
@@ -73,7 +73,7 @@
             {{ end }}
         </section>
 
-        <section class="row text-center">
+        <section class="row text-center px-2 d-none d-xl-block">
             <div class="card rounded-4">
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">

@@ -4,14 +4,23 @@
 {{ partial site.Params.banner.partial . }}
 {{ end }}
 
+<div class="container mt-3">
+<div class="row">
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+We have updated our website. The previous website is still available at <a href="https://legacy.cmpe.bogazici.edu.tr"><strong>https://legacy.cmpe.bogazici.edu.tr</strong></a>
+<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>  
+</div>
+</div>
+
 <div class="container">
-    <div class="row g-5">
-        <div class="col-xl-4 order-xl-5 my-5 text-center">
+    <div class="row">
+        <div class="col-xl-4 order-xl-5 my-4 text-center">
             {{ if site.Params.eventbar.enabled }}
                 {{ partial "bouncmpe/eventbar.html" . }}
             {{ end }}
         </div>
-        <div class="col-xl-8 my-5">
+        <div class="col-xl-8 my-4">
             {{ if site.Params.newsroom.enabled }}
                 {{ partial "bouncmpe/newsroom.html" . }}
             {{ end }}
