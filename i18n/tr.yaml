@@ -85,6 +85,12 @@ associate-professor:
 assistant-professor:
   other: "doktor öğretim üyesi"
 
+teaching-assistant:
+  other: öğretim görevlisi
+
+research-assistant:
+  other: araştırma görevlisi
+
 doctor:
   other: doktor
 

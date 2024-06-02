@@ -91,6 +91,12 @@ associate-professor:
 assistant-professor:
   other: Assistant Professor
 
+teaching-assistant:
+  other: Teaching Assistant
+
+research-assistant:
+  other: Research Assistant
+
 doctor:
   other: Ph.D.
 
