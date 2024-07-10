@@ -41,14 +41,14 @@ collections:
     label_singular: PhD Thesis Defense
     identifier_field: name
     folder: content/events
-    slug: "{{fields.time}}-{{name}}"
+    slug: "{{fields.datetime}}-{{name}}"
     path: "{{slug}}/index"
-    summary: "PhD Thesis Defense by {{name}} on {{fields.time | date('MMMM D, YYYY @HH:mm')}}"
+    summary: "PhD Thesis Defense by {{name}} on {{fields.datetime | date('MMMM D, YYYY @HH:mm')}}"
     create: true
     i18n: true
     editor:
       preview: false
-    sortable_fields: ["fields.time", "name"]
+    sortable_fields: ["fields.datetime", "name"]
     filter: { field: "type", value: "phd-thesis-defense" }
     fields:
       - label: Type
@@ -92,14 +92,14 @@ collections:
     label_singular: MS Thesis Defense
     identifier_field: name
     folder: content/events
-    slug: "{{fields.time}}-{{name}}"
+    slug: "{{fields.datetime}}-{{name}}"
     path: "{{slug}}/index"
-    summary: "MS Thesis Defense by {{name}} on {{fields.time | date('MMMM D, YYYY @HH:mm')}}"
+    summary: "MS Thesis Defense by {{name}} on {{fields.datetime | date('MMMM D, YYYY @HH:mm')}}"
     create: true
     i18n: true
     editor:
       preview: false
-    sortable_fields: ["fields.time", "name"]
+    sortable_fields: ["fields.datetime", "name"]
     filter: { field: "type", value: "ms-thesis-defense" }
     fields:
       - label: Type
@@ -116,7 +116,7 @@ collections:
         widget: string
         i18n: duplicate
       - label: Date
-        name: time
+        name: datetime
         widget: datetime
         date_format: YYYY-MM-DD
         time_format: HH:mm:00
@@ -143,14 +143,14 @@ collections:
     label_singular: Seminar
     identifier_field: name
     folder: content/events
-    slug: "{{fields.time}}-{{name}}"
+    slug: "{{fields.datetime}}-{{name}}"
     path: "{{slug}}/index"
-    summary: "Seminar by {{name}} on {{fields.time | date('MMMM D, YYYY @HH:mm')}}"
+    summary: "Seminar by {{name}} on {{fields.datetime | date('MMMM D, YYYY @HH:mm')}}"
     create: true
     i18n: true
     editor:
       preview: false
-    sortable_fields: ["fields.time", "name"]
+    sortable_fields: ["fields.datetime", "name"]
     filter: { field: "type", value: "seminar" }
     fields:
       - label: Type
@@ -167,7 +167,7 @@ collections:
         widget: string
         i18n: duplicate
       - label: Date
-        name: time
+        name: datetime
         widget: datetime
         date_format: YYYY-MM-DD
         time_format: HH:mm:00
@@ -250,14 +250,14 @@ collections:
     label_singular: Special Event
     identifier_field: name
     folder: content/events
-    slug: "{{fields.time}}-{{name}}"
+    slug: "{{fields.datetime}}-{{name}}"
     path: "{{slug}}/index"
-    summary: "{{title}} by {{name}} on {{fields.time | date('MMMM D, YYYY @HH:mm')}}"
+    summary: "{{title}} by {{name}} on {{fields.datetime | date('MMMM D, YYYY @HH:mm')}}"
     create: true
     i18n: true
     editor:
       preview: false
-    sortable_fields: ["fields.time", "name"]
+    sortable_fields: ["fields.datetime", "name"]
     filter: { field: "type", value: "special-event" }
     fields:
       - label: Type
@@ -274,7 +274,7 @@ collections:
         widget: string
         i18n: true
       - label: Date
-        name: time
+        name: datetime
         widget: datetime
         date_format: YYYY-MM-DD
         time_format: HH:mm:00
