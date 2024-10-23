@@ -7,6 +7,8 @@ aliases:
   - undergraduate/courses/cmpe260
 ---
 
+{{< under-construction-warning >}}
+
 ## Course Information
 
 <!-- prettier-ignore-start -->
