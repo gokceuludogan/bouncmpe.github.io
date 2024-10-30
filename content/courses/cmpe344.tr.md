@@ -7,6 +7,7 @@ aliases:
   - undergraduate/courses/cmpe344
 ---
 
+{{< under-construction-warning >}}
 ## Ders Bilgileri
 
 <!-- prettier-ignore-start -->
