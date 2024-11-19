@@ -10,8 +10,10 @@
     "cmpe470",
     "cmpe475",
     "former-cmpe150",
+    "advisor-1",
     "networkinginternetarchitecture",
     "paralleldistributedcloud"
   ],
-  "type": "person"
+  "type": "person",
+  "thumbnail": "images/people/ersoy_cem.jpg"
 }

@@ -8,9 +8,10 @@
     "chair",
     "former-cmpe150",
     "cmpe321",
-    "advisor-4",
+    "advisor-x",
     "bioinformatics",
     "computationlanguage"
   ],
-  "type": "person"
+  "type": "person",
+  "thumbnail": "images/people/ozgur_arzucan.jpg"
 }

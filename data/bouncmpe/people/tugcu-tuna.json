@@ -10,9 +10,11 @@
     "former-cmpe160",
     "cmpe322",
     "cmpe476",
+    "advisor-1",
     "senior-projects-coordinator",
     "networkinginternetarchitecture",
     "paralleldistributedcloud"
   ],
-  "type": "person"
+  "type": "person",
+  "thumbnail": "images/people/tugcu_tuna.jpg"
 }

@@ -7,11 +7,12 @@
     "former-postdoc",
     "former-cmpe140",
     "cmpe250",
-    "advisor-1",
+    "advisor-2",
     "former-cmpe140",
     "former-cmpe350",
     "networkinginternetarchitecture",
     "paralleldistributedcloud"
   ],
-  "type": "person"
+  "type": "person",
+  "thumbnail": "images/people/ozgovde_atay.jpg"
 }

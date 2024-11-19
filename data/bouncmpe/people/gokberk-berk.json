@@ -5,12 +5,12 @@
   "tags": [
     "faculty",
     "former-teaching-assistant",
-    "curriculum",
     "vicechair",
     "cmpe160",
-    "advisor-1",
+    "advisor-2",
     "computervisionpatternrecognition",
     "machinelearning"
   ],
-  "type": "person"
+  "type": "person",
+  "thumbnail": "images/people/gokberk_berk.jpg"
 }
