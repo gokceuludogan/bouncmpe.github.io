@@ -60,7 +60,7 @@ hasMermaid: true
 | [CMPE321](/courses/cmpe321) | Introduction to Database Systems | CMPE250 | 4 ||
 | [CMPE350](/courses/cmpe350) | Formal Languages and Automata Theory | CMPE220 | 3 ||
 | [CMPE352](/courses/cmpe352) | Fundamentals of Software Engineering | --- | 2 ||
-| [CMPE362](/courses/cmpe362) | Introduction to Signal Processing for Computer Engineers | MATH201 | 3 ||
+| [CMPE362](/courses/cmpe362) | Introduction to Signal Processing for Computer Engineers | MATH202 | 3 ||
 | IE306 | Systems Simulation | CMPE343 | 4 ||
 | HTR312 | History of the Turkish Republic II || 2 ||
 |||| **18** ||

@@ -27,7 +27,7 @@ type: wide
 | [CMPE160](/courses/cmpe160) | Nesne Tabanlı Programlamaya Giriş | CMPE150 | 4 ||
 | EC102 | Makroekonominin İlkeleri | EC101 |  3 ||
 ||||  **18-19** ||
-| <h4>Üçincü Dönem</h4>|
+| <h4>Üçüncü Dönem</h4>|
 | **Ders Kodu** |**Ders Başlığı** | **Önkoşullar** | **Kredi** | **AKTS** |
 | MATH201 | Matris Kuramı | --- | 4 ||
 | PHYS202 | Fizik IV | PHYS201 | 4 ||
@@ -59,7 +59,7 @@ type: wide
 | [CMPE321](/courses/cmpe321) | Veri Tabanı Sistemlerine Giriş | CMPE250 | 4 ||
 | [CMPE350](/courses/cmpe350) | Biçimsel Diller ve Makineler Kuramı | CMPE220 | 3 ||
 | [CMPE352](/courses/cmpe352) | Yazılım Mühendisliği Temelleri | --- | 2 ||
-| [CMPE362](/courses/cmpe362) | Bilgisayar Mühendisleri için Sinyal İşlemeye Giriş | MATH201 | 3 ||
+| [CMPE362](/courses/cmpe362) | Bilgisayar Mühendisleri için Sinyal İşlemeye Giriş | MATH202 | 3 ||
 | IE306 | Sistem Benzetimi | CMPE343 | 4 ||
 | HTR312 | Türkiye Cumhuriyeti Tarihi II || 2 ||
 |||| **18** ||
