@@ -20,6 +20,33 @@ thesis proposal is accepted, the student starts the MS Thesis. {{< /card >}}
 
 ## Apply to the MS Program
 
-All prospective candidates should apply through the
-[Graduate Programs Application](https://adaylar.boun.edu.tr/en-EN/Page/Admissions/Graduate/All)
-process.
+Applications to the Graduate Studies in Bogazici University, Department of Computer Engineering (CMPE) are processed electronically and there is no other channel of application. All prospective candidates should apply through the [Graduate Programs Application](https://adaylar.boun.edu.tr/en-EN/Page/Admissions/Graduate/All) process.
+
+The graduate education is exclusively in English and the applicants are expected to posses a high level of English speaking and writing skills. In only extraordinary circumstances, the Computer Engineering PhD program may admit candidates to the English preparatory class before the actual program. However, the quota for this option is severely limited.
+
+The department wants the candidate to specify his/her possible research topics while applying to the MS program. Hence, in the Online Application, there is a survey which asks the candidate to select six professors.
+
+​All applicants are expected to submit all necessary documents during their application process. Note that incomplete applications may not be considered for evaluation. Beware that the workflow in University's On-line Application System allows finalizing an application with eventually missing documents.
+
+Some submissions require letters of reference written on candidate's behalf. Such letters must be uploaded to an on-line reference system by the referees. Past experience has shown that referees too often forget or delay to upload these letters. It is in the candidate's responsibility to remind the referees to ensure that letters are uploaded before the evaluation.
+
+Graduates of Bogazici University Computer Engineering Department need not submit reference letters.
+
+## Interview
+
+Pre-evaluation is applied by the professors who are selected by each applicant. This phase is carried out by studying the application documents. If necessary, professor(s) may contact the applicant before finalizing the pre-evaluation process. Only selected applicants will be invited to the scientific interview.
+
+The result of the pre-filtering is sent to each applicant a few days before the interview date. If an applicant is invited to the interview, then a detailed interview schedule is also sent. For the selected candidates, at least two professors will conduct the scientific interview. These professors may be different than ones who appear in the survey. 
+- The interview takes 10 minutes per professor at the office of the professor. Between two interviews, there is at least a period of 10 minutes so that the applicant can be ready at the next office at the specified time slot. Time interval between two interviews can be longer than 10 minutes due to scheduling constraints. 
+- Each applicant is expected to appear in the interview. If a student cannot be physically present for the interview, then he/she may directly write to the professor and request a teleconference. Yet, the professor may or may not accept the teleconference request. If the request is not accepted, the applicant is assumed to be absent in the interview.
+- After the interviews are over, the applicant may want to revise the ordering of professors. In this case, the applicant should visit the department secretarial office and submit the new ordering before leaving the department.
+
+## Evaluation 
+
+Following the interview phase, the admission board evaluates each application based on several criteria, including the interview performance, evaluations of the faculty about the candidate, transcript(s) and reference letters to reach at a final decision.
+
+The admission decisions are officially announced from the website of the Institute of Graduate Studies in Science and Engineering (Fen Bilimleri Enstitusu). Only accepted and conditionally accepted candidates are announced, where the latter is for cases when further documents are required. During this 'conditionally accept' period, any missing documents that are needed for the official registration must be completed.
+
+## Scientific Preparation
+
+A student with a non-CmpE BS degree may be required to take remedial courses before starting at the regular MSc program.

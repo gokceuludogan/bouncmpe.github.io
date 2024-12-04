@@ -132,7 +132,7 @@ sections:
     nested: false
   graduate:
     sort: weight
-    style: rounded-5 card-zoom
+    style: rounded-1 card-zoom
     header: none
     footer: none
     padding: 3

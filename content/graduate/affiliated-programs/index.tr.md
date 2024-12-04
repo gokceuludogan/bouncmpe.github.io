@@ -1,6 +1,6 @@
 ---
 title: Diğer İlişkili Programlar
-description:
+description: Bilgisayar Mühendisliği İlişkili Programlar
 metadata: none
 weight: 431
 ---

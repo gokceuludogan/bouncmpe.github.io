@@ -4,4 +4,7 @@ description: Graduate Programs in Computer Engineering
 # _build:
 #   list: false
 #   render: false
+aliases:
+    - /graduate/cmpe
 ---
+

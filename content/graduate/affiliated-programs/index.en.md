@@ -1,6 +1,6 @@
 ---
 title: Affiliated Programs
-description:
+description: Computer Engineering Affiliated Programs
 metadata: none
 weight: 431
 ---
