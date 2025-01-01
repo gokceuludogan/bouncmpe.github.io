@@ -76,6 +76,9 @@ ms-thesis-defense:
 seminar:
   other: "Seminar"
 
+special-event:
+  other: special event
+
 read-full-text:
   other: "read full text"
 

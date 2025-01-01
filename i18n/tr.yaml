@@ -73,6 +73,9 @@ ms-thesis-defense:
 seminar:
   other: seminer
 
+special-event:
+  other: özel etkinlik
+
 read-full-text:
   other: "hepsini oku"
 
@@ -171,4 +174,3 @@ languageSwitcherLabel:
   other: Dil Seçimi
 toc:
   other: İçindekiler
-
