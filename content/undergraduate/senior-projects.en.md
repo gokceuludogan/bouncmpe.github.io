@@ -9,6 +9,8 @@ Our senior-year students in computer engineering demonstrate their brilliance an
 
 ## Project Selection
 
+Senior students have the flexibility to choose between single-semester and two-semester projects depending on their academic goals, interests, and the scope or complexity of the project they wish to undertake.
+
 {{< card-group padding="3" gutter="3" cols="2" >}}
 {{< card title="Single Semester" class="border-0 py-4" icon="fas bolt">}}
 Single-semester projects (CMPE492) are ideal for a focused goal with well-defined milestones and measurable outcomes within a constrained timeframe. {{< /card >}}
@@ -16,7 +18,16 @@ Single-semester projects (CMPE492) are ideal for a focused goal with well-define
 {{< /card >}}
 {{< /card-group >}}
 
-Senior students may check [**the current project board**](https://github.com/orgs/bouncmpe/projects/16) for this semester's offers. They are encouraged to Engage in discussions with faculty members and project advisors regarding projects of interest. Then, they must select a project, and proceed to complete the project registration process accordingly.
+**Finding a project topic is a key responsibility for senior students**, showcasing their expertise, critical thinking, and creativity while aligning academic knowledge with real-world challenges and career goals. As a guideline, an ideal senior design project should:
+
+- **Address** a real-world problem.
+- **Align** with the professional computer engineering roles students are likely to pursue after graduation.
+- **Be appropriately scoped** for the project team's size and project duration.
+  - (This is approximately 10 hours/week per student.)
+- **Incorporate** a significant design element.
+- **Provide** opportunities for students to demonstrate skills in leadership, project management, technical writing, ethical decision-making, safety, and time management.
+
+**Senior students are encouraged to engage in discussions early with faculty members and project advisors** regarding project topics of interest. They may check [**faculty members**](../people/faculty)' personal websites, bulletin boards in the department, and [**our experimental project board**](https://github.com/orgs/bouncmpe/projects/16) for this semester's offerings but thet are not limited with the listed options. Once the project topic is decided, students must proceed to complete the project registration process as announced in the beginning of each semester.
 
 Faculty members may use [**project offer templates**](https://github.com/bouncmpe/capstone/issues/new/choose) here to add new project offers to our semester offers board.
 

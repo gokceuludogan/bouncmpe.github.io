@@ -9,6 +9,8 @@ Bilgisayar Mühendisliği son sınıf öğrencilerimiz, her sene çeşitli tasar
 
 ## Proje Seçimi
 
+Son sınıf öğrencileri, akademik hedeflerine, ilgi alanlarına ve üstlenmek istedikleri projenin kapsamı veya karmaşıklığına bağlı olarak tek dönemlik ve iki dönemlik projeler arasında seçim yapabilirler.
+
 {{< card-group padding="3" gutter="3" cols="2" >}}
 {{< card title="Tek Dönem" class="border-0 py-4" icon="fas bolt">}}
 Tek dönemlik projeler (CMPE492), sınırlı bir zaman çerçevesi içinde tamamlanabilecek, iyi belirlenmiş hedeflere ve ölçülebilir sonuçlara erişmek için idealdir. {{< /card >}}
@@ -16,9 +18,17 @@ Tek dönemlik projeler (CMPE492), sınırlı bir zaman çerçevesi içinde tamam
 {{< /card >}}
 {{< /card-group >}}
 
-Son sınıf öğrencileri bu dönem için önerilen projelere [**güncel proje panosundan**](https://github.com/orgs/bouncmpe/projects/16) ulaşabilirler. Öğrencilerin ilgi duydukları projeler hakkında öğretim üyeleri ve proje danışmanları ile görüşmeleri ve proje detaylarını etraflıca tartışmaları tavsiye olunur. Ardından, öğrencilerin bir projeyi seçmeleri ve proje kayıt işlemini tamamlamaları gerekmektedir.
+Bir proje konusu seçmek, son sınıf öğrencileri için önemli bir sorumluluktur, uzmanlıklarını, kritik düşünme yeteneklerini ve yaratıcılıklarını sergileyerek, akademik bilgilerini gerçek dünya zorlukları ve kariyer hedefleriyle uyumlu hale getirir. Esas olarak, ideal bir bitirme projesi:
 
-Öğretim üyeleri ise, proje panomuza yeni proje önerileri eklemek için [**proje öneri şablonlarını**](https://github.com/bouncmpe/capstone/issues/new/choose) kullanabilirler.
+- Gerçek hayattan bir problemi ele almalıdır.
+- Öğrencilerin mezuniyet sonrası muhtemelen takip edecekleri profesyonel bilgisayar mühendisliği rollerine uygun olmalıdır.
+- Proje ekibinin büyüklüğüne ve proje süresine uygun bir kapsamda olmalıdır. Bu, her öğrenci için yaklaşık 10 saat/hafta olarak alınabilir.
+- Kayda değer bir tasarım bileşeni içermelidir.
+- Öğrencilerin liderlik, proje ve zaman yönetimi, teknik yazım, etik karar verme gibi becerilerini sergileyebilecekleri fırsatlar sunmalıdır.
+
+Son sınıf öğrencilerinin, olası proje konuları hakkında mevcut öğretim üyeleri ve proje danışmanlarıyla erkenden görüşme yapmaları tavsiye edilir. Öğrenciler, fakülte üyelerinin kişisel web sitelerini, bölümdeki ilan panolarını ve [**deneysel çevrimiçi proje panosunu**](https://github.com/orgs/bouncmpe/projects/16) bu dönemki proje önerileri incelemek için kullanabilirler; ancak sadece listelenen seçeneklerle sınırlı değillerdir. Proje konusu belirlendikten sonra, öğrenciler her dönemin başında duyurulan proje kayıt sürecini tamamlamalıdır.
+
+Öğretim üyeleri ise, çevrimiçi proje panomuza yeni proje önerileri eklemek için [**proje öneri şablonlarını**](https://github.com/bouncmpe/capstone/issues/new/choose) kullanabilirler.
 
 ## Proje Yürütülmesi
 
