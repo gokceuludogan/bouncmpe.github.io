@@ -22,12 +22,11 @@ Single-semester projects (CMPE492) are ideal for a focused goal with well-define
 
 - **Address** a real-world problem.
 - **Align** with the professional computer engineering roles students are likely to pursue after graduation.
-- **Be appropriately scoped** for the project team's size and project duration.
-  - (This is approximately 10 hours/week per student.)
+- **Be appropriately scoped** for the project team's size and project duration. This is approximately 10 hours/week per student.
 - **Incorporate** a significant design element.
 - **Provide** opportunities for students to demonstrate skills in leadership, project management, technical writing, ethical decision-making, safety, and time management.
 
-**Senior students are encouraged to engage in discussions early with faculty members and project advisors** regarding project topics of interest. They may check [**faculty members**](../people/faculty)' personal websites, bulletin boards in the department, and [**our experimental project board**](https://github.com/orgs/bouncmpe/projects/16) for this semester's offerings but thet are not limited with the listed options. Once the project topic is decided, students must proceed to complete the project registration process as announced in the beginning of each semester.
+**Senior students are encouraged to engage in discussions early with faculty members and project advisors** regarding project topics of interest. They may check [**faculty members**](../people/faculty)' personal websites, bulletin boards in the department, and [**our experimental project board**](https://github.com/orgs/bouncmpe/projects/16) for this semester's offerings but they are not limited with the listed options. Once the project topic is decided, students must proceed to complete the project registration process as announced in the beginning of each semester.
 
 Faculty members may use [**project offer templates**](https://github.com/bouncmpe/capstone/issues/new/choose) here to add new project offers to our semester offers board.
 
