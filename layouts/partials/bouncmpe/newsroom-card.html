@@ -7,11 +7,15 @@
     {{ $thumbnail = .Params.thumbnail }}
 {{ end }}
 
-{{ with resources.GetRemote $thumbnail }}
-  {{ if not .Err }}
+{{ with try (resources.GetRemote $thumbnail ) }}
+{{ with .Err }}
+   
+{{ else with .Value }}
     {{ $retouched := .Fill $image_settings }}
     {{ $thumbnail = $retouched.RelPermalink }}
-  {{ end }}
+{{ else }}
+    {{ errorf "Unable to get remote resource %q" $thumbnail }}
+{{ end }}
 {{ end }}
 
 {{ with resources.Get $thumbnail }}
