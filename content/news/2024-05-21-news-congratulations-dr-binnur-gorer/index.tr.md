@@ -2,7 +2,7 @@
 type: news
 title: Tebrikler Dr. Binnur Görer!
 description: Binnur Görer doktora tezini başarıyla savundu
-featured: true
+featured: false
 date: 2024-03-08
 thumbnail: uploads/binnur-gorer-doktora.png
 ---

@@ -2,7 +2,7 @@
 type: news
 title: Tebrikler Dr. Berrenur Saylam!
 description: Berrenur Saylam doktora tezini başarıyla savundu
-featured: true
+featured: false
 date: 2024-07-02
 thumbnail: uploads/berrenur-saylam-phd-defense.png
 ---

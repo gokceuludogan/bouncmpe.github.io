@@ -2,7 +2,7 @@
 type: news
 title: Tebrikler Dr. Nuriye Özlem Özcan Şimşek!
 description: Nuriye Özlem Özcan Şimşek doktora tezini başarıyla savundu
-featured: true
+featured: false
 date: 2024-05-21
 thumbnail: uploads/ozlem-simsek-doktora.png
 ---

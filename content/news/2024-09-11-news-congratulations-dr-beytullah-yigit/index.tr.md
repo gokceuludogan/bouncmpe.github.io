@@ -2,7 +2,7 @@
 type: news
 title: Tebrikler Dr. Beytullah Yiğit!
 description: Beytullah Yiğit doktora tezini başarıyla savundu
-featured: true
+featured: false
 date: 2024-06-03
 thumbnail: uploads/beytullah-yigit-doktora.png
 ---

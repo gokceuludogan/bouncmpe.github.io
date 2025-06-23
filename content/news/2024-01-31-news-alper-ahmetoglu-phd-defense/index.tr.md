@@ -2,7 +2,7 @@
 type: news
 title: Tebrikler Dr. Alper Ahmetoğlu
 description: Alper Ahmetoğlu doktora tezini başarıyla savundu!
-featured: true
+featured: false
 date: 2024-01-31
 thumbnail: uploads/ahmet-alperoglu-doktora.png
 ---

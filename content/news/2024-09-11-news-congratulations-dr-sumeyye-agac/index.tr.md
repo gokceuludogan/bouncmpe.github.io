@@ -2,7 +2,7 @@
 type: news
 title: Tebrikler Dr. Sümeyye Ağaç!
 description: Sümeyye Ağaç doktora tezini başarıyla savundu
-featured: true
+featured: false
 date: 2024-08-27
 thumbnail: uploads/sumeyye-agac-doktora.png
 ---

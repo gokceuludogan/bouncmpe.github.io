@@ -2,7 +2,7 @@
 type: news
 title: Congratulations Dr. Nuriye Özlem Özcan Şimşek!
 description: Nuriye Özlem Özcan Şimşek has successfully defended his PhD thesis
-featured: true
+featured: false
 date: 2024-05-21
 thumbnail: uploads/ozlem-simsek-doktora.png
 ---

@@ -2,7 +2,7 @@
 type: news
 title: Congratulations Dr. Alper Ahmetoğlu
 description: Alper Ahmetoğlu has successfully defended his PhD thesis
-featured: true
+featured: false
 date: 2024-01-31
 thumbnail: uploads/ahmet-alperoglu-doktora.png
 ---

@@ -2,7 +2,7 @@
 type: news
 title: Congratulations Dr. Binnur Görer!
 description: Binnur Görer has successfully defended her PhD thesis
-featured: true
+featured: false
 date: 2024-03-08
 thumbnail: uploads/binnur-gorer-doktora.png
 ---

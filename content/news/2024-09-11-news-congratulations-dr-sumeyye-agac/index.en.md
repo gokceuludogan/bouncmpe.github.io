@@ -2,7 +2,7 @@
 type: news
 title: Congratulations Dr. Sümeyye Ağaç!
 description: Sümeyye Ağaç has successfully defended her PhD thesis
-featured: true
+featured: false
 date: 2024-08-27
 thumbnail: uploads/sumeyye-agac-doktora.png
 ---
