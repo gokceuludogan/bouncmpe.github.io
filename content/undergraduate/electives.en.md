@@ -19,7 +19,7 @@ Complementary Elective (CC) courses are an important part of the undergraduate e
 
 The CC course category includes a broad selection of offerings from various departments, such as natural sciences, mathematics, management, economics, and other engineering disciplines. By taking CC courses, students can deepen their understanding of related fields, gain new perspectives, and apply different methods and approaches to engineering challenges.
 
-The list of approved CC courses is available on our [**departmant documentation**](https://cmpe.bogazici.edu.tr/docs/undergraduate/cc) pages.
+The list of approved CC courses is available on our [**departmant documentation**](https://cmpe.bogazici.edu.tr/docs) pages.
 
 ## Elective Courses Committee
 

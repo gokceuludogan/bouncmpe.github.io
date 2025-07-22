@@ -19,7 +19,7 @@ Tamamlayıcı Seçmeli (CC) dersler, Boğaziçi Üniversitesi lisans mühendisli
 
 CC dersi kategorisi; fen bilimleri, matematik, işletme, ekonomi ve diğer mühendislik disiplinleri gibi çeşitli bölümlerden geniş bir ders yelpazesini içerir. Öğrenciler bu dersleri alarak ilgili alanlardaki bilgi düzeylerini derinleştirebilir, yeni bakış açıları kazanabilir ve mühendislik problemlerine farklı yöntem ve yaklaşımlarla çözüm üretebilirler.
 
-Onaylı CC derslerinin listesine [bölüm dokümantasyonu](https://cmpe.bogazici.edu.tr/docs/undergraduate/cc) sayfalarımızdan ulaşabilirsiniz.
+Onaylı CC derslerinin listesine [bölüm dokümantasyonu](https://cmpe.bogazici.edu.tr/docs) sayfalarımızdan ulaşabilirsiniz.
 
 ## Seçmeli Dersler Komisyonu
 
