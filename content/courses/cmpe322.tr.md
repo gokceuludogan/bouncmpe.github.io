@@ -2,12 +2,11 @@
 title: CMPE322
 description: İşletim Sistemleri
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe322/1400
+# thumbnail: https://picsum.photos/seed/cmpe322/1400
 aliases:
   - undergraduate/courses/cmpe322
 ---
 
-{{< under-construction-warning >}}
 ## Ders Bilgileri
 
 <!-- prettier-ignore-start -->
@@ -32,8 +31,6 @@ aliases:
 ## Katalog Tanımı
 
 İşletim sistemlerinin evrimi. Çok programlılık ve zaman paylaşımı kavramları. Kullanıcı ve program arayüzleri. Eşzamanlı süreçler, CPU zamanlama, süreç senkronizasyonu, kritik bölüm problemi. Deadlock (kilitlenme) önleme, kaçınma, tespit ve kurtarma. Bellek yönetimi, swap (değiştirme), çoklu bölümlendirme. Sayfalama, segmentasyon, sanal bellek, sayfa değiştirme algoritmaları. Dosya sistemi yapıları, tahsis yöntemleri, dizin uygulamaları. G/Ç arayüzleri, ikincil depolama yapısı. Koruma ve güvenlik: Erişim matrisi ve haklar, yetenekler, güvenlik sorunları. LINUX vaka çalışmaları.
-
-## Dersin Öğrenme Çıktıları
 
 ## Dersi Veren Öğretim Üyesi
 

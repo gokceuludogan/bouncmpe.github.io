@@ -2,12 +2,10 @@
 title: CMPE220
 description: Discrete Computational Structures
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe220/1400
+# thumbnail: https://picsum.photos/seed/cmpe220/1400
 aliases:
   - undergraduate/courses/cmpe220
 ---
-
-{{< under-construction-warning >}}
 
 ## Course Information
 
@@ -35,8 +33,6 @@ aliases:
 Propositional logic and proofs. Set theory. Functions and relations. Algebraic structures. Groups and semi-groups. Graphs, lattices and Boolean algebra.
 
 Önerme mantığı ve kanıtları. Küme teorisi. Fonksiyonlar ve ilişkiler. Cebirsel yapılar. Gruplar ve yarı gruplar. Grafikler, kafesler ve Boole cebiri.
-
-## Dersin Öğrenme Çıktıları
 
 ## Dersi Veren Öğretim Üyesi
 

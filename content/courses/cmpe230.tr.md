@@ -2,13 +2,10 @@
 title: CMPE230
 description: Systems Programming
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe230/1400
+# thumbnail: https://picsum.photos/seed/cmpe230/1400
 aliases:
   - undergraduate/courses/cmpe230
 ---
-
-{{< under-construction-warning >}}
-
 ## Course Information
 
 <!-- prettier-ignore-start -->
@@ -35,8 +32,6 @@ aliases:
 Overview of compilers, interpreters, assemblers, linkers and loaders. Unix environment and system calls. Shell programming. Signals and exceptions. Localization and Unicode. PERL and CGI programming. Assembly language programming. Introduction to multithreading. Introductory Graphical User Interface (GUI) programming.
 
 Derleyici, yorumlayıcı, birleştirici, bağlayıcı ve yükleyiciler hakkında genel bilgi. Unix ortamı ve sistem çağrıları. Shell programlama. Sinyaller ve istisnalar. Yerelleştirme ve Unicode. PERL ve CGI programlama. Assembly programlama. Çoklu iş parçacığına giriş. Giriş seviyesi Grafiksel Kullanıcı Arayüzü (GUI) programlama.
-
-## Course Learning Outcome
 
 ## Current Instructor
 

@@ -2,13 +2,10 @@
 title: CMPE240
 description: Digital Systems
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe240/1400
+# thumbnail: https://picsum.photos/seed/cmpe240/1400
 aliases:
   - undergraduate/courses/cmpe240
 ---
-
-{{< under-construction-warning >}}
-
 ## Course Information
 
 <!-- prettier-ignore-start -->
@@ -33,8 +30,6 @@ aliases:
 ## Catalog Description
 
 Number systems. Boolean algebra, logic networks and their simplification. Logic design with gates. MSI and LSI technologies. Combinatorial circuits and sequential circuits. Counters, shift registers, computer organization, arithmetic logic, memory and control units, mini and microcomputer systems. Laboratory experiments and applications of digital logic design.
-
-## Course Learning Outcomes
 
 ## Current Instructor
 

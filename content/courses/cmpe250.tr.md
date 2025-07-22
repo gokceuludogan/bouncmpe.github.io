@@ -2,12 +2,10 @@
 title: CMPE250
 description: Data Structures and Algorithms
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe250/1400
+# thumbnail: https://picsum.photos/seed/cmpe250/1400
 aliases:
   - undergraduate/courses/cmpe250
 ---
-
-{{< under-construction-warning >}}
 
 ## Course Information
 
@@ -33,8 +31,6 @@ aliases:
 ## Catalog Description
 
 Grafikler. Gelişmiş Sıralama. Hashing. Yığın Yapıları. Arama Yapıları. Karmaşıklık. Paralel algoritmalar. Dosya organizasyonu.
-
-## Course Learning Outcome
 
 ## Current Instructor
 

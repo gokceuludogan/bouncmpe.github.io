@@ -2,12 +2,11 @@
 title: CMPE362
 description: Introduction to Signal Processing for Computer Engineers
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe362/1400
+# thumbnail: https://picsum.photos/seed/cmpe362/1400
 aliases:
   - undergraduate/courses/cmpe362
 ---
 
-{{< under-construction-warning >}}
 ## Course Information
 
 <!-- prettier-ignore-start -->
@@ -32,8 +31,6 @@ aliases:
 ## Catalog Description
 
 Introduction to discrete and continuous time signals and systems with computer engineering applications. Time-domain signal representations, impulse response of linear time-invariant systems; convolution. Fourier series. Spectrum representation of signals. Fourier transform. Digital signals and sampling. Reconstruction, Filtering, Z-transform representation, discrete Fourier transform. Algorithms for signal processing. Floating point and quantization errors. Exercises with applications in audio and image processing.
-
-## Course Learning Outcomes
 
 ## Current Instructor
 

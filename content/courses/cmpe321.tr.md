@@ -2,12 +2,11 @@
 title: CMPE321
 description: Veritabanı Sistemlerine Giriş
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe321/1400
+# thumbnail: https://picsum.photos/seed/cmpe321/1400
 aliases:
   - undergraduate/courses/cmpe321
 ---
 
-{{< under-construction-warning >}}
 ## Ders Bilgileri
 
 <!-- prettier-ignore-start -->
@@ -32,8 +31,6 @@ aliases:
 ## Katalog Tanımı
 
 Verilerin Mantıksal Organizasyonu: Verilerin varlık-ilişki modellemesi. Hiyerarşik, ağ ve ilişkisel modeller. Veri tanımlama ve sorgu dilleri. Normal formlar ve veritabanı tasarımı. Fiziksel tasarım ve erişim stratejileri. Güvenlik, bütünlük ve güvenilirlik. Dosya güvenliği ve basit bir sorgu dilini içeren basit bir veritabanı yönetim sisteminin tasarımı ve uygulanması.
-
-## Dersin Öğrenme Çıktıları
 
 ## Dersi Veren Öğretim Üyesi
 

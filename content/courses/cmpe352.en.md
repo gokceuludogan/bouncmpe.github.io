@@ -2,12 +2,11 @@
 title: CMPE352
 description: Fundamentals of Software Engineering
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe352/1400
+# thumbnail: https://picsum.photos/seed/cmpe352/1400
 aliases:
   - undergraduate/courses/cmpe352
 ---
 
-{{< under-construction-warning >}}
 ## Course Information
 
 <!-- prettier-ignore-start -->
@@ -34,8 +33,6 @@ aliases:
 Introductory concepts in software engineering. The software life cycle and the phases in software development: feasibility study, analysis, specification, design, implementation and testing, documentation, and maintenance. Tools, techniques, environments, and methodologies. Management issues: planning, organization and control. Professional ethics.
 
 There are numerous hands-on assignments to gain software engineering skills using commonly used tools and methods.
-
-## Course Learning Outcomes
 
 ## Current Instructor
 

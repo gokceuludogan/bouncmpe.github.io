@@ -2,12 +2,11 @@
 title: CMPE350
 description: Formal Languages and Automata Theory
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe350/1400
+# thumbnail: https://picsum.photos/seed/cmpe350/1400
 aliases:
   - undergraduate/courses/cmpe350
 ---
 
-{{< under-construction-warning >}}
 ## Course Information
 
 <!-- prettier-ignore-start -->
@@ -32,8 +31,6 @@ aliases:
 ## Catalog Description
 
 Strings and languages. Classification of grammars. Finite-state automata and regular expressions. Pushdown automata and context-free grammars. Context sensitive grammars and linear bounded automata. Turing machines.
-
-## Course Learning Outcomes
 
 ## Current Instructor
 

@@ -2,12 +2,10 @@
 title: CMPE240
 description: Digital Systems
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe240/1400
+# thumbnail: https://picsum.photos/seed/cmpe240/1400
 aliases:
   - undergraduate/courses/cmpe240
 ---
-
-{{< under-construction-warning >}}
 
 ## Course Information
 
@@ -33,8 +31,6 @@ aliases:
 ## Catalog Description
 
 Sayı sistemleri. Boolean cebiri, mantık ağları ve basitleştirilmesi. Kapılarla mantık tasarımı. MSI ve LSI teknolojileri. Kombinasyonel devreler ve ardışık devreler. Sayıcılar, kaydırıcılar, bilgisayar organizasyonu, aritmetik mantık, bellek ve kontrol üniteleri, mini ve mikro bilgisayar sistemleri. Dijital mantık tasarımının laboratuvar deneyleri ve uygulamaları.
-
-## Course Learning Outcome
 
 ## Current Instructor
 

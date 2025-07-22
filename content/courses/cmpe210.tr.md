@@ -2,12 +2,10 @@
 title: CMPE210
 description: Nesne Tabanlı Programlamanın Temelleri
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe210/1400
+# thumbnail: https://picsum.photos/seed/cmpe210/1400
 aliases:
   - undergraduate/courses/cmpe210
 ---
-
-{{< under-construction-warning >}}
 
 ## Course Information
 
@@ -33,8 +31,6 @@ aliases:
 ## Katalog Tanımı
 
 Skalar ve yapılandırılmış veri türlerinin incelemesi. Nesne yönelimli programlama kavramları: sınıflar ve soyut veri türleri, kalıtım ilişkileri, çok biçimlilik, operatör yükleme. Klasik ve nesne yönelimli program spesifikasyonu, tasarımı, kodlaması ve testi. Doğrusal (yığınlar, kuyruklar, doğrusal listeler) ve doğrusal olmayan veri yapıları (ağaçlar, kümeler). Sıralı ve rastgele erişim dosyaları. Veri yapılarının uygulanması: Bağlı listeler, çok boyutlu diziler, kayıt yapıları, karakter dizileri, yığınlar, kuyruklar, ağaçlar ve kümeler. Özyineleme.
-
-## Dersin Öğrenme Çıktıları
 
 ## Dersi Veren Öğretim Üyesi
 

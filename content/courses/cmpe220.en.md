@@ -2,12 +2,10 @@
 title: CMPE220
 description: Discrete Computational Structures
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe220/1400
+# thumbnail: https://picsum.photos/seed/cmpe220/1400
 aliases:
   - undergraduate/courses/cmpe220
 ---
-
-{{< under-construction-warning >}}
 
 ## Course Information
 
@@ -33,8 +31,6 @@ aliases:
 ## Catalog Description
 
 Propositional logic and proofs. Set theory. Functions and relations. Algebraic structures. Groups and semi-groups. Graphs, lattices and Boolean algebra.
-
-## Course Learning Outcomes
 
 ## Current Instructor
 

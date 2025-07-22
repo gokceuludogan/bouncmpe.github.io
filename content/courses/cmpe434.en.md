@@ -2,12 +2,10 @@
 title: CMPE434
 description: Introduction to Robotics
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe434/1400
+# thumbnail: https://picsum.photos/seed/cmpe434/1400
 aliases:
   - undergraduate/courses/cmpe434
 ---
-
-{{< under-construction-warning >}}
 
 ## Course Information
 
@@ -33,8 +31,6 @@ aliases:
 ## Catalog Description
 
 Designing, building and programming mobile robots; sensors, effectors, locomotion, basic control theory, control architectures, path planning, localization, mapping, learning. Teamwork; robot contest.
-
-## Course Learning Outcomes
 
 ## Current Instructor
 

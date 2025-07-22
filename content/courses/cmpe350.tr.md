@@ -2,12 +2,12 @@
 title: CMPE350
 description: Biçimsel Diller ve Makineler Kuramı
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe350/1400
+# thumbnail: https://picsum.photos/seed/cmpe350/1400
 aliases:
   - undergraduate/courses/cmpe350
 ---
 
-{{< under-construction-warning >}}
+
 ## Ders Bilgileri
 
 <!-- prettier-ignore-start -->
@@ -32,9 +32,6 @@ aliases:
 ## Katalog Tanımı
 
 Dizeler ve diller. Gramerlerin sınıflandırılması. Sonlu durum otomatları ve düzenli ifadeler. İtişli otomatlar ve bağlam bağımlı gramatikler. Bağlam duyarlı gramatikler ve lineer sınırlı otomatlar. Turing makineleri.
-
-## Dersin Öğrenme Çıktıları
-
 
 ## Dersi Veren Öğretim Üyesi
 

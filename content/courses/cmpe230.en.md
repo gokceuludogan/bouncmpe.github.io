@@ -2,12 +2,10 @@
 title: CMPE230
 description: Systems Programming
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe230/1400
+# thumbnail: https://picsum.photos/seed/cmpe230/1400
 aliases:
   - undergraduate/courses/cmpe230
 ---
-
-{{< under-construction-warning >}}
 
 ## Course Information
 
@@ -33,8 +31,6 @@ aliases:
 ## Catalog Description
 
 Overview of compilers, interpreters, assemblers, linkers and loaders. Unix environment and system calls. Shell programming. Signals and exceptions. Localization and Unicode. PERL and CGI programming. Assembly language programming. Introduction to multithreading. Introductory Graphical User Interface (GUI) programming.
-
-## Course Learning Outcomes
 
 ## Current Instructor
 

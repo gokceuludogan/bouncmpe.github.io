@@ -4,7 +4,6 @@ description: Boğaziçi University Computer Enginering Curriculum
 metadata: none
 toc: false
 weight: 2
-type: wide
 hasMermaid: true
 ---
 
@@ -84,7 +83,7 @@ hasMermaid: true
 {{< /table >}}
 <!-- prettier-ignore-end -->
 
-## Course Prerequisites Graph
+## Prerequisites Graph
 
 ```mermaid "caption=prerequisites"
 %%{ init: { 'flowchart': { 'curve': 'linear' } } }%%

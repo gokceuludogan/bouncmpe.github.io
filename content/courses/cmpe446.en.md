@@ -2,12 +2,10 @@
 title: CMPE446
 description: Introduction to Computer Architecture
 metadata: none
-thumbnail: https://picsum.photos/seed/cmpe446/1400
+# thumbnail: https://picsum.photos/seed/cmpe446/1400
 aliases:
   - undergraduate/courses/cmpe446
 ---
-
-{{< under-construction-warning >}}
 
 ## Course Information
 
@@ -33,8 +31,6 @@ aliases:
 ## Catalog Description
 
 Performance limits of Von Neumann architecture. Reduced Instruction Set Computer (RISC) architecture. Pipelined processor design. Instruction pipeline and arithmetic pipelines. Array processors. Dynamic and static interconnection networks. Shared memory multiprocessor systems. Message passing multiprocessor systems.
-
-## Course Learning Outcomes
 
 ## Current Instructor
 
