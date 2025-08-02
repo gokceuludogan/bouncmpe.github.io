@@ -1,11 +1,20 @@
 ---
+# Front Matter
+
 type: "{{ type }}"
+
+# Displayed Title
 title: "{{ title }}"
+
 description: |
   {{ description | replace("\n", "\n  ") }}
+
 featured: {{ featured | lower }}
 date: "{{ date }}"
 thumbnail: "{{ thumbnail }}"
 ---
+
+<!-- Poster -->
+{% if thumbnail %}![{{ title }}]({{ thumbnail }}){% endif %}
 
 {{ content }}
