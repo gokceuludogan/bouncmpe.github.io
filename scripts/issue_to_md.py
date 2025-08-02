@@ -54,6 +54,7 @@ def get_field(names, default=""):
 # ─── COMMON ───────────────────────────────────────────────────────────────────
 title_en = get_field(['title_en'], issue.title)
 title_tr = get_field(['title_tr'], title_en)
+
 date_val = get_field(['date'], '')
 time_val = get_field(['time'], '')
 
@@ -77,7 +78,7 @@ description_t  = get_field(['description_tr'], '')
 # ─── IMAGE DOWNLOAD ───────────────────────────────────────────────────────────
 def download_image(md: str) -> str:
     m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) or \
-        re.search(r"<img[^>]+src=\"(https?://[^"]+)\"", md)
+        re.search(r'<img[^>]+src="(https?://[^\"]+)"', md)
     if not m:
         return ""
     url = m.group(1)
@@ -99,16 +100,16 @@ for lang in ('en', 'tr'):
     dt_iso     = f"{date_val}T{time_val}:00" if date_val and time_val else ''
     ctx = {
         'type':      event_type if is_event else 'news',
-        'title':     title_tr if (lang=='tr') else title_en,
+        'title':     title_tr if lang=='tr' else title_en,
         'name':      speaker_name if is_event else None,
         'datetime':  dt_iso if is_event else None,
         'date':      date_val if not is_event else None,
         'duration':  duration if is_event else None,
-        'location':  (location_tr if lang=='tr' else location_en) if is_event else None,
+        'location':  location_tr if lang=='tr' and is_event else location_en if is_event else None,
         'thumbnail': download_image(event_image_md if is_event else news_image_md),
-        'description': (description_t if is_event else desc_tr) if lang=='tr' else (description_e if is_event else desc_en),
+        'description': description_t if lang=='tr' and is_event else desc_tr if not is_event and lang=='tr' else description_e if is_event else desc_en,
         'featured':  False if not is_event else None,
-        'content':   content_tr if (not is_event and lang=='tr') else (content_en if not is_event else None),
+        'content':   content_tr if lang=='tr' and not is_event else content_en if not is_event else None,
     }
     template = 'event.md.j2' if is_event else 'news.md.j2'
     env      = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=False)
