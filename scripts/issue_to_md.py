@@ -25,14 +25,12 @@ issue = repo.get_issue(number=ISSUE_NUMBER)
 
 # ─── PARSE FIELDS ─────────────────────────────────────────────────────────────
 def parse_fields(body: str):
-    # Try JSON form data
     m = re.search(r"<!--\s*({.*})\s*-->", body or "", re.DOTALL)
     if m:
         try:
             return json.loads(m.group(1))
         except json.JSONDecodeError:
             pass
-    # Fallback: headings-based parse
     pattern = re.compile(
         r"^#{1,6}\s+(.*?)\s*\r?\n+(.*?)(?=^#{1,6}\s|\Z)",
         re.MULTILINE | re.DOTALL
@@ -55,13 +53,15 @@ def get_field(names, default=""):
 
 # ─── COMMON ───────────────────────────────────────────────────────────────────
 title_en = get_field(['title_en'], issue.title)
-title_tr = get_field(['title_tr'], '')
+title_tr = get_field(['title_tr'], title_en)
 date_val = get_field(['date'], '')
 time_val = get_field(['time'], '')
 
 # ─── NEWS ─────────────────────────────────────────────────────────────────────
 desc_en       = get_field(['description_en'], '')
+desc_tr       = get_field(['description_tr'], '')
 content_en    = get_field(['content_en'], '')
+content_tr    = get_field(['content_tr'], '')
 news_image_md = get_field(['image_markdown'], '')
 
 # ─── EVENT ────────────────────────────────────────────────────────────────────
@@ -77,7 +77,7 @@ description_t  = get_field(['description_tr'], '')
 # ─── IMAGE DOWNLOAD ───────────────────────────────────────────────────────────
 def download_image(md: str) -> str:
     m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) or \
-        re.search(r"<img[^>]+src=\"(https?://[^\"]+)\"", md)
+        re.search(r"<img[^>]+src=\"(https?://[^"]+)\"", md)
     if not m:
         return ""
     url = m.group(1)
@@ -93,40 +93,31 @@ def download_image(md: str) -> str:
         f.write(resp.content)
     return f"/uploads/{name}"
 
-# ─── BUILD CONTEXT ────────────────────────────────────────────────────────────
-is_event    = bool(event_type)
-# append :00 for HH:MM:SS
-datetime_iso = f"{date_val}T{time_val}:00" if date_val and time_val else ''
+# ─── BUILD & WRITE ────────────────────────────────────────────────────────────
+for lang in ('en', 'tr'):
+    is_event   = bool(event_type)
+    dt_iso     = f"{date_val}T{time_val}:00" if date_val and time_val else ''
+    ctx = {
+        'type':      event_type if is_event else 'news',
+        'title':     title_tr if (lang=='tr') else title_en,
+        'name':      speaker_name if is_event else None,
+        'datetime':  dt_iso if is_event else None,
+        'date':      date_val if not is_event else None,
+        'duration':  duration if is_event else None,
+        'location':  (location_tr if lang=='tr' else location_en) if is_event else None,
+        'thumbnail': download_image(event_image_md if is_event else news_image_md),
+        'description': (description_t if is_event else desc_tr) if lang=='tr' else (description_e if is_event else desc_en),
+        'featured':  False if not is_event else None,
+        'content':   content_tr if (not is_event and lang=='tr') else (content_en if not is_event else None),
+    }
+    template = 'event.md.j2' if is_event else 'news.md.j2'
+    env      = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=False)
+    rendered = env.get_template(template).render(**ctx)
 
-ctx = {
-    'type':       event_type if is_event else 'news',
-    'title':      title_en,
-    'name':       speaker_name if is_event else None,
-    'datetime':   datetime_iso if is_event else None,
-    'date':       date_val if not is_event else None,
-    'duration':   duration if is_event else None,
-    'location':   location_en if is_event else None,
-    'thumbnail':  download_image(event_image_md if is_event else news_image_md),
-    'description': description_e if is_event else desc_en,
-    'featured':   False if not is_event else None,
-    'content':    content_en if not is_event else None,
-}
-
-template_file = "event.md.j2" if is_event else "news.md.j2"
-
-# ─── RENDER & WRITE ───────────────────────────────────────────────────────────
-env = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=False)
-tmpl = env.get_template(template_file)
-output = tmpl.render(**ctx)
-
-# create slug
-slug = unicodedata.normalize("NFKD", title_en)\
-       .encode("ascii","ignore")\
-       .decode().lower()
-slug = re.sub(r"[^\w]+", "-", slug).strip("-")
-
-folder = "events" if is_event else "news"
-out_dir = os.path.join("content", folder, f"{date_val}-{slug}")
-os.makedirs(out_dir, exist_ok=True)
-with open(os.path.join(out_dir, "index.en.md"), "w", encoding="utf-8") as f:
-    f.write(output)
+    slug = unicodedata.normalize('NFKD', ctx['title']).encode('ascii','ignore').decode().lower()
+    slug = re.sub(r"[^\w]+", '-', slug).strip('-')
+    folder = 'events' if is_event else 'news'
+    out_dir = os.path.join('content', folder, f"{date_val}-{slug}")
+    os.makedirs(out_dir, exist_ok=True)
+    with open(os.path.join(out_dir, f"index.{lang}.md"), 'w', encoding='utf-8') as f:
+        f.write(rendered)
