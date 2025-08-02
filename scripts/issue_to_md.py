@@ -45,16 +45,15 @@ def parse_fields(body: str):
 
 fields = parse_fields(issue.body)
 
-def get_field(names, default=""):
-    for n in names:
-        if n in fields and fields[n]:
-            return fields[n]
+def get_field(keys, default=""):
+    for k in keys:
+        if k in fields and fields[k]:
+            return fields[k]
     return default
 
 # ─── COMMON ───────────────────────────────────────────────────────────────────
 title_en = get_field(['title_en'], issue.title)
 title_tr = get_field(['title_tr'], title_en)
-
 date_val = get_field(['date'], '')
 time_val = get_field(['time'], '')
 
@@ -94,31 +93,39 @@ def download_image(md: str) -> str:
         f.write(resp.content)
     return f"/uploads/{name}"
 
-# ─── BUILD & WRITE ────────────────────────────────────────────────────────────
+# ─── RENDER & WRITE ────────────────────────────────────────────────────────────
 for lang in ('en', 'tr'):
-    is_event   = bool(event_type)
-    dt_iso     = f"{date_val}T{time_val}:00" if date_val and time_val else ''
+    is_event = bool(event_type)
+    # Build ISO timestamp
+    dt_iso = f"{date_val}T{time_val}:00" if date_val and time_val else ''
+
+    # Shared context
     ctx = {
-        'type':      event_type if is_event else 'news',
-        'title':     title_tr if lang=='tr' else title_en,
-        'name':      speaker_name if is_event else None,
-        'datetime':  dt_iso if is_event else None,
-        'date':      date_val if not is_event else None,
-        'duration':  duration if is_event else None,
-        'location':  location_tr if lang=='tr' and is_event else location_en if is_event else None,
-        'thumbnail': download_image(event_image_md if is_event else news_image_md),
-        'description': description_t if lang=='tr' and is_event else desc_tr if not is_event and lang=='tr' else description_e if is_event else desc_en,
-        'featured':  False if not is_event else None,
-        'content':   content_tr if lang=='tr' and not is_event else content_en if not is_event else None,
+        'type':        event_type if is_event else 'news',
+        'title':       title_tr if lang == 'tr' else title_en,
+        'name':        speaker_name if is_event else None,
+        'datetime':    dt_iso if is_event else None,
+        'date':        date_val if not is_event else None,
+        'duration':    duration if is_event else None,
+        'location':    location_tr if (lang == 'tr' and is_event) else (location_en if is_event else None),
+        'thumbnail':   download_image(event_image_md if is_event else news_image_md),
+        'description': (description_t if is_event else desc_tr) if lang == 'tr' else (description_e if is_event else desc_en),
+        'featured':    False if not is_event else None,
+        'content':     content_tr if (not is_event and lang == 'tr') else (content_en if not is_event else None),
     }
+
     template = 'event.md.j2' if is_event else 'news.md.j2'
-    env      = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=False)
+    env = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=False)
     rendered = env.get_template(template).render(**ctx)
 
+    # Slugify
     slug = unicodedata.normalize('NFKD', ctx['title']).encode('ascii','ignore').decode().lower()
     slug = re.sub(r"[^\w]+", '-', slug).strip('-')
+
     folder = 'events' if is_event else 'news'
     out_dir = os.path.join('content', folder, f"{date_val}-{slug}")
     os.makedirs(out_dir, exist_ok=True)
-    with open(os.path.join(out_dir, f"index.{lang}.md"), 'w', encoding='utf-8') as f:
+
+    filename = f"index.{lang}.md"
+    with open(os.path.join(out_dir, filename), 'w', encoding='utf-8') as f:
         f.write(rendered)
