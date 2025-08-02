@@ -1,0 +1,11 @@
+---
+type: "{{ type }}"
+title: "{{ title }}"
+description: |
+  {{ description | replace("\n", "\n  ") }}
+featured: {{ featured | lower }}
+date: "{{ date }}"
+thumbnail: "{{ thumbnail }}"
+---
+
+{{ content }}
