@@ -127,38 +127,6 @@ class NewsProcessor(BaseProcessor):
             desc_key = f"short_description_{lang}"
             content_key = f"full_content_{lang}"
             desc = get_field(desc_key, '').strip()
-            # Build frontmatter in desired order:
-            front = [
-                '---',
-                'type: news',
-                f"title: {title_en if lang=='en' else title_tr}",
-            ]
-            # description, inline or block
-            if '
-' in desc:
-                front.append('description: |')
-                front += [f"  {line}" for line in desc.splitlines()]
-            else:
-                front.append(f"description: {desc}")
-            # featured checkbox
-            featured = get_field('featured', 'false')
-            front.append(f"featured: {featured}")
-            # date and thumbnail last
-            front.append(f"date: {date_val}")
-            front.append(f"thumbnail: {image_md}")
-            front.append('---')
-            front.append('')
-
-            body = get_field(content_key)
-            out_file = out_dir / f"index.{lang}.md"
-            self.write(out_file, "
-".join(front + [body]))
-        image_field_md = get_field(['image_markdown', 'image_drag_drop_here'], '')
-        image_md = download_image(image_field_md)
-        for lang in ('en','tr'):
-            desc_key = f"short_description_{lang}"
-            content_key = f"full_content_{lang}"
-            desc = get_field(desc_key, '').strip()
             front = [
                 '---',
                 'type: news',
@@ -208,4 +176,5 @@ class EventProcessor(BaseProcessor):
 processor = EventProcessor() if is_event else NewsProcessor()
 processor.render()
 print("[DEBUG] Processing complete.")
+
 
