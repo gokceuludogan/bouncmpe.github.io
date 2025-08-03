@@ -1,60 +1,59 @@
-name: 🗓️ Event Submission
-description: Submit a new event to appear on the CMPE website.
-title: "[Event] "
+name: Bilingual Event Submission
+description: Submit an event for the website. Provide both English and Turkish entries. Image optional.
+title: "[EVENT] <Insert event title>"
 labels: ["event"]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Please fill in the following information to submit an event.
-
   - type: dropdown
-    id: content_kind
+    id: event_type
     attributes:
-      label: Event Type
+      label: "Event Type"
       options:
         - phd-thesis-defense
         - ms-thesis-defense
         - seminar
         - special-event
+      description: "Choose the type of the event"
     validations:
       required: true
 
   - type: input
-    id: event_title_en
+    id: title_en
     attributes:
-      label: Event Title (English)
+      label: "Event Title (EN)"
+      placeholder: "Enter event title here"
     validations:
       required: true
 
   - type: input
-    id: event_title_tr
+    id: title_tr
     attributes:
-      label: Event Title (Turkish)
+      label: "Event Title (TR)"
+      placeholder: "Enter event title here"
+    validations:
+      required: true
 
   - type: input
-    id: speaker_presenter_name
+    id: name
     attributes:
-      label: Speaker/Presenter Name
+      label: "Speaker/Presenter Name"
+      placeholder: "Enter presenter name here"
     validations:
       required: true
 
   - type: input
     id: date
     attributes:
-      label: Date
-      description: Use format YYYY-MM-DD (e.g., 2025-08-03)
+      label: "Date (YYYY-MM-DD)"
+      placeholder: "YYYY-MM-DD"
     validations:
       required: true
 
   - type: dropdown
     id: time
     attributes:
-      label: Time
-      description: Select a time slot
+      label: "Time"
+      description: "Choose a time slot"
       options:
-        - "08:00"
-        - "08:30"
         - "09:00"
         - "09:30"
         - "10:00"
@@ -78,30 +77,60 @@ body:
         - "19:00"
         - "19:30"
         - "20:00"
+        - "20:30"
+        - "21:00"
     validations:
       required: true
 
-  - type: input
+  - type: dropdown
     id: duration
     attributes:
-      label: Duration
-      description: e.g., 1h, 1.5h
+      label: "Duration"
+      options:
+        - 1h
+        - 1.5h
+        - 2h
+        - 2.5h
+        - 3h
+        - Other
     validations:
       required: true
 
   - type: input
     id: location_en
     attributes:
-      label: Location (English)
+      label: "Location (EN)"
+      placeholder: "Enter location here"
     validations:
       required: true
 
   - type: input
     id: location_tr
     attributes:
-      label: Location (Turkish)
+      label: "Location (TR)"
+      placeholder: "Enter location here"
+    validations:
+      required: true
 
-  - type: markdown
+  - type: textarea
+    id: image_markdown
     attributes:
-      value: |
-        Thanks! After submission, a pull request will be automatically created.
+      label: "Image (optional, drag & drop)"
+      description: "Drag & drop an image to include a poster/cover."
+      placeholder: "![alt text](https://user-images.githubusercontent.com/.../your-image.png)"
+
+  - type: textarea
+    id: description_en
+    attributes:
+      label: "Description (EN)"
+      placeholder: "Enter description here"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description_tr
+    attributes:
+      label: "Description (TR)"
+      placeholder: "Enter description here"
+    validations:
+      required: true
