@@ -30,7 +30,7 @@ if DEBUG:
 
 # ─── PARSING UTILITIES ──────────────────────────────────────────────────────────
 def parse_fields(body: str) -> dict:
-    parts = re.split(r"^###\s+", body, flags=re.MULTILINE)[1:]
+    parts = re.split(r"^###\s+", body or "", flags=re.MULTILINE)[1:]
     parsed = {}
     for part in parts:
         lines = part.splitlines()
@@ -44,7 +44,7 @@ def parse_fields(body: str) -> dict:
             print(f"[DEBUG] Parsed field '{label}' → '{key}': {value!r}")
     return parsed
 
-fields = parse_fields(issue.body or "")
+fields = parse_fields(issue.body)
 
 def get_field(keys, default=""):
     if isinstance(keys, str):
@@ -77,6 +77,8 @@ def download_image(md: str) -> str:
     if not m:
         return ""
     url = m.group(1)
+    if DEBUG:
+        print(f"[DEBUG] Downloading image: {url}")
     resp = requests.get(url, timeout=15)
     resp.raise_for_status()
     ext   = mimetypes.guess_extension(resp.headers.get('Content-Type','').split(';')[0]) or Path(url).suffix or '.png'
@@ -112,24 +114,32 @@ class BaseProcessor:
 
 class NewsProcessor(BaseProcessor):
     def render(self):
-        image_md = download_image(get_field('image_markdown',''))
+        # support both markdown link and drag-drop
+        image_field_md = get_field(['image_markdown', 'image_drag_drop_here'], '')
+        image_md       = download_image(image_field_md)
+
         for lang in ('en','tr'):
             desc_key    = f'short_description_{lang}'
             content_key = f'full_content_{lang}'
-            desc = get_field(desc_key, '').strip()
-            front = [ '---', 'type: news',
-                      f"title: {title_en if lang=='en' else title_tr}",
-                      f"date: {date_val}",
-                      f"thumbnail: {image_md}" ]
-            # Handle description formatting
+            desc        = get_field(desc_key, '').strip()
+
+            front = [
+                '---',
+                'type: news',
+                f"title: {title_en if lang=='en' else title_tr}",
+                f"date: {date_val}",
+                f"thumbnail: {image_md}"  
+            ]
+
+            # description: inline vs block
             if '\n' in desc:
                 front.append('description: |')
                 for line in desc.splitlines():
                     front.append(f'  {line}')
             else:
                 front.append(f'description: {desc}')
-            front.extend(['featured: false', '---', ''])
 
+            front.extend(['featured: false', '---', ''])
             body = get_field(content_key)
             out_file = out_dir / f"index.{lang}.md"
             self.write(out_file, "\n".join(front + [body]))
@@ -154,7 +164,7 @@ class EventProcessor(BaseProcessor):
             out_file = out_dir / f"index.{lang}.md"
             self.write(out_file, rendered)
 
-# ─── DISPATCH ───────────────────────────────────────────────────────────────────
+# Dispatch
 processor = EventProcessor(None) if is_event else NewsProcessor()
 processor.render()
 print("[DEBUG] Processing complete.")
