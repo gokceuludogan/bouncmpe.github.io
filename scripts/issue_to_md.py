@@ -79,7 +79,9 @@ if DEBUG:
 
 # ─── IMAGE HANDLING ─────────────────────────────────────────────────────────────
 def download_image(md: str) -> str:
-    m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)")
+    # attempt markdown-style or HTML <img> src URL
+    m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) or \
+        re.search(r"src=\"(https?://[^\"]+)\"", md)
     if not m:
         return ""
     url = m.group(1)
@@ -87,8 +89,8 @@ def download_image(md: str) -> str:
         print(f"[DEBUG] Downloading image: {url}")
     resp = requests.get(url, timeout=15)
     resp.raise_for_status()
-    ext   = mimetypes.guess_extension(resp.headers.get('Content-Type','').split(';')[0]) \
-            or Path(url).suffix or '.png'
+    ext = mimetypes.guess_extension(resp.headers.get('Content-Type','').split(';')[0]) \
+          or Path(url).suffix or '.png'
     fname = f"{ISSUE_NUMBER}_{uuid4().hex[:8]}{ext}"
     UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
     path = UPLOADS_DIR / fname
@@ -98,7 +100,7 @@ def download_image(md: str) -> str:
         print(f"[DEBUG] Saved image to {path} → '{local}'")
     return local
 
-# ─── SLUG & OUTPUT DIRECTORY ────────────────────────────────────────────────────
+# ─── SLUG & OUTPUT DIRECTORY & OUTPUT DIRECTORY ────────────────────────────────────────────────────
 def make_slug(text: str) -> str:
     slug = unicodedata.normalize('NFKD', text).encode('ascii','ignore').decode().lower()
     slug = re.sub(r"[^\w\s-]", '', slug)
