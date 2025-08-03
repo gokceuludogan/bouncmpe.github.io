@@ -4,55 +4,45 @@ import re
 import unicodedata
 import mimetypes
 import requests
-import logging
 from uuid import uuid4
 from pathlib import Path
 from github import Github
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from jinja2 import Environment, FileSystemLoader
 
 # ─── CONFIGURATION ─────────────────────────────────────────────────────────────
 GITHUB_REPOSITORY = os.getenv("GITHUB_REPOSITORY")
-ISSUE_NUMBER      = os.getenv("ISSUE_NUMBER")
+ISSUE_NUMBER      = int(os.getenv("ISSUE_NUMBER", "0"))
 GITHUB_TOKEN      = os.getenv("GITHUB_TOKEN")
 UPLOADS_DIR       = Path("static/uploads")
 CONTENT_DIR       = Path("content")
+DEBUG             = True
 
-# ─── LOGGING SETUP ───────────────────────────────────────────────────────────────
-LOG_LEVEL = os.getenv("LOG_LEVEL", "DEBUG").upper()
-logging.basicConfig(level=getattr(logging, LOG_LEVEL))
-log = logging.getLogger(__name__)
+if not GITHUB_REPOSITORY or not GITHUB_TOKEN or ISSUE_NUMBER == 0:
+    missing = [n for n in ["GITHUB_REPOSITORY","GITHUB_TOKEN","ISSUE_NUMBER"] if not os.getenv(n)]
+    raise RuntimeError(f"Missing required env vars: {', '.join(missing)}")
 
-# ─── VALIDATE ENVIRONMENT ────────────────────────────────────────────────────────
-def require_env(var_name):
-    val = os.getenv(var_name)
-    if not val:
-        log.error(f"Missing required environment variable: {var_name}")
-        raise RuntimeError(f"Missing required env var: {var_name}")
-    return val
-
-GITHUB_REPOSITORY = require_env("GITHUB_REPOSITORY")
-GITHUB_TOKEN      = require_env("GITHUB_TOKEN")
-ISSUE_NUMBER      = int(require_env("ISSUE_NUMBER"))
-log.debug(f"Repo={GITHUB_REPOSITORY}, Issue={ISSUE_NUMBER}")
-
-# ─── GITHUB INITIALIZATION ──────────────────────────────────────────────────────
+# ─── GITHUB INITIALIZATION ─────────────────────────────────────────────────────
 gh    = Github(GITHUB_TOKEN)
 repo  = gh.get_repo(GITHUB_REPOSITORY)
 issue = repo.get_issue(number=ISSUE_NUMBER)
-log.debug(f"Loaded Issue #{ISSUE_NUMBER}: '{issue.title}'")
+if DEBUG:
+    print(f"[DEBUG] Loaded Issue #{ISSUE_NUMBER}: {issue.title!r}")
 
 # ─── PARSING UTILITIES ──────────────────────────────────────────────────────────
 def parse_fields(body: str) -> dict:
     parts = re.split(r"^###\s+", body or "", flags=re.MULTILINE)[1:]
-    fields = {}
+    parsed = {}
     for part in parts:
         lines = part.splitlines()
         label = lines[0].strip()
-        key = re.sub(r"[^a-z0-9]+", "_", label.lower()).strip("_")
+        key   = re.sub(r"[^a-z0-9]+","_", label.lower()).strip("_")
         value = "\n".join(lines[1:]).strip()
-        fields[key] = value
-        log.debug(f"Parsed field '{label}' → '{key}': {value!r}")
-    return fields
+        if "date" in key and "yyyy" in value.lower():
+            key = "date"
+        parsed[key] = value
+        if DEBUG:
+            print(f"[DEBUG] Parsed field '{label}' → '{key}': {value!r}")
+    return parsed
 
 fields = parse_fields(issue.body)
 
@@ -61,91 +51,126 @@ def get_field(keys, default=""):
         keys = [keys]
     for k in keys:
         if k in fields and fields[k]:
-            log.debug(f"get_field '{k}' = {fields[k]!r}")
+            if DEBUG:
+                print(f"[DEBUG] get_field '{k}': {fields[k]!r}")
             return fields[k]
-    log.debug(f"get_field default for {keys}: {default!r}")
+    if DEBUG:
+        print(f"[DEBUG] get_field default for {keys}: {default!r}")
     return default
 
-# ─── CONTENT KIND & SUBTYPE ──────────────────────────────────────────────────────
+# ─── DETERMINE CONTENT KIND ─────────────────────────────────────────────────────
 content_kind = get_field('content_kind', 'news')
-is_event = content_kind != 'news'
-log.debug(f"Content kind: {content_kind} (is_event={is_event})")
+is_event     = content_kind.startswith('phd') or content_kind.startswith('ms') 
+               or content_kind == 'seminar' or content_kind == 'special-event'
 
-# ─── COMMON FIELDS & NORMALIZATION ───────────────────────────────────────────────
-title_en = get_field('title_en', issue.title)
-title_tr = get_field('title_tr', '')
-date_val = get_field('date', issue.created_at.date().isoformat()).strip()
+# ─── COMMON FIELDS & NORMALIZATION ──────────────────────────────────────────────
+title_en = get_field(['event_title_en','title_en'], issue.title)
+title_tr = get_field(['event_title_tr','title_tr'], '')
+date_val = get_field('date', '').strip() or issue.created_at.date().isoformat()
 raw_time = get_field('time', '').strip()
 time_val = raw_time + ":00" if re.match(r"^\d{2}:\d{2}$", raw_time) else raw_time
-log.debug(f"title_en={title_en!r}, date_val={date_val!r}, time_val={time_val!r}")
-
-# ─── SLUG & OUTPUT DIRECTORY ────────────────────────────────────────────────────
-def make_slug(text: str, issue_num: int) -> str:
-    slug = unicodedata.normalize('NFKD', text).encode('ascii','ignore').decode().lower()
-    slug = re.sub(r"[^\w\s-]", '', slug)
-    slug = re.sub(r"[-\s]+", '-', slug).strip('-')
-    return f"{slug}-{issue_num}"
-
-slug = make_slug(title_en, ISSUE_NUMBER)
-subdir = 'events' if is_event else 'news'
-out_dir = CONTENT_DIR / subdir / f"{date_val}-{slug}"
-out_dir.mkdir(parents=True, exist_ok=True)
-log.debug(f"Output directory: {out_dir}")
+if DEBUG:
+    print(f"[DEBUG] date_val={date_val!r}, time_val={time_val!r}")
 
 # ─── IMAGE HANDLING ─────────────────────────────────────────────────────────────
 def download_image(md: str) -> str:
-    m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) or \
-            re.search(r"src=\"(https?://[^\"]+)\"", md)
+    m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)")
     if not m:
-        log.debug("No image found in field")
         return ""
     url = m.group(1)
-    log.debug(f"Downloading image from {url}")
+    if DEBUG:
+        print(f"[DEBUG] Downloading image: {url}")
     resp = requests.get(url, timeout=15)
     resp.raise_for_status()
-    ext = mimetypes.guess_extension(resp.headers.get('Content-Type','').split(';')[0]) or Path(url).suffix or '.png'
+    ext   = mimetypes.guess_extension(resp.headers.get('Content-Type','').split(';')[0]) \
+            or Path(url).suffix or '.png'
     fname = f"{ISSUE_NUMBER}_{uuid4().hex[:8]}{ext}"
     UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
     path = UPLOADS_DIR / fname
     path.write_bytes(resp.content)
-    local_path = f"uploads/{fname}"
-    log.debug(f"Saved image to {path}")
-    return local_path
+    local = f"uploads/{fname}"
+    if DEBUG:
+        print(f"[DEBUG] Saved image to {path} → '{local}'")
+    return local
 
-# ─── JINJA SETUP ─────────────────────────────────────────────────────────────────
-env = Environment(loader=FileSystemLoader('templates'),
-                   autoescape=select_autoescape(['html','md']),
-                   trim_blocks=True, lstrip_blocks=True)
+# ─── SLUG & OUTPUT DIRECTORY ────────────────────────────────────────────────────
+def make_slug(text: str) -> str:
+    slug = unicodedata.normalize('NFKD', text).encode('ascii','ignore').decode().lower()
+    slug = re.sub(r"[^\w\s-]", '', slug)
+    slug = re.sub(r"[-\s]+", '-', slug).strip('-')
+    return f"{slug}-{ISSUE_NUMBER}"
 
-# ─── PROCESSING & RENDERING ──────────────────────────────────────────────────────
+slug   = make_slug(title_en)
+subdir = 'events' if is_event else 'news'
+out_dir = CONTENT_DIR / subdir / f"{date_val}-{slug}"
+out_dir.mkdir(parents=True, exist_ok=True)
+if DEBUG:
+    print(f"[DEBUG] out_dir={out_dir}")
+
+# ─── PROCESSORS ─────────────────────────────────────────────────────────────────
 class BaseProcessor:
     def write(self, path: Path, text: str):
         path.write_text(text, encoding='utf-8')
-        log.info(f"Wrote file: {path}")
+        if DEBUG:
+            print(f"[DEBUG] Wrote file: {path}")
+
+class NewsProcessor(BaseProcessor):
+    def render(self):
+        image_field_md = get_field(['image_markdown', 'image_drag_drop_here'], '')
+        image_md       = download_image(image_field_md)
+
+        for lang in ('en','tr'):
+            desc_key    = f'short_description_{lang}'
+            content_key = f'full_content_{lang}'
+            desc        = get_field(desc_key, '').strip()
+
+            front = [
+                '---',
+                'type: news',
+                f"title: {title_en if lang=='en' else title_tr}",
+                f"date: {date_val}",
+                f"thumbnail: {image_md}"  
+            ]
+
+            if '\n' in desc:
+                front.append('description: |')
+                for line in desc.splitlines(): front.append(f'  {line}')
+            else:
+                front.append(f'description: {desc}')
+
+            front.extend(['featured: false', '---', ''])
+            body = get_field(content_key)
+            out_file = out_dir / f"index.{lang}.md"
+            self.write(out_file, "\n".join(front + [body]))
 
 class EventProcessor(BaseProcessor):
     def render(self):
-        subtype = content_kind
-        template_name = f"events/{subtype}.md.j2"
-        log.debug(f"Event template selected: {template_name}")
-        tmpl = env.get_template(template_name)
-        for lang in ('en', 'tr'):
-            context = {
-                'type':        subtype,
-                'title':       title_en if lang=='en' else title_tr,
-                'date':        date_val,
-                'time':        time_val,
-                'datetime':    f"{date_val}T{time_val}" if time_val else None,
-                'speaker':     get_field(['speaker','presenter'], ''),
-                'duration':    get_field('duration',''),
-                'location':    get_field(f'location_{lang}', get_field('location','')), 
+        print(f"[DEBUG] EventProcessor: kind={content_kind}, template=events/{content_kind}.md.j2")
+        env  = Environment(loader=FileSystemLoader('templates'), autoescape=False)
+        tmpl_name = f"events/{content_kind}.md.j2"
+        try:
+            tmpl = env.get_template(tmpl_name)
+        except Exception as e:
+            print(f"[DEBUG] Template load error: {e}")
+            raise
+        for lang in ('en','tr'):
+            ctx = {
+                'type':     content_kind,
+                'title':    title_en if lang=='en' else title_tr,
+                'date':     date_val,
+                'time':     time_val,
+                'datetime': f"{date_val}T{time_val}",
+                'speaker':  get_field(['speaker','presenter'], ''),
+                'duration': get_field('duration',''),
+                'location': get_field([f'location_{lang}','location'], ''),
                 'description': get_field(f'description_{lang}','')
             }
+            print(f"[DEBUG] Context for {lang}: {ctx}")
+            rendered = tmpl.render(**ctx)
             out_file = out_dir / f"index.{lang}.md"
-            log.debug(f"Rendering {out_file} with context: {context}")
-            self.write(out_file, tmpl.render(**context))
+            self.write(out_file, rendered)
 
-# Dispatch only for events
-if is_event:
-    EventProcessor().render()
-    log.info("Event processing complete.")
+# Dispatch
+processor = EventProcessor() if is_event else NewsProcessor()
+processor.render()
+print("[DEBUG] Processing complete.")
