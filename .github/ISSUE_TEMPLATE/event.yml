@@ -1,5 +1,5 @@
 name: Bilingual Event Submission
-description: Submit an event for the website. Provide both English and Turkish entries. Image optional.
+description: Submit an event for the website. Provide both English and Turkish entries.
 title: "[EVENT] <Insert event title>"
 labels: ["event"]
 body:
@@ -109,28 +109,5 @@ body:
     attributes:
       label: "Location (TR)"
       placeholder: "Enter location here"
-    validations:
-      required: true
-
-  - type: textarea
-    id: image_markdown
-    attributes:
-      label: "Image (optional, drag & drop)"
-      description: "Drag & drop an image to include a poster/cover."
-      placeholder: "![alt text](https://user-images.githubusercontent.com/.../your-image.png)"
-
-  - type: textarea
-    id: description_en
-    attributes:
-      label: "Description (EN)"
-      placeholder: "Enter description here"
-    validations:
-      required: true
-
-  - type: textarea
-    id: description_tr
-    attributes:
-      label: "Description (TR)"
-      placeholder: "Enter description here"
     validations:
       required: true
