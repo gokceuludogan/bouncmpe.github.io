@@ -25,7 +25,6 @@ issue = repo.get_issue(number=ISSUE_NUMBER)
 
 # ─── PARSE FORM DATA ───────────────────────────────────────────────────────────
 def parse_fields(body: str) -> dict:
-    # JSON form data injected by GitHub Forms
     m = re.search(r"<!--\s*({.*?})\s*-->", body or "", re.DOTALL)
     if m:
         try:
@@ -61,17 +60,17 @@ def get_field(keys, default="") -> str:
     return default
 
 # ─── COMMON FIELDS ─────────────────────────────────────────────────────────────
-title_en = get_field(['title_en'], issue.title)
-title_tr = get_field(['title_tr'], title_en)
+title_en = get_field(['news_title__en', 'title_en'], issue.title)
+title_tr = get_field(['news_title__tr', 'title_tr'], title_en)
 date_val = get_field(['date'], '')
 time_val = get_field(['time'], '')
 
 # ─── NEWS FIELDS ───────────────────────────────────────────────────────────────
-desc_en       = get_field(['description_en'], '')
-desc_tr       = get_field(['description_tr'], '')
-content_en    = get_field(['content_en'], '')
-content_tr    = get_field(['content_tr'], '')
-news_image_md = get_field(['image_markdown'], '')
+desc_en       = get_field(['short_description__en', 'description_en'], '')
+desc_tr       = get_field(['short_description__tr', 'description_tr'], '')
+content_en    = get_field(['full_content__en', 'content_en'], '')
+content_tr    = get_field(['full_content__tr', 'content_tr'], '')
+news_image_md = get_field(['image__drag___drop_here', 'image_markdown'], '')
 
 # ─── EVENT FIELDS ──────────────────────────────────────────────────────────────
 event_type     = get_field(['event_type'], '')
@@ -79,7 +78,7 @@ speaker_name   = get_field(['name'], '')
 duration       = get_field(['duration'], '')
 location_en    = get_field(['location_en'], '')
 location_tr    = get_field(['location_tr'], '')
-event_image_md = get_field(['image_markdown'], '')
+event_image_md = get_field(['image__optional__drag___drop', 'image_markdown'], '')
 description_e  = get_field(['description_en'], '')
 description_t  = get_field(['description_tr'], '')
 
@@ -88,7 +87,7 @@ def download_image(md: str) -> str:
     m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) or \
         re.search(r'<img[^>]+src="(https?://[^\"]+)"', md)
     if not m:
-        print("[DEBUG] No image URL found in: ", md)
+        print("[DEBUG] No image URL found in:", md)
         return ''
     url = m.group(1)
     print("[DEBUG] Downloading image:", url)
@@ -117,9 +116,9 @@ for lang in ('en', 'tr'):
         'duration':   duration if is_event else None,
         'location':   (location_tr if lang == 'tr' else location_en) if is_event else None,
         'thumbnail':  download_image(event_image_md if is_event else news_image_md),
-        'description': (description_t if is_event else desc_tr) if lang == 'tr' else (description_e if is_event else desc_en),
+        'description': (description_t if lang == 'tr' else desc_en) if is_event else (description_tr if lang=='tr' else desc_en),
         'featured':   False if not is_event else None,
-        'content':    content_tr if (not is_event and lang == 'tr') else (content_en if not is_event else None),
+        'content':    (content_tr if lang == 'tr' else content_en) if not is_event else None,
     }
     print(f"[DEBUG] Context for {lang}:", json.dumps(ctx, indent=2))
     template_name = 'event.md.j2' if is_event else 'news.md.j2'
