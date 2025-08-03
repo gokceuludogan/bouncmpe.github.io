@@ -1,14 +1,11 @@
-# File: templates/news.md.j2
 ---
 type: "{{ type }}"
 title: "{{ title }}"
-description: |
-  {{ description | replace("\n", "\n  ") }}
-featured: {{ featured | lower }}
-date: "{{ date }}"
+name: "{{ name }}"
+datetime: "{{ datetime }}"
+duration: "{{ duration }}"
+location: "{{ location }}"
 thumbnail: "{{ thumbnail }}"
 ---
 
-{% if thumbnail %}!['{{ title }}']({{ thumbnail }}){% endif %}
-
-{{ content }}
+{{ description }}
