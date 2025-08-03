@@ -9,7 +9,7 @@ from pathlib import Path
 from github import Github
 from jinja2 import Environment, FileSystemLoader
 
-# ─── CONFIGURATION ─────────────────────────────────────────────────────────────
+# ─── CONFIGURATION ───────I──────────────────────────────────────────────────────
 GITHUB_REPOSITORY = os.getenv("GITHUB_REPOSITORY")
 ISSUE_NUMBER      = int(os.getenv("ISSUE_NUMBER", "0"))
 GITHUB_TOKEN      = os.getenv("GITHUB_TOKEN")
@@ -60,10 +60,15 @@ def get_field(keys, default=""):
 
 # ─── DETERMINE CONTENT KIND ─────────────────────────────────────────────────────
 content_kind = get_field('content_kind', 'news')
-is_event     = content_kind.startswith('phd') or content_kind.startswith('ms') 
-               or content_kind == 'seminar' or content_kind == 'special-event'
+# treat specific event types
+is_event = (
+    content_kind.startswith('phd') or 
+    content_kind.startswith('ms') or 
+    content_kind == 'seminar' or 
+    content_kind == 'special-event'
+)
 
-# ─── COMMON FIELDS & NORMALIZATION ──────────────────────────────────────────────
+# ─── COMMON FIELDS & NORMALIZATION ────────────────────────────────────────────── & NORMALIZATION ──────────────────────────────────────────────
 title_en = get_field(['event_title_en','title_en'], issue.title)
 title_tr = get_field(['event_title_tr','title_tr'], '')
 date_val = get_field('date', '').strip() or issue.created_at.date().isoformat()
