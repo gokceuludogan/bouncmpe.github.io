@@ -1,0 +1,16 @@
+{% extends "_base.md.j2" %}
+
+{% block front_matter %}
+type: "phd-thesis-defense"
+datetime: "{{ datetime }}"
+speaker: "{{ speaker }}"
+duration: "{{ duration }}"
+location: "{{ location }}"
+---
+{% endblock %}
+
+{% block content %}
+{% if thumbnail %}![{{ title }}]({{ thumbnail }}){% endif %}
+
+{{ description }}
+{% endblock %}
