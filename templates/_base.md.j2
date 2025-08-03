@@ -1,0 +1,9 @@
+# Required front-matter fields
+title: "{{ title }}"
+date: "{{ date }}"
+time: "{{ time }}"
+{% if thumbnail %}thumbnail: "{{ thumbnail }}"{% endif %}
+{% block front_matter %}{% endblock %}
+---
+
+{% block content %}{% endblock %}
