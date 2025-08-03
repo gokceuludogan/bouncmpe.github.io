@@ -104,7 +104,7 @@ def download_image(md: str) -> str:
 
 # ─── RENDER & WRITE CONTENT ────────────────────────────────────────────────────
 for lang in ('en', 'tr'):
-    is_event = bool(event_type)
+    is_event = bool(get_field(['event_type'], ''))
     datetime_iso = f"{date_val}T{time_val}:00" if date_val and time_val else ''
     ctx = {
         'type':       event_type if is_event else 'news',
