@@ -29,9 +29,7 @@ def parse_fields(body: str) -> dict:
     pattern = re.compile(r"^###\s+(.*?)\n+(.+?)(?=\n^###|\Z)", re.MULTILINE | re.DOTALL)
     parsed = {}
     for label, val in pattern.findall(body):
-        # slugify: lowercase, alnum and underscore only
         key = re.sub(r"[^a-z0-9]+", "_", label.lower()).strip("_")
-        # normalize date field
         if "date" in key and "yyyy" in key:
             key = "date"
         parsed[key] = val.strip()
@@ -74,6 +72,7 @@ if DEBUG:
 
 # ─── IMAGE DOWNLOAD ────────────────────────────────────────────────────────────
 def download_image(md: str) -> str:
+    # include parsed key for drag & drop here
     m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md)
     if not m:
         m = re.search(r"src=\"(https?://[^\"]+)\"", md)
@@ -93,7 +92,8 @@ def download_image(md: str) -> str:
         print(f"[DEBUG] Saved image to {path} → '{local}'")
     return local
 
-image_md = download_image(get_field(['image_markdown', 'image__drag___drop_here'], ''))
+# include new key 'image_drag_drop_here'
+image_md = download_image(get_field(['image_markdown', 'image_drag_drop_here'], ''))
 
 # ─── OUTPUT WRITER ─────────────────────────────────────────────────────────────
 # Prepare output directory and slug
@@ -112,14 +112,13 @@ if not is_event:
     for lang in ('en', 'tr'):
         desc_key    = f'short_description_{lang}'
         content_key = f'full_content_{lang}'
-        desc = get_field(desc_key, '')
+        desc    = get_field(desc_key, '')
         content = get_field(content_key, '')
         header = [
             '---',
             'type: news',
             f'title: {title_en if lang=='en' else title_tr}',
-            'description: >',
-            f'  {desc}',
+            f'description: {desc}',  # plain description
             'featured: false',
             f'date: {date_val}',
             f'thumbnail: {image_md}',
