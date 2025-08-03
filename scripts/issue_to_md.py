@@ -36,7 +36,6 @@ def parse_fields(body: str) -> dict:
         lines = part.splitlines()
         label = lines[0].strip()
         key   = re.sub(r"[^a-z0-9]+","_", label.lower()).strip("_")
-        # unify date key
         if key.startswith('date'):
             key = 'date'
         value = "\n".join(lines[1:]).strip()
@@ -48,7 +47,8 @@ def parse_fields(body: str) -> dict:
 fields = parse_fields(issue.body)
 
 def get_field(keys, default=""):
-    if isinstance(keys, str): keys = [keys]
+    if isinstance(keys, str):
+        keys = [keys]
     for k in keys:
         if k in fields and fields[k]:
             if DEBUG:
@@ -59,9 +59,10 @@ def get_field(keys, default=""):
     return default
 
 # ─── DETERMINE CONTENT KIND ─────────────────────────────────────────────────────
-content_kind = get_field('content_kind', 'news')
+content_kind = get_field('content_kind', 'news')  # 'event' expected for events
 is_event     = (content_kind == 'event')
-print(f"[DEBUG] content_kind={content_kind}, is_event={is_event}")
+if DEBUG:
+    print(f"[DEBUG] content_kind={content_kind}, is_event={is_event}")
 
 # ─── COMMON FIELDS & NORMALIZATION ──────────────────────────────────────────────
 title_en = get_field(['event_title__en','title_en'], issue.title)
@@ -76,15 +77,18 @@ if DEBUG:
 def download_image(md: str) -> str:
     m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) or re.search(r"src=\"(https?://[^\"]+)\"", md)
     if not m:
-        if DEBUG: print("[DEBUG] No image URL found in markdown")
+        if DEBUG:
+            print("[DEBUG] No image URL found in markdown")
         return ""
     url = m.group(1)
-    if DEBUG: print(f"[DEBUG] Downloading image: {url}")
+    if DEBUG:
+        print(f"[DEBUG] Downloading image: {url}")
     try:
         resp = requests.get(url, timeout=15)
         resp.raise_for_status()
     except Exception as e:
-        print(f"[DEBUG] Image download failed: {e}")
+        if DEBUG:
+            print(f"[DEBUG] Image download failed: {e}")
         return ""
     ext   = mimetypes.guess_extension(resp.headers.get('Content-Type','').split(';')[0]) or Path(url).suffix or '.png'
     fname = f"{ISSUE_NUMBER}_{uuid4().hex[:8]}{ext}"
@@ -146,7 +150,7 @@ class NewsProcessor(BaseProcessor):
 
 class EventProcessor(BaseProcessor):
     def render(self):
-        # Debug context build
+        # Debug: start event rendering
         print("[DEBUG] Entering EventProcessor.render()")
         env  = Environment(loader=FileSystemLoader('templates'), autoescape=False)
         tmpl = env.get_template('event_base.md.j2')
@@ -159,14 +163,18 @@ class EventProcessor(BaseProcessor):
                 'date':        date_val,
                 'time':        time_val,
                 'datetime':    f"{date_val}T{time_val}",
-                'speaker':     get_field(['speaker','presenter'], ''),
+                'speaker':     get_field(['speaker','presenter','speaker_presenter_name'], ''),
                 'duration':    get_field('duration',''),
                 'location':    get_field([f'location_{lang}','location'], ''),
                 'description': get_field(f'description_{lang}','')
             }
-            print(f"[DEBUG] Event ctx for {lang}: {ctx}")
-            rendered = tmpl.render(**ctx)
-            print(f"[DEBUG] Rendered template for {lang}:\n{rendered}\n---")
+            print(f"[DEBUG] EventProcessor.context[{lang}] = {ctx}")
+            try:
+                rendered = tmpl.render(**ctx)
+            except Exception as e:
+                print(f"[DEBUG] Template rendering error for lang={lang}: {e}")
+                raise
+            print(f"[DEBUG] Rendered event_base.md.j2 for {lang}:\n{rendered}\n---")
             out_file = out_dir / f"index.{lang}.md"
             self.write(out_file, rendered)
             print(f"[DEBUG] Wrote Event file: {out_file}")
