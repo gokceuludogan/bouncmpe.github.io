@@ -56,8 +56,9 @@ is_event   = bool(event_type)
 print(f"[DEBUG] is_event={is_event}")
 
 # ─── COMMON FIELDS ──────────────────────────────────────────────────────────────
-title_en = get_field('news_title_en' if not is_event else 'title_en', issue.title)
-title_tr = get_field('news_title_tr' if not is_event else 'title_tr', '')
+# Check both form keys and fallback to headings
+title_en = get_field(['event_title_en','title_en'], issue.title)
+title_tr = get_field(['event_title_tr','title_tr'], '')
 
 # Date & time normalization
 date_val = get_field('date', '')
@@ -68,7 +69,7 @@ else:
     time_val = raw_time
 if DEBUG: print(f"[DEBUG] date_val={date_val!r}, time_val={time_val!r}")
 
-# ─── IMAGE HANDLING FOR NEWS ────────────────────────────────────────────────────
+# ─── IMAGE HANDLING FOR NEWS (unchanged) ─────────────────────────────────────────
 def download_image(md: str) -> str:
     m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) or re.search(r"src=\"(https?://[^\"]+)\"", md)
     if not m: return ""
@@ -119,7 +120,7 @@ if not is_event:
         if DEBUG: print(f"[DEBUG] Writing news ({lang}) to: {out_file}")
         out_file.write_text("\n".join(front + [content]), encoding='utf-8')
 else:
-    # EVENT: no images, localized
+    # EVENT: no images, localized content
     env = Environment(loader=FileSystemLoader('templates'), autoescape=False)
     tmpl = env.get_template(f"events/{event_type}.md.j2")
     for lang in ('en','tr'):
@@ -129,9 +130,9 @@ else:
             'date':        date_val,
             'time':        time_val,
             'datetime':    f"{date_val}T{time_val}",
-            'speaker':     get_field(['name','speaker_presenter_name'], ''),
+            'speaker':     get_field(['speaker_presenter_name','name'], ''),
             'duration':    get_field('duration',''),
-            'location':    get_field(['location_en','location_tr'], ''),
+            'location':    get_field([f'location_{lang}','location'], ''),
             'description': get_field(f'description_{lang}','')
         }
         if DEBUG: print(f"[DEBUG] Rendering {lang} event with context: {ctx}")
