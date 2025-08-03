@@ -21,7 +21,7 @@ if not GITHUB_REPOSITORY or not GITHUB_TOKEN or ISSUE_NUMBER == 0:
     missing = [n for n in ["GITHUB_REPOSITORY","GITHUB_TOKEN","ISSUE_NUMBER"] if not os.getenv(n)]
     raise RuntimeError(f"Missing required env vars: {', '.join(missing)}")
 
-# ─── GITHUB INIT ────────────────────────────────────────────────────────────────
+# ─── GITHUB INITIALIZATION ──────────────────────────────────────────────────────
 gh    = Github(GITHUB_TOKEN)
 repo  = gh.get_repo(GITHUB_REPOSITORY)
 issue = repo.get_issue(number=ISSUE_NUMBER)
@@ -37,8 +37,7 @@ def parse_fields(body: str) -> dict:
         label = lines[0].strip()
         key   = re.sub(r"[^a-z0-9]+","_", label.lower()).strip("_")
         value = "\n".join(lines[1:]).strip()
-        # Normalize date field label if form used 'YYYY-MM-DD' hint
-        if "date" in key and "yyyy" in label.lower():
+        if "date" in key and "yyyy" in value.lower():
             key = "date"
         parsed[key] = value
         if DEBUG:
@@ -59,24 +58,22 @@ def get_field(keys, default=""):
         print(f"[DEBUG] get_field default for {keys}: {default!r}")
     return default
 
-# ─── DETECT NEWS VS EVENT ───────────────────────────────────────────────────────
-# We use the 'event_type' field: if present => event, otherwise news
-event_type = get_field("event_type", "").strip()
-is_event   = bool(event_type)
+# ─── DETERMINE CONTENT KIND ─────────────────────────────────────────────────────
+content_kind = get_field('content_kind', 'news')  # dropdown in issue form
+is_event     = (content_kind == 'event')
 
 # ─── COMMON FIELDS & NORMALIZATION ──────────────────────────────────────────────
-title_en = get_field(["event_title_en","title_en"], issue.title)
-title_tr = get_field(["event_title_tr","title_tr"], "")
-date_val = get_field("date", "").strip() or issue.created_at.date().isoformat()
-raw_time = get_field("time", "").strip()
+title_en = get_field(['event_title_en','title_en'], issue.title)
+title_tr = get_field(['event_title_tr','title_tr'], '')
+date_val = get_field('date', '').strip() or issue.created_at.date().isoformat()
+raw_time = get_field('time', '').strip()
 time_val = raw_time + ":00" if re.match(r"^\d{2}:\d{2}$", raw_time) else raw_time
 if DEBUG:
-    print(f"[DEBUG] date_val={date_val!r}, time_val={time_val!r}, is_event={is_event}")
+    print(f"[DEBUG] date_val={date_val!r}, time_val={time_val!r}")
 
 # ─── IMAGE HANDLING ─────────────────────────────────────────────────────────────
 def download_image(md: str) -> str:
-    m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) \
-        or re.search(r'src="(https?://[^"]+)"', md)
+    m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) or re.search(r"src=\"(https?://[^\"]+)\"", md)
     if not m:
         return ""
     url = m.group(1)
@@ -84,8 +81,7 @@ def download_image(md: str) -> str:
         print(f"[DEBUG] Downloading image: {url}")
     resp = requests.get(url, timeout=15)
     resp.raise_for_status()
-    ext = mimetypes.guess_extension(resp.headers.get("Content-Type","").split(";")[0]) \
-          or Path(url).suffix or ".png"
+    ext   = mimetypes.guess_extension(resp.headers.get('Content-Type','').split(';')[0]) or Path(url).suffix or '.png'
     fname = f"{ISSUE_NUMBER}_{uuid4().hex[:8]}{ext}"
     UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
     path = UPLOADS_DIR / fname
@@ -97,13 +93,13 @@ def download_image(md: str) -> str:
 
 # ─── SLUG & OUTPUT DIRECTORY ────────────────────────────────────────────────────
 def make_slug(text: str) -> str:
-    slug = unicodedata.normalize("NFKD", text).encode("ascii","ignore").decode().lower()
-    slug = re.sub(r"[^\w\s-]", "", slug)
-    slug = re.sub(r"[-\s]+", "-", slug).strip("-")
+    slug = unicodedata.normalize('NFKD', text).encode('ascii','ignore').decode().lower()
+    slug = re.sub(r"[^\w\s-]", '', slug)
+    slug = re.sub(r"[-\s]+", '-', slug).strip('-')
     return f"{slug}-{ISSUE_NUMBER}"
 
 slug   = make_slug(title_en)
-subdir = "events" if is_event else "news"
+subdir = 'events' if is_event else 'news'
 out_dir = CONTENT_DIR / subdir / f"{date_val}-{slug}"
 out_dir.mkdir(parents=True, exist_ok=True)
 if DEBUG:
@@ -112,56 +108,63 @@ if DEBUG:
 # ─── PROCESSORS ─────────────────────────────────────────────────────────────────
 class BaseProcessor:
     def write(self, path: Path, text: str):
-        path.write_text(text, encoding="utf-8")
+        path.write_text(text, encoding='utf-8')
         if DEBUG:
-            print(f"[DEBUG] Wrote: {path}")
+            print(f"[DEBUG] Wrote file: {path}")
 
 class NewsProcessor(BaseProcessor):
     def render(self):
-        image_md = download_image(get_field(["image_markdown","image_drag_drop_here"], ""))
-        for lang in ("en","tr"):
-            desc = get_field(f"short_description_{lang}", "").strip()
+        # support both markdown link and drag-drop
+        image_field_md = get_field(['image_markdown', 'image_drag_drop_here'], '')
+        image_md       = download_image(image_field_md)
+
+        for lang in ('en','tr'):
+            desc_key    = f'short_description_{lang}'
+            content_key = f'full_content_{lang}'
+            desc        = get_field(desc_key, '').strip()
+
             front = [
-                "---",
-                "type: news",
-                f"title: {title_en if lang=='en' else title_tr}"
-            ]
-            # description
-            if "\n" in desc:
-                front.append("description: |")
-                front += [f"  {line}" for line in desc.splitlines()]
-            else:
-                front.append(f"description: {desc}")
-            front += [
-                "featured: false",
+                '---',
+                'type: news',
+                f"title: {title_en if lang=='en' else title_tr}",
                 f"date: {date_val}",
-                f"thumbnail: {image_md}",
-                "---",
-                ""
+                f"thumbnail: {image_md}"  
             ]
-            body = get_field(f"full_content_{lang}", "")
+
+            # description: inline vs block
+            if '\n' in desc:
+                front.append('description: |')
+                for line in desc.splitlines():
+                    front.append(f'  {line}')
+            else:
+                front.append(f'description: {desc}')
+
+            front.extend(['featured: false', '---', ''])
+            body = get_field(content_key)
             out_file = out_dir / f"index.{lang}.md"
             self.write(out_file, "\n".join(front + [body]))
 
 class EventProcessor(BaseProcessor):
     def render(self):
-        env  = Environment(loader=FileSystemLoader("templates"), autoescape=False)
-        tmpl = env.get_template("_base.md.j2")
-        # Build context from issue fields
-        ctx = {
-            "type":     event_type,
-            "title":    title_en,
-            "name":     get_field(["speaker","presenter","name"], ""),
-            "datetime": f"{date_val}T{time_val}" if time_val else date_val,
-            "duration": get_field("duration",""),
-            "location": get_field(["location_en","location"], "")
-        }
-        rendered = tmpl.render(**ctx)
-        # Events only need a single index.md
-        out_file = out_dir / "index.md"
-        self.write(out_file, rendered)
+        env  = Environment(loader=FileSystemLoader('templates'), autoescape=False)
+        tmpl = env.get_template('event_base.md.j2')
+        for lang in ('en','tr'):
+            ctx = {
+                'type':        content_kind,
+                'title':       title_en if lang=='en' else title_tr,
+                'date':        date_val,
+                'time':        time_val,
+                'datetime':    f"{date_val}T{time_val}",
+                'speaker':     get_field(['speaker','presenter'], ''),
+                'duration':    get_field('duration',''),
+                'location':    get_field([f'location_{lang}','location'], ''),
+                'description': get_field(f'description_{lang}','')
+            }
+            rendered = tmpl.render(**ctx)
+            out_file = out_dir / f"index.{lang}.md"
+            self.write(out_file, rendered)
 
-# ─── DISPATCH ───────────────────────────────────────────────────────────────────
-processor = EventProcessor() if is_event else NewsProcessor()
+# Dispatch
+processor = EventProcessor(None) if is_event else NewsProcessor()
 processor.render()
-print("[DEBUG] Done.")
+print("[DEBUG] Processing complete.")
