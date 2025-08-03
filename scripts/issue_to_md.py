@@ -35,7 +35,7 @@ def parse_fields(body: str) -> dict:
     for part in parts:
         lines = part.splitlines()
         label = lines[0].strip()
-        key   = re.sub(r"[^a-z0-9]+","_", label.lower()).strip("_")
+        key = re.sub(r"[^a-z0-9]+", "_", label.lower()).strip("_")
         value = "\n".join(lines[1:]).strip()
         if "date" in key and "yyyy" in value.lower():
             key = "date"
@@ -59,9 +59,7 @@ def get_field(keys, default=""):
     return default
 
 # ─── DETERMINE CONTENT KIND ─────────────────────────────────────────────────────
-# get actual content kind, fallback to news
 content_kind = get_field(['content_kind','event_type'], 'news')
-# identify if this is an event
 is_event = (
     content_kind.startswith('phd') or 
     content_kind.startswith('ms') or 
@@ -80,7 +78,6 @@ if DEBUG:
 
 # ─── IMAGE HANDLING ─────────────────────────────────────────────────────────────
 def download_image(md: str) -> str:
-    # markdown or HTML image
     m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) or \
         re.search(r"src=\"(https?://[^\"]+)\"", md)
     if not m:
@@ -108,7 +105,7 @@ def make_slug(text: str) -> str:
     slug = re.sub(r"[-\s]+", '-', slug).strip('-')
     return f"{slug}-{ISSUE_NUMBER}"
 
-slug   = make_slug(title_en)
+slug = make_slug(title_en)
 subdir = 'events' if is_event else 'news'
 out_dir = CONTENT_DIR / subdir / f"{date_val}-{slug}"
 out_dir.mkdir(parents=True, exist_ok=True)
@@ -125,13 +122,11 @@ class BaseProcessor:
 class NewsProcessor(BaseProcessor):
     def render(self):
         image_field_md = get_field(['image_markdown', 'image_drag_drop_here'], '')
-        image_md       = download_image(image_field_md)
-
+        image_md = download_image(image_field_md)
         for lang in ('en','tr'):
-            desc_key    = f"short_description_{lang}"
+            desc_key = f"short_description_{lang}"
             content_key = f"full_content_{lang}"
-            desc        = get_field(desc_key, '').strip()
-
+            desc = get_field(desc_key, '').strip()
             front = [
                 '---',
                 'type: news',
@@ -139,14 +134,12 @@ class NewsProcessor(BaseProcessor):
                 f"date: {date_val}",
                 f"thumbnail: {image_md}",
             ]
-
             if '\n' in desc:
                 front.append('description: |')
                 for line in desc.splitlines():
                     front.append(f"  {line}")
             else:
                 front.append(f"description: {desc}")
-
             front.extend(['featured: false', '---', ''])
             body = get_field(content_key)
             out_file = out_dir / f"index.{lang}.md"
@@ -154,32 +147,30 @@ class NewsProcessor(BaseProcessor):
 
 class EventProcessor(BaseProcessor):
     def render(self):
-        # debugging info
         print(f"[DEBUG] EventProcessor: kind={content_kind}, template=events/{content_kind}.md.j2")
-        env  = Environment(loader=FileSystemLoader('templates'), autoescape=False)
-        tmpl_name = f"events/{content_kind}.md.j2"
-        try:
-            tmpl = env.get_template(tmpl_name)
-        except Exception as e:
-            print(f"[DEBUG] Template load error: {e}")
-            raise
-
+        env = Environment(loader=FileSystemLoader('templates'), autoescape=False)
+        tmpl = env.get_template(f"events/{content_kind}.md.j2")
         for lang in ('en','tr'):
             ctx = {
-                'type':        content_kind,
-                'title':       title_en if lang=='en' else title_tr,
-                'date':        date_val,
-                'time':        time_val,
-                'datetime':    f"{date_val}T{time_val}" if time_val else '',
-                'speaker':     get_field(['speaker_presenter_name','speaker','presenter'], ''),
-                'duration':    get_field('duration',''),
-                'location':    get_field([f'location_{lang}','location'], ''),
-                'description': get_field(f'description_{lang}','')
+                'type': content_kind,
+                'title': title_en if lang=='en' else title_tr,
+                'date': date_val,
+                'time': time_val,
+                'datetime': f"{date_val}T{time_val}" if time_val else '',
+                'name': get_field(['speaker_presenter_name','speaker','presenter'], ''),
+                'duration': get_field('duration',''),
+                'location': get_field([f'location_{lang}','location'], ''),
             }
             print(f"[DEBUG] Context for {lang}: {ctx}")
             rendered = tmpl.render(**ctx)
+            filtered = []
+            for line in rendered.splitlines():
+                if line.startswith(('thumbnail:','description:','featured:')):
+                    continue
+                filtered.append(line)
+            out_md = "\n".join(filtered)
             out_file = out_dir / f"index.{lang}.md"
-            self.write(out_file, rendered)
+            self.write(out_file, out_md)
 
 # Dispatch
 processor = EventProcessor() if is_event else NewsProcessor()
