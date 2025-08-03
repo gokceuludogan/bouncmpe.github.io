@@ -58,23 +58,6 @@ title_tr = get_field(['news_title__tr', 'title_tr'], title_en)
 date_val = get_field(['date'], '')
 time_val = get_field(['time'], '')
 
-# ─── NEWS FIELDS ───────────────────────────────────────────────────────────────
-desc_en       = get_field(['short_description__en', 'description_en'], '')
-desc_tr       = get_field(['short_description__tr', 'description_tr'], '')
-content_en    = get_field(['full_content__en', 'content_en'], '')
-content_tr    = get_field(['full_content__tr', 'content_tr'], '')
-news_image_md = get_field(['image__drag___drop_here', 'image_markdown'], '')
-
-# ─── EVENT FIELDS ──────────────────────────────────────────────────────────────
-event_type     = get_field(['event_type'], '')
-speaker_name   = get_field(['name'], '')
-duration       = get_field(['duration'], '')
-location_en    = get_field(['location_en'], '')
-location_tr    = get_field(['location_tr'], '')
-event_image_md = get_field(['image__optional__drag___drop', 'image_markdown'], '')
-description_e  = get_field(['description_en'], '')
-description_t  = get_field(['description_tr'], '')
-
 # ─── IMAGE DOWNLOAD ────────────────────────────────────────────────────────────
 def download_image(md: str) -> str:
     m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) or \
@@ -82,6 +65,7 @@ def download_image(md: str) -> str:
     if not m:
         return ''
     url = m.group(1)
+    print("[DEBUG] Downloading image from:", url)
     resp = requests.get(url, timeout=15)
     resp.raise_for_status()
     ctype = resp.headers.get('Content-Type','').split(';')[0]
@@ -93,28 +77,42 @@ def download_image(md: str) -> str:
         f.write(resp.content)
     return f"/uploads/{name}"
 
-# ─── RENDER & WRITE CONTENT ────────────────────────────────────────────────────
-
-# Restore image_keys used inside rendering loop
-image_keys = ['image__optional__drag___drop', 'image_markdown', 'image__drag___drop_here']
-
+# ─── RENDER FOR EACH LANGUAGE ──────────────────────────────────────────────────
 for lang in ('en', 'tr'):
+    event_type = get_field(['event_type'], '')
     is_event = bool(event_type)
-    datetime_iso = f"{date_val}T{time_val}:00" if date_val and time_val else ''
-    ctx = {
-        'type':       event_type if is_event else 'news',
-        'title':      title_tr if lang == 'tr' else title_en,
-        'name':       speaker_name if is_event else None,
-        'datetime':   datetime_iso if is_event else None,
-        'date':       date_val if not is_event else None,
-        'duration':   duration if is_event else None,
-        'location':   (location_tr if lang == 'tr' else location_en) if is_event else None,
-        'thumbnail':  download_image(event_image_md if is_event else news_image_md),
-        'description': desc_tr if lang == 'tr' else desc_en,
-        'featured':   False if not is_event else None,
-        'content':    content_tr if lang == 'tr' else content_en,
-    }
-    template_name = 'event.md.j2' if is_event else 'news.md.j2'
+
+    print(f"[DEBUG] Rendering for lang={lang}, is_event={is_event}")
+
+    ctx = {}
+    if is_event:
+        # EVENT
+        ctx = {
+            'type':       event_type,
+            'title':      title_tr if lang == 'tr' else title_en,
+            'name':       get_field(['name'], ''),
+            'datetime':   f"{date_val}T{time_val}:00" if date_val and time_val else '',
+            'duration':   get_field(['duration'], ''),
+            'location':   get_field(['location_tr'], '') if lang == 'tr' else get_field(['location_en'], ''),
+            'thumbnail':  download_image(get_field(['image__optional__drag___drop', 'image_markdown'], '')),
+            'description': get_field(['description_tr'], '') if lang == 'tr' else get_field(['description_en'], ''),
+        }
+        template_name = 'event.md.j2'
+    else:
+        # NEWS
+        ctx = {
+            'type':       'news',
+            'title':      title_tr if lang == 'tr' else title_en,
+            'date':       date_val,
+            'description': get_field(['short_description__tr'], '') if lang == 'tr' else get_field(['short_description__en'], ''),
+            'thumbnail':  download_image(get_field(['image__drag___drop_here', 'image_markdown'], '')),
+            'featured':   False,
+            'content':    get_field(['full_content__tr'], '') if lang == 'tr' else get_field(['full_content__en'], ''),
+        }
+        template_name = 'news.md.j2'
+
+    print(f"[DEBUG] Final context for lang={lang}:\n", json.dumps(ctx, indent=2))
+
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=False)
     rendered = env.get_template(template_name).render(**ctx)
 
@@ -130,3 +128,4 @@ for lang in ('en', 'tr'):
     filepath = os.path.join(out_dir, filename)
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(rendered)
+
