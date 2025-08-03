@@ -162,7 +162,7 @@ class EventProcessor(BaseProcessor):
             print(f"[DEBUG] Context for {lang}: {ctx}")
             rendered = tmpl.render(**ctx)
             # compact filtering: no empty lines and drop unwanted keys
-            out_md = "".join(
+            out_md = "\n".join(
                 line for line in rendered.splitlines()
                 if line.strip() and not (
                     line.startswith(('thumbnail:','description:','featured:','date:'))
@@ -176,3 +176,4 @@ class EventProcessor(BaseProcessor):
 processor = EventProcessor() if is_event else NewsProcessor()
 processor.render()
 print("[DEBUG] Processing complete.")
+
