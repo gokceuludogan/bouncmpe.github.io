@@ -2,6 +2,7 @@
 import os
 import re
 import unicodedata
+import mimetypes
 import requests
 from pathlib import Path
 from github import Github
@@ -72,7 +73,6 @@ if DEBUG:
 
 # ─── IMAGE DOWNLOAD ────────────────────────────────────────────────────────────
 def download_image(md: str) -> str:
-    # include parsed key for drag & drop here
     m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md)
     if not m:
         m = re.search(r"src=\"(https?://[^\"]+)\"", md)
@@ -83,16 +83,17 @@ def download_image(md: str) -> str:
         print(f"[DEBUG] Downloading image: {url}")
     resp = requests.get(url, timeout=15)
     resp.raise_for_status()
-    fname = os.path.basename(url).split('?')[0]
+    content_type = resp.headers.get('Content-Type', '').split(';')[0]
+    ext = mimetypes.guess_extension(content_type) or os.path.splitext(url)[1] or '.png'
+    filename = os.path.basename(url).split('?')[0] + ext
     UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
-    path = UPLOADS_DIR / fname
+    path = UPLOADS_DIR / filename
     path.write_bytes(resp.content)
-    local = f"uploads/{fname}"
+    local = f"uploads/{filename}"
     if DEBUG:
-        print(f"[DEBUG] Saved image to {path} → '{local}'")
+        print(f"[DEBUG] Saved image to {path} → '{local}' (Content-Type: {content_type})")
     return local
 
-# include new key 'image_drag_drop_here'
 image_md = download_image(get_field(['image_markdown', 'image_drag_drop_here'], ''))
 
 # ─── OUTPUT WRITER ─────────────────────────────────────────────────────────────
@@ -108,7 +109,6 @@ if DEBUG:
 
 # ─── RENDER OUTPUT ─────────────────────────────────────────────────────────────
 if not is_event:
-    # loop languages for news
     for lang in ('en', 'tr'):
         desc_key    = f'short_description_{lang}'
         content_key = f'full_content_{lang}'
@@ -118,7 +118,7 @@ if not is_event:
             '---',
             'type: news',
             f'title: {title_en if lang=='en' else title_tr}',
-            f'description: {desc}',  # plain description
+            f'description: {desc}',
             'featured: false',
             f'date: {date_val}',
             f'thumbnail: {image_md}',
@@ -132,7 +132,6 @@ if not is_event:
             print(f"[DEBUG] Writing news ({lang}) to: {path}")
         path.write_text(out, encoding='utf-8')
 else:
-    # event uses Jinja template
     env = Environment(loader=FileSystemLoader('templates'), autoescape=False)
     tmpl = env.get_template(f"events/{event_type}.md.j2")
     ctx = {
