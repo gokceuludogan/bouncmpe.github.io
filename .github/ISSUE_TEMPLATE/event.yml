@@ -1,90 +1,107 @@
-name: Bilingual Event Submission
-description: Submit an event for the website. Provide both English and Turkish entries.
-title: "[EVENT] <Insert event title>"
+name: 🗓️ Event Submission
+description: Submit a new event to appear on the CMPE website.
+title: "[Event] "
 labels: ["event"]
 body:
-  - type: dropdown
-    id: event_type
+  - type: markdown
     attributes:
-      label: "Event Type"
+      value: |
+        Please fill in the following information to submit an event.
+
+  - type: dropdown
+    id: content_kind
+    attributes:
+      label: Event Type
       options:
         - phd-thesis-defense
         - ms-thesis-defense
         - seminar
         - special-event
-      description: "Choose the type of the event"
     validations:
       required: true
 
   - type: input
-    id: title_en
+    id: event_title_en
     attributes:
-      label: "Event Title (EN)"
-      placeholder: "Enter event title here"
+      label: Event Title (English)
     validations:
       required: true
 
   - type: input
-    id: title_tr
+    id: event_title_tr
     attributes:
-      label: "Event Title (TR)"
-      placeholder: "Enter event title here"
-    validations:
-      required: true
+      label: Event Title (Turkish)
 
   - type: input
-    id: name
+    id: speaker_presenter_name
     attributes:
-      label: "Speaker/Presenter Name"
-      placeholder: "Enter presenter name here"
+      label: Speaker/Presenter Name
     validations:
       required: true
 
   - type: input
     id: date
     attributes:
-      label: "Date (YYYY-MM-DD)"
-      placeholder: "YYYY-MM-DD"
+      label: Date
+      description: Use format YYYY-MM-DD (e.g., 2025-08-03)
     validations:
       required: true
 
   - type: dropdown
     id: time
     attributes:
-      label: "Time"
-      description: "Choose a time slot"
+      label: Time
+      description: Select a time slot
       options:
+        - "08:00"
+        - "08:30"
         - "09:00"
         - "09:30"
         - "10:00"
-        # …etc…
+        - "10:30"
+        - "11:00"
+        - "11:30"
+        - "12:00"
+        - "12:30"
+        - "13:00"
+        - "13:30"
+        - "14:00"
+        - "14:30"
+        - "15:00"
+        - "15:30"
+        - "16:00"
+        - "16:30"
+        - "17:00"
+        - "17:30"
+        - "18:00"
+        - "18:30"
+        - "19:00"
+        - "19:30"
+        - "20:00"
     validations:
       required: true
 
-  - type: dropdown
+  - type: input
     id: duration
     attributes:
-      label: "Duration"
-      options:
-        - 1h
-        - 1.5h
-        - 2h
-        - Other
+      label: Duration
+      description: e.g., 1h, 1.5h
     validations:
       required: true
 
   - type: input
     id: location_en
     attributes:
-      label: "Location (EN)"
-      placeholder: "Enter location here"
+      label: Location (English)
     validations:
       required: true
 
   - type: input
     id: location_tr
     attributes:
-      label: "Location (TR)"
-      placeholder: "Enter location here"
-    validations:
-      required: true
+      label: Location (Turkish)
+
+  - type: markdown
+    attributes:
+      value: |
+        Thanks! After submission, a pull request will be automatically created.
