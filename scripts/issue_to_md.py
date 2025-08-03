@@ -6,19 +6,20 @@ import json
 import mimetypes
 import requests
 from github import Github
-from jinja2 import Environment, FileSystemLoader
 
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
 REPO_NAME     = os.getenv("GITHUB_REPOSITORY")
 ISSUE_NUMBER  = int(os.getenv("ISSUE_NUMBER", "0"))
 GITHUB_TOKEN  = os.getenv("GITHUB_TOKEN")
-TEMPLATES_DIR = "templates"
 UPLOADS_DIR   = os.path.join("static", "uploads")
+CONTENT_DIR   = "content"
+DEBUG         = True
 
 if not GITHUB_TOKEN or ISSUE_NUMBER == 0:
     raise RuntimeError("GITHUB_TOKEN and ISSUE_NUMBER must be set")
 
 # ─── INIT GITHUB CLIENT & ISSUE ───────────────────────────────────────────────
+from github import Github
 gh    = Github(GITHUB_TOKEN)
 repo  = gh.get_repo(REPO_NAME)
 issue = repo.get_issue(number=ISSUE_NUMBER)
@@ -26,179 +27,103 @@ print(f"[DEBUG] Loaded Issue #{ISSUE_NUMBER}: {issue.title!r}")
 
 # ─── PARSE FIELDS ─────────────────────────────────────────────────────────────
 def parse_fields(body: str) -> dict:
-    m = re.search(r"<!--\s*({.*})\s*-->", body or "", re.DOTALL)
-    if m:
-        try:
-            data = json.loads(m.group(1))
-            print("[DEBUG] Parsed JSON form data:", data)
-            return data
-        except Exception as e:
-            print("[DEBUG] JSON parse error:", e)
-    pattern = re.compile(
-        r"^#{1,6}\s+(.*?)\s*\r?\n+(.*?)(?=^#{1,6}\s|\Z)",
-        re.MULTILINE | re.DOTALL
-    )
-    parsed = {}
-    for label, val in pattern.findall(body or ""):
-        key = re.sub(r"[^a-z0-9_]", "_", label.lower()).strip("_")
-        parsed[key] = val.strip()
-    if 'date__yyyy_mm_dd' in parsed:
-        parsed['date'] = parsed.pop('date__yyyy_mm_dd')
-    print("[DEBUG] Fallback parsed fields:", parsed)
+    pattern = re.compile(r"^###\s+(.*?)\n+(.+?)(?=\n^###|\Z)", re.MULTILINE | re.DOTALL)
+    parsed = {re.sub(r"[^a-z0-9_]", "_", k.lower()): v.strip()
+              for k, v in pattern.findall(body)}
+    print("[DEBUG] Parsed fields:", parsed)
     return parsed
 
 fields = parse_fields(issue.body)
 
-# ─── FIELD LOOKUP HELPER ──────────────────────────────────────────────────────
-def get_field(variants, default=""):
-    for name in variants:
-        if name in fields and fields[name]:
-            print(f"[DEBUG] get_field '{name}': {fields[name]}")
-            return fields[name]
-    print(f"[DEBUG] get_field default for {variants}: {default}")
+def get_field(keys, default=""):
+    if isinstance(keys, str): keys = [keys]
+    for k in keys:
+        if k in fields and fields[k]:
+            print(f"[DEBUG] get_field '{k}': {fields[k]}")
+            return fields[k]
+    print(f"[DEBUG] get_field default for {keys}: {default}")
     return default
 
-# ─── COMMON VARIABLES ─────────────────────────────────────────────────────────
-title_en = get_field(
-    ['title_en','event_title__en','news_title__en'], 
-    issue.title
-)
-title_tr = get_field(
-    ['title_tr','event_title__tr','news_title__tr'], 
-    ''
-)
-date_val = get_field(['date'], '')
-raw_time = get_field(['time'], '')
-# Normalize time to hh:mm:ss
+# ─── DETERMINE TYPE ────────────────────────────────────────────────────────────
+event_type = get_field('event_type', '')
+is_event   = bool(event_type)
+print(f"[DEBUG] is_event={is_event}")
+
+# ─── COMMON FIELDS ────────────────────────────────────────────────────────────
+title_en = get_field('news_title__en' if not is_event else 'event_title__en', issue.title)
+title_tr = get_field('news_title__tr' if not is_event else 'event_title__tr', '')
+date_val = get_field('date', '')
+
+raw_time = get_field('time', '')
 if raw_time and re.match(r"^\d{2}:\d{2}$", raw_time):
     time_val = raw_time + ":00"
 else:
     time_val = raw_time
-print(f"[DEBUG] date_val: {date_val}, time_val: {time_val}")
+print(f"[DEBUG] date_val={date_val}, time_val={time_val}")
 
-# ─── NEWS-SPECIFIC VARIABLES ───────────────────────────────────────────────────
-desc_en    = get_field(
-    ['description_en','short_description_en','short_description__en'], ''
-)
-content_en = get_field(
-    ['content_en','full_content_en','full_content__en'], ''
-)
-desc_tr    = get_field(
-    ['description_tr','short_description_tr','short_description__tr'], ''
-)
-content_tr = get_field(
-    ['content_tr','full_content_tr','content__tr','full_content__tr'], ''
-)
-news_image_md = get_field(
-    ['image_markdown','image__drag___drop_here','image__optional__drag___drop'], ''
-)
-
-# ─── EVENT-SPECIFIC VARIABLES ──────────────────────────────────────────────────
-event_type   = get_field(['event_type'], '')
-speaker_name = get_field(['name','speaker_presenter_name'], '')
-duration     = get_field(['duration'], '')
-location_en  = get_field(['location_en','location__en'], '')
-location_tr  = get_field(['location_tr','location__tr'], '')
-event_image_md = get_field(
-    ['image_markdown','image__optional__drag___drop'], ''
-)
-description_e = get_field(['description_en','description__en'], '')
-description_t = get_field(['description_tr','description__tr'], '')
-
-# ─── IMAGE DOWNLOAD (shared) ──────────────────────────────────────────────────
+# ─── IMAGE ─────────────────────────────────────────────────────────────────────
 def download_image(md: str) -> str:
-    print(f"[DEBUG] download_image input: {md}")
-    m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) or \
-        re.search(r"<img[^>]+src=\"(https?://[^\"]+)\"", md)
-    if not m:
-        print("[DEBUG] No image URL found")
-        return ""
+    m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md)
+    if not m: m = re.search(r"src=\"(https?://[^\"]+)\"", md)
+    if not m: return ""
     url = m.group(1)
-    print(f"[DEBUG] Found image URL: {url}")
-    resp = requests.get(url, timeout=15)
-    resp.raise_for_status()
-    ctype = resp.headers.get('Content-Type','').split(';')[0]
-    ext = mimetypes.guess_extension(ctype) or os.path.splitext(url)[1] or '.png'
+    print(f"[DEBUG] Downloading image: {url}")
+    resp = requests.get(url, timeout=15); resp.raise_for_status()
+    fname = os.path.basename(url).split('?')[0]
     os.makedirs(UPLOADS_DIR, exist_ok=True)
-    base = os.path.basename(url).split('?')[0]
-    name = os.path.splitext(base)[0] + ext
-    dest = os.path.join(UPLOADS_DIR, name)
-    with open(dest, 'wb') as f:
-        f.write(resp.content)
-    print(f"[DEBUG] Saved image to {dest} (Content-Type: {ctype})")
-    return f"uploads/{name}"  # no leading slash to match previous
+    path = os.path.join(UPLOADS_DIR, fname)
+    with open(path, 'wb') as f: f.write(resp.content)
+    return f"uploads/{fname}"
 
-# Choose which image MD to use
-image_md = download_image(news_image_md) if not event_type else download_image(event_image_md)
+image_md = download_image(get_field(['image_markdown','image__drag___drop_here'], ''))
 
-# ─── BUILD CONTEXT & SELECT TEMPLATE ──────────────────────────────────────────
-is_event     = bool(event_type)
-datetime_iso = f"{date_val}T{time_val}" if date_val and time_val else ''
-print(f"[DEBUG] is_event={is_event}, datetime_iso={datetime_iso}")
-
-if is_event:
-    ctx_en = {
-        'type':       event_type,
-        'title':      title_en,
-        'name':       speaker_name,
-        'datetime':   datetime_iso,
-        'duration':   duration,
-        'location':   location_en,
-        'thumbnail':  image_md,
-        'description': description_e,
-    }
-    ctx_tr = {
-        'type':       event_type,
-        'title':      title_tr or title_en,
-        'name':       speaker_name,
-        'datetime':   datetime_iso,
-        'duration':   duration,
-        'location':   location_tr,
-        'thumbnail':  image_md,
-        'description': description_t,
-    }
-    template_path = f"events/{event_type}.md.j2"
-    out_subdir    = "events"
-else:
-    ctx_en = {
-        'type':        'news',
-        'title':       title_en,
-        'description': desc_en,
-        'featured':    False,
-        'date':        date_val,
-        'thumbnail':   image_md,
-    }
-    ctx_tr = {
-        'type':        'news',
-        'title':       title_tr or title_en,
-        'description': desc_tr,
-        'featured':    False,
-        'date':        date_val,
-        'thumbnail':   image_md,
-    }
-    template_path = "news.md.j2"
-    out_subdir    = "news"
-
-print(f"[DEBUG] Rendering {'Event' if is_event else 'News'} using {template_path}")
-
-# ─── RENDER & WRITE FILES ─────────────────────────────────────────────────────
-env  = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=False)
-tmpl = env.get_template(template_path)
-
-# Slugify the English title
-slug = unicodedata.normalize("NFKD", title_en).encode("ascii","ignore").decode().lower()
-slug = re.sub(r"[^\w\s-]","", slug)
-slug = re.sub(r"[-\s]+","-", slug)
-
-out_dir = os.path.join("content", out_subdir, f"{date_val}-{slug}")
+# ─── OUTPUT PATH ──────────────────────────────────────────────────────────────
+folder = 'events' if is_event else 'news'
+slug   = unicodedata.normalize('NFKD', title_en).encode('ascii','ignore').decode().lower()
+slug   = re.sub(r"[^\w\s-]", '', slug)
+slug   = re.sub(r"[-\s]+", '-', slug)
+out_dir = os.path.join(CONTENT_DIR, folder, f"{date_val}-{slug}")
+print(f"[DEBUG] out_dir={out_dir}")
 os.makedirs(out_dir, exist_ok=True)
 
-for lang, ctx, fname in [
-    ("en", ctx_en, "index.en.md"),
-    ("tr", ctx_tr, "index.tr.md"),
-]:
-    print(f"[DEBUG] Final context for {lang}: {ctx}")
-    path = os.path.join(out_dir, fname)
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(tmpl.render(**ctx))
-    print(f"[DEBUG] Wrote {lang} → {path}")
+# ─── RENDER ───────────────────────────────────────────────────────────────────
+if not is_event:
+    # build manual front-matter for news
+    header = [
+        '---',
+        f'type: news',
+        f'title: {title_en}',
+        'description: >',
+        f'  {get_field(["short_description__en"],"")}',
+        f'featured: false',
+        f'date: {date_val}',
+        f'thumbnail: {image_md}',
+        '---',
+        '',
+        get_field(['full_content__en'], '')
+    ]
+    out = "\n".join(header)
+    path = os.path.join(out_dir, 'index.en.md')
+    print(f"[DEBUG] Writing news file: {path}")
+    with open(path, 'w', encoding='utf-8') as f: f.write(out)
+else:
+    # event uses Jinja template
+    from jinja2 import Environment, FileSystemLoader
+    env = Environment(loader=FileSystemLoader('templates'), autoescape=False)
+    tmpl = env.get_template(f"events/{event_type}.md.j2")
+    ctx = {
+        'type':      event_type,
+        'title':     title_en,
+        'datetime':  f"{date_val}T{time_val}",
+        'speaker':   get_field('name',''),
+        'duration':  get_field('duration',''),
+        'location':  get_field(['location_en','location_tr'],''),
+        'thumbnail': image_md,
+        'description': get_field('description_en','')
+    }
+    print("[DEBUG] Rendering event with context:", ctx)
+    out = tmpl.render(**ctx)
+    path = os.path.join(out_dir, 'index.en.md')
+    with open(path, 'w', encoding='utf-8') as f: f.write(out)
+
+print("[DEBUG] Done.")
