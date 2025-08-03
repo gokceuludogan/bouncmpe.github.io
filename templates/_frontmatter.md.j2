@@ -1,10 +1,9 @@
 ---
-{% if type %}type: {{ type }}{% endif %}
-{% if title %}title: {{ title }}{% endif %}
-{% if date %}date: {{ date }}{% endif %}
-{% if time %}time: {{ time }}{% endif %}
-{% if thumbnail %}thumbnail: {{ thumbnail }}{% endif %}
+type: {{ type }}
+title: {{ title }}
+date: {{ date }}
 {% block extra_fields %}{% endblock %}
+thumbnail: {{ thumbnail | default('') }}
+description: {{ description | default('') }}
+featured: false
 ---
-
-{% block content %}{% endblock %}
