@@ -70,13 +70,13 @@ title_tr = get_field(
 date_val = get_field(['date'], '')
 raw_time = get_field(['time'], '')
 # Normalize time to hh:mm:ss
-if re.match(r"^\d{2}:\d{2}$", raw_time):
+if raw_time and re.match(r"^\d{2}:\d{2}$", raw_time):
     time_val = raw_time + ":00"
 else:
     time_val = raw_time
 print(f"[DEBUG] date_val: {date_val}, time_val: {time_val}")
 
-# ─── NEWS‑SPECIFIC VARIABLES ───────────────────────────────────────────────────
+# ─── NEWS-SPECIFIC VARIABLES ───────────────────────────────────────────────────
 desc_en    = get_field(
     ['description_en','short_description_en','short_description__en'], ''
 )
@@ -93,7 +93,7 @@ news_image_md = get_field(
     ['image_markdown','image__drag___drop_here','image__optional__drag___drop'], ''
 )
 
-# ─── EVENT‑SPECIFIC VARIABLES ──────────────────────────────────────────────────
+# ─── EVENT-SPECIFIC VARIABLES ──────────────────────────────────────────────────
 event_type   = get_field(['event_type'], '')
 speaker_name = get_field(['name','speaker_presenter_name'], '')
 duration     = get_field(['duration'], '')
@@ -126,7 +126,7 @@ def download_image(md: str) -> str:
     with open(dest, 'wb') as f:
         f.write(resp.content)
     print(f"[DEBUG] Saved image to {dest} (Content-Type: {ctype})")
-    return f"/uploads/{name}"
+    return f"uploads/{name}"  # no leading slash to match previous
 
 # Choose which image MD to use
 image_md = download_image(news_image_md) if not event_type else download_image(event_image_md)
@@ -140,25 +140,21 @@ if is_event:
     ctx_en = {
         'type':       event_type,
         'title':      title_en,
-        'date':       date_val,
-        'time':       time_val,
-        'thumbnail':  image_md,
+        'name':       speaker_name,
         'datetime':   datetime_iso,
-        'speaker':    speaker_name,
         'duration':   duration,
         'location':   location_en,
+        'thumbnail':  image_md,
         'description': description_e,
     }
     ctx_tr = {
         'type':       event_type,
         'title':      title_tr or title_en,
-        'date':       date_val,
-        'time':       time_val,
-        'thumbnail':  image_md,
+        'name':       speaker_name,
         'datetime':   datetime_iso,
-        'speaker':    speaker_name,
         'duration':   duration,
         'location':   location_tr,
+        'thumbnail':  image_md,
         'description': description_t,
     }
     template_path = f"events/{event_type}.md.j2"
@@ -167,20 +163,18 @@ else:
     ctx_en = {
         'type':        'news',
         'title':       title_en,
-        'date':        date_val,
-        'time':        time_val,
-        'thumbnail':   image_md,
         'description': desc_en,
-        'content':     content_en,
+        'featured':    False,
+        'date':        date_val,
+        'thumbnail':   image_md,
     }
     ctx_tr = {
         'type':        'news',
         'title':       title_tr or title_en,
-        'date':        date_val,
-        'time':        time_val,
-        'thumbnail':   image_md,
         'description': desc_tr,
-        'content':     content_tr,
+        'featured':    False,
+        'date':        date_val,
+        'thumbnail':   image_md,
     }
     template_path = "news.md.j2"
     out_subdir    = "news"
