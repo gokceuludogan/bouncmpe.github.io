@@ -1,7 +1,8 @@
 {% extends "_frontmatter.md.j2" %}
+
 {% block extra_fields %}
-description: >
-  {{ description }}
+# single-line or block description handled in script; no > in template
+{{ super() }}
 {% endblock %}
 
 {% block content %}
