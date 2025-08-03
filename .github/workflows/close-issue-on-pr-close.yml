@@ -1,0 +1,25 @@
+name: Close Issue on PR Close
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  close-issue:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.body != ''
+    steps:
+      - name: Extract Issue Number
+        id: extract
+        run: |
+          ISSUE_LINE=$(echo "${{ github.event.pull_request.body }}" | grep -iE 'closes #([0-9]+)' || true)
+          if [[ "$ISSUE_LINE" =~ ([0-9]+) ]]; then
+            echo "issue_number=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Close Issue
+        if: steps.extract.outputs.issue_number != ''
+        uses: peter-evans/close-issue@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ steps.extract.outputs.issue_number }}
