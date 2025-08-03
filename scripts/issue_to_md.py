@@ -1,117 +1,210 @@
+#!/usr/bin/env python3
 import os
 import re
-import sys
-import yaml
+import unicodedata
+import json
+import mimetypes
 import requests
-from pathlib import Path
+from github import Github
 from jinja2 import Environment, FileSystemLoader
 
-# ========== CONFIGURATION ==========
-TEMPLATE_DIR = "scripts/templates"
-UPLOADS_DIR = "static/uploads"
-OUTPUT_DIR = "_news"
-DEBUG = True
+# ─── CONFIG ───────────────────────────────────────────────────────────────────
+REPO_NAME     = os.getenv("GITHUB_REPOSITORY")
+ISSUE_NUMBER  = int(os.getenv("ISSUE_NUMBER", "0"))
+GITHUB_TOKEN  = os.getenv("GITHUB_TOKEN")
+TEMPLATES_DIR = "templates"
+UPLOADS_DIR   = os.path.join("static", "uploads")
 
-# ========== HELPERS ==========
+if not GITHUB_TOKEN or ISSUE_NUMBER == 0:
+    raise RuntimeError("GITHUB_TOKEN and ISSUE_NUMBER must be set")
 
-def debug_print(msg, data=None):
-    if DEBUG:
-        print(f"[DEBUG] {msg}")
-        if data is not None:
-            print(f"{data}")
+# ─── INIT GITHUB CLIENT & ISSUE ───────────────────────────────────────────────
+gh    = Github(GITHUB_TOKEN)
+repo  = gh.get_repo(REPO_NAME)
+issue = repo.get_issue(number=ISSUE_NUMBER)
+print(f"[DEBUG] Loaded Issue #{ISSUE_NUMBER}: {issue.title!r}")
 
-def parse_issue_body(issue_body):
-    """
-    Parses GitHub issue body into a dictionary of field names and values.
-    Assumes each section is marked by a Markdown heading like '### Field Name'.
-    """
-    field_pattern = r"### (.+?)\n\n(.*?)(?=\n### |\Z)"
-    matches = re.findall(field_pattern, issue_body, re.DOTALL)
-    fields = {slugify_title(k.strip()): v.strip() for k, v in matches}
-    debug_print("Parsed fields:", fields)
-    return fields
-
-def slugify_title(text):
-    """Convert header names into consistent field keys."""
-    return (
-        text.lower()
-        .strip()
-        .replace(" ", "_")
-        .replace("-", "_")
-        .replace("(", "")
-        .replace(")", "")
+# ─── PARSE FIELDS ─────────────────────────────────────────────────────────────
+def parse_fields(body: str) -> dict:
+    m = re.search(r"<!--\s*({.*})\s*-->", body or "", re.DOTALL)
+    if m:
+        try:
+            data = json.loads(m.group(1))
+            print("[DEBUG] Parsed JSON form data:", data)
+            return data
+        except Exception as e:
+            print("[DEBUG] JSON parse error:", e)
+    pattern = re.compile(
+        r"^#{1,6}\s+(.*?)\s*\r?\n+(.*?)(?=^#{1,6}\s|\Z)",
+        re.MULTILINE | re.DOTALL
     )
+    parsed = {}
+    for label, val in pattern.findall(body or ""):
+        key = re.sub(r"[^a-z0-9_]", "_", label.lower()).strip("_")
+        parsed[key] = val.strip()
+    if 'date__yyyy_mm_dd' in parsed:
+        parsed['date'] = parsed.pop('date__yyyy_mm_dd')
+    print("[DEBUG] Fallback parsed fields:", parsed)
+    return parsed
 
-def get_field(keys, default=""):
-    """Tries multiple keys and returns the first non-empty one."""
-    if isinstance(keys, str):
-        return fields.get(keys, default).strip()
-    for key in keys:
-        if key in fields and fields[key].strip():
-            return fields[key].strip()
+fields = parse_fields(issue.body)
+
+# ─── FIELD LOOKUP HELPER ──────────────────────────────────────────────────────
+def get_field(variants, default=""):
+    for name in variants:
+        if name in fields and fields[name]:
+            print(f"[DEBUG] get_field '{name}': {fields[name]}")
+            return fields[name]
+    print(f"[DEBUG] get_field default for {variants}: {default}")
     return default
 
-def download_image(img_tag):
-    match = re.search(r'src="([^"]+)"', img_tag)
-    if not match:
+# ─── COMMON VARIABLES ─────────────────────────────────────────────────────────
+title_en = get_field(
+    ['title_en','event_title__en','news_title__en'], 
+    issue.title
+)
+title_tr = get_field(
+    ['title_tr','event_title__tr','news_title__tr'], 
+    ''
+)
+date_val = get_field(['date'], '')
+raw_time = get_field(['time'], '')
+# Normalize time to hh:mm:ss
+if re.match(r"^\d{2}:\d{2}$", raw_time):
+    time_val = raw_time + ":00"
+else:
+    time_val = raw_time
+print(f"[DEBUG] date_val: {date_val}, time_val: {time_val}")
+
+# ─── NEWS‑SPECIFIC VARIABLES ───────────────────────────────────────────────────
+desc_en    = get_field(
+    ['description_en','short_description_en','short_description__en'], ''
+)
+content_en = get_field(
+    ['content_en','full_content_en','full_content__en'], ''
+)
+desc_tr    = get_field(
+    ['description_tr','short_description_tr','short_description__tr'], ''
+)
+content_tr = get_field(
+    ['content_tr','full_content_tr','content__tr','full_content__tr'], ''
+)
+news_image_md = get_field(
+    ['image_markdown','image__drag___drop_here','image__optional__drag___drop'], ''
+)
+
+# ─── EVENT‑SPECIFIC VARIABLES ──────────────────────────────────────────────────
+event_type   = get_field(['event_type'], '')
+speaker_name = get_field(['name','speaker_presenter_name'], '')
+duration     = get_field(['duration'], '')
+location_en  = get_field(['location_en','location__en'], '')
+location_tr  = get_field(['location_tr','location__tr'], '')
+event_image_md = get_field(
+    ['image_markdown','image__optional__drag___drop'], ''
+)
+description_e = get_field(['description_en','description__en'], '')
+description_t = get_field(['description_tr','description__tr'], '')
+
+# ─── IMAGE DOWNLOAD (shared) ──────────────────────────────────────────────────
+def download_image(md: str) -> str:
+    print(f"[DEBUG] download_image input: {md}")
+    m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) or \
+        re.search(r"<img[^>]+src=\"(https?://[^\"]+)\"", md)
+    if not m:
+        print("[DEBUG] No image URL found")
         return ""
-    url = match.group(1)
-    debug_print("Downloading image from", url)
-    filename = url.split("/")[-1] + ".png"
-    path = Path(UPLOADS_DIR) / filename
-    path.parent.mkdir(parents=True, exist_ok=True)
-    response = requests.get(url)
-    if response.status_code == 200:
-        with open(path, "wb") as f:
-            f.write(response.content)
-        return f"/{UPLOADS_DIR}/{filename}"
-    return ""
+    url = m.group(1)
+    print(f"[DEBUG] Found image URL: {url}")
+    resp = requests.get(url, timeout=15)
+    resp.raise_for_status()
+    ctype = resp.headers.get('Content-Type','').split(';')[0]
+    ext = mimetypes.guess_extension(ctype) or os.path.splitext(url)[1] or '.png'
+    os.makedirs(UPLOADS_DIR, exist_ok=True)
+    base = os.path.basename(url).split('?')[0]
+    name = os.path.splitext(base)[0] + ext
+    dest = os.path.join(UPLOADS_DIR, name)
+    with open(dest, 'wb') as f:
+        f.write(resp.content)
+    print(f"[DEBUG] Saved image to {dest} (Content-Type: {ctype})")
+    return f"/uploads/{name}"
 
-# ========== MAIN ==========
+# Choose which image MD to use
+image_md = download_image(news_image_md) if not event_type else download_image(event_image_md)
 
-if __name__ == "__main__":
-    # Load issue body
-    issue_body = Path(".github/issue_body.md").read_text(encoding="utf-8")
-    fields = parse_issue_body(issue_body)
+# ─── BUILD CONTEXT & SELECT TEMPLATE ──────────────────────────────────────────
+is_event     = bool(event_type)
+datetime_iso = f"{date_val}T{time_val}" if date_val and time_val else ''
+print(f"[DEBUG] is_event={is_event}, datetime_iso={datetime_iso}")
 
-    # Determine if it's an event
-    event_keys = ['event_type', 'name', 'datetime', 'duration']
-    is_event = any(f in fields and fields[f].strip() for f in event_keys)
-    debug_print("Template selected:", "event.md.j2" if is_event else "news.md.j2")
+if is_event:
+    ctx_en = {
+        'type':       event_type,
+        'title':      title_en,
+        'date':       date_val,
+        'time':       time_val,
+        'thumbnail':  image_md,
+        'datetime':   datetime_iso,
+        'speaker':    speaker_name,
+        'duration':   duration,
+        'location':   location_en,
+        'description': description_e,
+    }
+    ctx_tr = {
+        'type':       event_type,
+        'title':      title_tr or title_en,
+        'date':       date_val,
+        'time':       time_val,
+        'thumbnail':  image_md,
+        'datetime':   datetime_iso,
+        'speaker':    speaker_name,
+        'duration':   duration,
+        'location':   location_tr,
+        'description': description_t,
+    }
+    template_path = f"events/{event_type}.md.j2"
+    out_subdir    = "events"
+else:
+    ctx_en = {
+        'type':        'news',
+        'title':       title_en,
+        'date':        date_val,
+        'time':        time_val,
+        'thumbnail':   image_md,
+        'description': desc_en,
+        'content':     content_en,
+    }
+    ctx_tr = {
+        'type':        'news',
+        'title':       title_tr or title_en,
+        'date':        date_val,
+        'time':        time_val,
+        'thumbnail':   image_md,
+        'description': desc_tr,
+        'content':     content_tr,
+    }
+    template_path = "news.md.j2"
+    out_subdir    = "news"
 
-    # Setup Jinja
-    env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
-    template_name = "event.md.j2" if is_event else "news.md.j2"
-    template = env.get_template(template_name)
+print(f"[DEBUG] Rendering {'Event' if is_event else 'News'} using {template_path}")
 
-    langs = ['en', 'tr']
-    for lang in langs:
-        context = {
-            "type": "event" if is_event else "news",
-            "title": get_field([f"{'event_name' if is_event else 'news_title'}__{lang}"]),
-            "description": get_field([
-                f"description__{lang}" if is_event else f"short_description__{lang}"
-            ]),
-            "featured": False,
-            "date": get_field("date"),
-            "datetime": get_field("datetime"),
-            "duration": get_field("duration"),
-            "location": get_field([f"location__{lang}", "location"]),
-            "name": get_field("name"),
-            "content": get_field([
-                f"full_description__{lang}" if is_event else f"full_content__{lang}"
-            ]),
-        }
+# ─── RENDER & WRITE FILES ─────────────────────────────────────────────────────
+env  = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=False)
+tmpl = env.get_template(template_path)
 
-        # Image
-        image_field = get_field(["image__drag___drop_here", "image_markdown"])
-        context["thumbnail"] = download_image(image_field) if image_field else ""
+# Slugify the English title
+slug = unicodedata.normalize("NFKD", title_en).encode("ascii","ignore").decode().lower()
+slug = re.sub(r"[^\w\s-]","", slug)
+slug = re.sub(r"[-\s]+","-", slug)
 
-        debug_print(f"Final context for lang={lang}:", context)
+out_dir = os.path.join("content", out_subdir, f"{date_val}-{slug}")
+os.makedirs(out_dir, exist_ok=True)
 
-        # Render & write output
-        output = template.render(context)
-        filename_slug = slugify_title(context["title"])[:64]
-        output_path = Path(OUTPUT_DIR) / f"{filename_slug}.{lang}.md"
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(output, encoding="utf-8")
+for lang, ctx, fname in [
+    ("en", ctx_en, "index.en.md"),
+    ("tr", ctx_tr, "index.tr.md"),
+]:
+    print(f"[DEBUG] Final context for {lang}: {ctx}")
+    path = os.path.join(out_dir, fname)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(tmpl.render(**ctx))
+    print(f"[DEBUG] Wrote {lang} → {path}")
