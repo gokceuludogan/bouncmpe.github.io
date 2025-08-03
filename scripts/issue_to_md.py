@@ -165,7 +165,7 @@ class EventProcessor(BaseProcessor):
             rendered = tmpl.render(**ctx)
             filtered = []
             for line in rendered.splitlines():
-                if line.startswith(('thumbnail:','description:','featured:')):
+                if line.startswith(('thumbnail:','description:','featured:','date:')) and not line.startswith('datetime:'):
                     continue
                 filtered.append(line)
             out_md = "\n".join(filtered)
