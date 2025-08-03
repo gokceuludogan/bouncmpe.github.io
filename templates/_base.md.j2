@@ -1,6 +1,12 @@
-# Required front-matter
-title: "{{ title }}"
-date: "{{ date }}"
-time: "{{ time }}"
-{% block front_matter %}{% endblock %}
-{% block content %}{% endblock %}
+{% extends "_frontmatter.md.j2" %}
+
+{% block extra_fields %}
+{% if datetime %}datetime: {{ datetime }}{% endif %}
+{% if duration %}duration: {{ duration }}{% endif %}
+{% if location %}location: {{ location }}{% endif %}
+{% if speaker  %}speaker: {{ speaker }}{% endif %}
+{% endblock %}
+
+{% block content %}
+{{ description }}
+{% endblock %}
