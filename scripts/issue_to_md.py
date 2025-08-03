@@ -50,37 +50,39 @@ def parse_fields(body: str) -> dict:
         lines = part.splitlines()
         label = lines[0].strip()
         key   = re.sub(r"[^a-z0-9]+","_", label.lower()).strip("_")
-        value = "\n".join(lines[1:]).strip()
-        data[key] = value
+        # unify date field
+        if key.startswith('date_'):
+            key = 'date'
+        data[key] = "\n".join(lines[1:]).strip()
         if DEBUG:
-            print(f"[DEBUG] Parsed field '{label}' => key='{key}', value={value!r}")
+            print(f"[DEBUG] Parsed field '{label}' => key='{key}', value={data[key]!r}")
     return data
 
 fields = parse_fields(issue.body)
 if DEBUG:
     print(f"[DEBUG] Full parsed fields dict: {json.dumps(fields, indent=2)}")
 
-# Field map
+# Field map with extended keys
 FIELD_MAP = {
-    'content_kind': ['content_kind'],
-    'title_en':     ['event_title_en','title_en'],
-    'title_tr':     ['event_title_tr','title_tr'],
-    'date':         ['date'],
-    'time':         ['time'],
-    'speaker':      ['speaker','presenter'],
-    'duration':     ['duration'],
-    'location_en':  ['location_en','location'],
-    'location_tr':  ['location_tr','location'],
-    'short_desc_en':['short_description_en'],
-    'short_desc_tr':['short_description_tr'],
-    'content_en':   ['full_content_en'],
-    'content_tr':   ['full_content_tr'],
-    'image_markdown':['image_markdown','image_drag_drop_here'],
+    'content_kind':    ['event_type', 'content_kind'],
+    'title_en':        ['event_title_en', 'news_title_en', 'title_en'],
+    'title_tr':        ['event_title_tr', 'news_title_tr', 'title_tr'],
+    'date':            ['date'],
+    'time':            ['time'],
+    'speaker':         ['speaker', 'presenter', 'speaker_presenter_name'],
+    'duration':        ['duration'],
+    'location_en':     ['location_en', 'location'],
+    'location_tr':     ['location_tr', 'location'],
+    'short_desc_en':   ['short_description_en', 'description_en'],
+    'short_desc_tr':   ['short_description_tr', 'description_tr'],
+    'content_en':      ['full_content_en', 'content_en'],
+    'content_tr':      ['full_content_tr', 'content_tr'],
+    'image_markdown':  ['image_markdown', 'image_drag_drop_here', 'image_optional_drag_drop'],
 }
 
 def get_field(name, default=""):
     for key in FIELD_MAP.get(name, [name]):
-        if key in fields and fields[key]:
+        if key in fields and fields[key] and not fields[key].startswith('_No response'):
             if DEBUG:
                 print(f"[DEBUG] get_field: using '{key}' => '{fields[key]}'")
             return fields[key]
@@ -105,9 +107,9 @@ print(f"[DEBUG] title_en={title_en}, title_tr={title_tr}, date={date_val}, time=
 def download_image(md: str) -> str:
     if DEBUG:
         print(f"[DEBUG] download_image input markdown: {md}")
-    m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md)
+    m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) or re.search(r"src=\"(https?://[^\"]+)\"", md)
     if not m:
-        if DEBUG: print("[DEBUG] No image markdown found.")
+        if DEBUG: print("[DEBUG] No image markdown or src found.")
         return ""
     url = m.group(1)
     if DEBUG: print(f"[DEBUG] Attempting to download image URL: {url}")
@@ -147,15 +149,15 @@ print(f"[DEBUG] Using template: {tmpl_name}")
 # Prepare context
 ctx = {
     'content_kind':  kind,
-    'title':         title_en,  # will be overridden per-language
+    'title':         title_en,
     'date':          date_val,
     'time':          time_val,
     'datetime':      f"{date_val}T{time_val}" if time_val else '',
     'speaker':       get_field('speaker',''),
     'duration':      get_field('duration',''),
     'location':      get_field('location_en',''),
-    'description':   get_field('short_desc_en',''),  # overridden per-lang
-    'content':       get_field('content_en',''),     # overridden per-lang
+    'description':   get_field('short_desc_en',''),
+    'content':       get_field('content_en',''),
     'thumbnail':     download_image(get_field('image_markdown',''))
 }
 print(f"[DEBUG] Base context: {json.dumps({k:v for k,v in ctx.items() if k!='thumbnail'}, indent=2)}")
@@ -169,7 +171,7 @@ for lang in ('en','tr'):
         'content':     get_field(f'content_{lang}',''),
         'location':    get_field(f'location_{lang}', lang_ctx['location']),
     })
-    print(f"[DEBUG] Rendering for lang={lang}: context snippet title={lang_ctx['title']!r}, desc={lang_ctx['description']!r}")
+    print(f"[DEBUG] Rendering for lang={lang}: title={lang_ctx['title']!r}, desc={lang_ctx['description']!r}")
     rendered = tmpl.render(**lang_ctx)
     out_path = out_dir / f"index.{lang}.md"
     out_path.write_text(rendered, encoding='utf-8')
