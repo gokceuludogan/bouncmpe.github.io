@@ -29,8 +29,11 @@ def parse_fields(body: str) -> dict:
     pattern = re.compile(r"^###\s+(.*?)\n+(.+?)(?=\n^###|\Z)", re.MULTILINE | re.DOTALL)
     parsed = {}
     for label, val in pattern.findall(body):
-        # slugify and strip leading/trailing underscores
-        key = re.sub(r"[^a-z0-9_]+", "_", label.lower()).strip("_")
+        # slugify: lowercase, alnum and underscore only
+        key = re.sub(r"[^a-z0-9]+", "_", label.lower()).strip("_")
+        # normalize date field
+        if "date" in key and "yyyy" in key:
+            key = "date"
         parsed[key] = val.strip()
         if DEBUG:
             print(f"[DEBUG] Parsed field '{label}' → '{key}': {parsed[key]!r}")
@@ -109,17 +112,20 @@ if not is_event:
     for lang in ('en', 'tr'):
         desc_key    = f'short_description_{lang}'
         content_key = f'full_content_{lang}'
+        desc = get_field(desc_key, '')
+        content = get_field(content_key, '')
         header = [
             '---',
             'type: news',
             f'title: {title_en if lang=='en' else title_tr}',
             'description: >',
-            f'  {get_field(desc_key, "")}','featured: false',
+            f'  {desc}',
+            'featured: false',
             f'date: {date_val}',
             f'thumbnail: {image_md}',
             '---',
             '',
-            get_field(content_key, '')
+            content
         ]
         out = "\n".join(header)
         path = out_dir / f"index.{lang}.md"
