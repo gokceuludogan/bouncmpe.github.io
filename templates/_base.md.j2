@@ -1,12 +1,16 @@
-{% extends "_frontmatter.md.j2" %}
-
-{% block extra_fields %}
-{% if datetime %}datetime: {{ datetime }}{% endif %}
-{% if duration %}duration: {{ duration }}{% endif %}
-{% if location %}location: {{ location }}{% endif %}
-{% if speaker  %}name: {{ speaker }}{% endif %}
-{% endblock %}
-
-{% block content %}
-{{ description }}
-{% endblock %}
+---
+type: {{ type }}
+title: {{ title }}
+{% if name %}
+name: {{ name }}
+{% endif %}
+{% if datetime %}
+datetime: {{ datetime }}
+{% endif %}
+{% if duration %}
+duration: {{ duration }}
+{% endif %}
+{% if location %}
+location: {{ location }}
+{% endif %}
+---
