@@ -154,21 +154,21 @@ class EventProcessor(BaseProcessor):
             ctx = {
                 'type': content_kind,
                 'title': title_en if lang=='en' else title_tr,
-                'date': date_val,
-                'time': time_val,
                 'datetime': f"{date_val}T{time_val}" if time_val else '',
                 'name': get_field(['speaker_presenter_name','speaker','presenter'], ''),
                 'duration': get_field('duration',''),
-                'location': get_field([f'location_{lang}','location'], ''),
+                'location': get_field([f'location_{lang}','location'], '')
             }
             print(f"[DEBUG] Context for {lang}: {ctx}")
             rendered = tmpl.render(**ctx)
-            filtered = []
-            for line in rendered.splitlines():
-                if line.startswith(('thumbnail:','description:','featured:','date:')) and not line.startswith('datetime:'):
-                    continue
-                filtered.append(line)
-            out_md = "\n".join(filtered)
+            # compact filtering: no empty lines and drop unwanted keys
+            out_md = "".join(
+                line for line in rendered.splitlines()
+                if line.strip() and not (
+                    line.startswith(('thumbnail:','description:','featured:','date:'))
+                    and not line.startswith('datetime:')
+                )
+            )
             out_file = out_dir / f"index.{lang}.md"
             self.write(out_file, out_md)
 
