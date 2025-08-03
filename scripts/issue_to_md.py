@@ -104,36 +104,45 @@ def download_image(md: str) -> str:
 
 # ─── RENDER & WRITE CONTENT ────────────────────────────────────────────────────
 for lang in ('en', 'tr'):
-    is_event = bool(get_field(['event_type'], ''))
-    datetime_iso = f"{date_val}T{time_val}:00" if date_val and time_val else ''
-    ctx = {
-        'type':       event_type if is_event else 'news',
-        'title':      title_tr if lang == 'tr' else title_en,
-        'name':       speaker_name if is_event else None,
-        'datetime':   datetime_iso if is_event else None,
-        'date':       date_val if not is_event else None,
-        'duration':   duration if is_event else None,
-        'location':   (location_tr if lang == 'tr' else location_en) if is_event else None,
-        'thumbnail':  download_image(event_image_md if is_event else news_image_md),
-        'description': desc_tr if lang == 'tr' and not is_event else desc_en,
-        'featured':   False if not is_event else None,
-        'content':    content_tr if lang == 'tr' and not is_event else content_en,
+    lang_suffix = f'__{lang}'
+    title = get_field([f'news_title{lang_suffix}', f'event_title{lang_suffix}', f'title{lang_suffix}'], '')
+    content = get_field([f'full_content{lang_suffix}'], '')
+    description = get_field([f'short_description{lang_suffix}'], '')
+    date = get_field(['date'], '')
+    time = get_field(['time'], '')
+    datetime_str = f'{date}T{time}' if date and time else None
+    image_url = get_field(image_keys, '')
+    image_path = download_image(image_url)
+
+    is_event = bool(get_field(['event_type'], ''))  # check if event_type is filled
+    if is_event:
+        template_name = 'event.md.j2'
+        out_dir = os.path.join('content', 'events')
+        slug = slugify(title)
+        filename = os.path.join(out_dir, f'{date}-{slug}', f'index.{lang}.md')
+    else:
+        template_name = 'news.md.j2'
+        out_dir = os.path.join('content', 'news')
+        slug = slugify(title)
+        filename = os.path.join(out_dir, f'{date}-{slug}', f'index.{lang}.md')
+
+    context = {
+        'type': 'event' if is_event else 'news',
+        'title': title,
+        'date': date,
+        'datetime': datetime_str if is_event else None,
+        'name': get_field(['name'], None) if is_event else None,
+        'duration': get_field(['duration'], None) if is_event else None,
+        'location': get_field([f'location_{lang}'], None) if is_event else None,
+        'thumbnail': image_path,
+        'description': description,
+        'content': content,
+        'featured': get_field(['featured'], False),
     }
-    print(f"[DEBUG] Context for {lang}:\n", json.dumps(ctx, indent=2))
-    template_name = 'event.md.j2' if is_event else 'news.md.j2'
-    env = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=False)
-    rendered = env.get_template(template_name).render(**ctx)
 
-    raw_title = ctx['title'] or title_en
-    slug = unicodedata.normalize('NFKD', raw_title).encode('ascii','ignore').decode().lower()
-    slug = re.sub(r"[-\s]+", '-', slug)
-    slug = re.sub(r"[^a-z0-9-]", '', slug).strip('-')
+    print(f"[DEBUG] Context for {lang}:\n{json.dumps(context, indent=2)}")
+    print(f"[DEBUG] Writing file: {filename}")
 
-    folder = 'events' if is_event else 'news'
-    out_dir = os.path.join('content', folder, f"{date_val}-{slug}")
-    os.makedirs(out_dir, exist_ok=True)
-    filename = f"index.{lang}.md"
-    filepath = os.path.join(out_dir, filename)
-    print("[DEBUG] Writing file:", filepath)
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write(rendered)
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write(env.get_template(template_name).render(context))
