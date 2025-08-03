@@ -1,11 +1,9 @@
----
-type: "{{ type }}"
-title: "{{ title }}"
-name: "{{ name }}"
-datetime: "{{ datetime }}"
-duration: "{{ duration }}"
-location: "{{ location }}"
-thumbnail: "{{ thumbnail }}"
----
+{% extends "_frontmatter.md.j2" %}
+{% block extra_fields %}
+description: >
+  {{ description }}
+{% endblock %}
 
-{{ description }}
+{% block content %}
+{{ content }}
+{% endblock %}
