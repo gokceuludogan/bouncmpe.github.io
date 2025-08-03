@@ -1,131 +1,117 @@
-#!/usr/bin/env python3
 import os
 import re
-import unicodedata
-import json
-import mimetypes
+import sys
+import yaml
 import requests
-from github import Github
+from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
-# ─── CONFIG ───────────────────────────────────────────────────────────────────
-REPO_NAME     = os.getenv("GITHUB_REPOSITORY")
-ISSUE_NUMBER  = int(os.getenv("ISSUE_NUMBER", "0"))
-GITHUB_TOKEN  = os.getenv("GITHUB_TOKEN")
-TEMPLATES_DIR = "templates"
-UPLOADS_DIR   = os.path.join("static", "uploads")
+# ========== CONFIGURATION ==========
+TEMPLATE_DIR = "scripts/templates"
+UPLOADS_DIR = "static/uploads"
+OUTPUT_DIR = "_news"
+DEBUG = True
 
-if not GITHUB_TOKEN or ISSUE_NUMBER == 0:
-    raise RuntimeError("GITHUB_TOKEN and ISSUE_NUMBER must be set")
+# ========== HELPERS ==========
 
-# ─── INIT GITHUB CLIENT & ISSUE ───────────────────────────────────────────────
-gh    = Github(GITHUB_TOKEN)
-repo  = gh.get_repo(REPO_NAME)
-issue = repo.get_issue(number=ISSUE_NUMBER)
+def debug_print(msg, data=None):
+    if DEBUG:
+        print(f"[DEBUG] {msg}")
+        if data is not None:
+            print(f"{data}")
 
-# ─── PARSE FORM DATA ───────────────────────────────────────────────────────────
-def parse_fields(body: str) -> dict:
-    m = re.search(r"<!--\s*({.*?})\s*-->", body or "", re.DOTALL)
-    if m:
-        try:
-            return json.loads(m.group(1))
-        except json.JSONDecodeError:
-            pass
-    pattern = re.compile(
-        r"^#{1,6}\s+(.*?)\s*\r?\n+(.*?)(?=^#{1,6}\s|\Z)",
-        re.MULTILINE | re.DOTALL
+def parse_issue_body(issue_body):
+    """
+    Parses GitHub issue body into a dictionary of field names and values.
+    Assumes each section is marked by a Markdown heading like '### Field Name'.
+    """
+    field_pattern = r"### (.+?)\n\n(.*?)(?=\n### |\Z)"
+    matches = re.findall(field_pattern, issue_body, re.DOTALL)
+    fields = {slugify_title(k.strip()): v.strip() for k, v in matches}
+    debug_print("Parsed fields:", fields)
+    return fields
+
+def slugify_title(text):
+    """Convert header names into consistent field keys."""
+    return (
+        text.lower()
+        .strip()
+        .replace(" ", "_")
+        .replace("-", "_")
+        .replace("(", "")
+        .replace(")", "")
     )
-    parsed = {}
-    for label, val in pattern.findall(body or ""):
-        key = re.sub(r"[^a-z0-9_]", "_", label.lower()).strip("_")
-        parsed[key] = val.strip()
-    if 'date__yyyy_mm_dd' in parsed:
-        parsed['date'] = parsed.pop('date__yyyy_mm_dd')
-    return parsed
 
-fields = parse_fields(issue.body)
-print("[DEBUG] Parsed fields:\n", json.dumps(fields, indent=2))
-
-def get_field(keys, default="") -> str:
-    for k in keys:
-        if k in fields and fields[k]:
-            return fields[k]
+def get_field(keys, default=""):
+    """Tries multiple keys and returns the first non-empty one."""
+    if isinstance(keys, str):
+        return fields.get(keys, default).strip()
+    for key in keys:
+        if key in fields and fields[key].strip():
+            return fields[key].strip()
     return default
 
-# ─── COMMON FIELDS ─────────────────────────────────────────────────────────────
-title_en = get_field(['news_title__en', 'title_en'], issue.title)
-title_tr = get_field(['news_title__tr', 'title_tr'], title_en)
-date_val = get_field(['date'], '')
-time_val = get_field(['time'], '')
+def download_image(img_tag):
+    match = re.search(r'src="([^"]+)"', img_tag)
+    if not match:
+        return ""
+    url = match.group(1)
+    debug_print("Downloading image from", url)
+    filename = url.split("/")[-1] + ".png"
+    path = Path(UPLOADS_DIR) / filename
+    path.parent.mkdir(parents=True, exist_ok=True)
+    response = requests.get(url)
+    if response.status_code == 200:
+        with open(path, "wb") as f:
+            f.write(response.content)
+        return f"/{UPLOADS_DIR}/{filename}"
+    return ""
 
-# ─── IMAGE DOWNLOAD ────────────────────────────────────────────────────────────
-def download_image(md: str) -> str:
-    m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) or \
-        re.search(r'<img[^>]+src="(https?://[^\"]+)"', md)
-    if not m:
-        return ''
-    url = m.group(1)
-    print("[DEBUG] Downloading image from:", url)
-    resp = requests.get(url, timeout=15)
-    resp.raise_for_status()
-    ctype = resp.headers.get('Content-Type','').split(';')[0]
-    ext = mimetypes.guess_extension(ctype) or os.path.splitext(url)[1] or '.png'
-    os.makedirs(UPLOADS_DIR, exist_ok=True)
-    name = os.path.basename(url).split('?')[0].split('.')[0] + ext
-    dest = os.path.join(UPLOADS_DIR, name)
-    with open(dest, 'wb') as f:
-        f.write(resp.content)
-    return f"/uploads/{name}"
+# ========== MAIN ==========
 
-# ─── RENDER FOR EACH LANGUAGE ──────────────────────────────────────────────────
-for lang in ('en', 'tr'):
-    event_type = get_field(['event_type'], '')
-    is_event = bool(event_type)
+if __name__ == "__main__":
+    # Load issue body
+    issue_body = Path(".github/issue_body.md").read_text(encoding="utf-8")
+    fields = parse_issue_body(issue_body)
 
-    print(f"[DEBUG] Rendering for lang={lang}, is_event={is_event}")
+    # Determine if it's an event
+    event_keys = ['event_type', 'name', 'datetime', 'duration']
+    is_event = any(f in fields and fields[f].strip() for f in event_keys)
+    debug_print("Template selected:", "event.md.j2" if is_event else "news.md.j2")
 
-    ctx = {}
-    if is_event:
-        # EVENT
-        ctx = {
-            'type':       event_type,
-            'title':      title_tr if lang == 'tr' else title_en,
-            'name':       get_field(['name'], ''),
-            'datetime':   f"{date_val}T{time_val}:00" if date_val and time_val else '',
-            'duration':   get_field(['duration'], ''),
-            'location':   get_field(['location_tr'], '') if lang == 'tr' else get_field(['location_en'], ''),
-            'thumbnail':  download_image(get_field(['image__optional__drag___drop', 'image_markdown'], '')),
-            'description': get_field(['description_tr'], '') if lang == 'tr' else get_field(['description_en'], ''),
+    # Setup Jinja
+    env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
+    template_name = "event.md.j2" if is_event else "news.md.j2"
+    template = env.get_template(template_name)
+
+    langs = ['en', 'tr']
+    for lang in langs:
+        context = {
+            "type": "event" if is_event else "news",
+            "title": get_field([f"{'event_name' if is_event else 'news_title'}__{lang}"]),
+            "description": get_field([
+                f"description__{lang}" if is_event else f"short_description__{lang}"
+            ]),
+            "featured": False,
+            "date": get_field("date"),
+            "datetime": get_field("datetime"),
+            "duration": get_field("duration"),
+            "location": get_field([f"location__{lang}", "location"]),
+            "name": get_field("name"),
+            "content": get_field([
+                f"full_description__{lang}" if is_event else f"full_content__{lang}"
+            ]),
         }
-        template_name = 'event.md.j2'
-    else:
-        # NEWS
-        ctx = {
-            'type':       'news',
-            'title':      title_tr if lang == 'tr' else title_en,
-            'date':       date_val,
-            'description': get_field(['short_description__tr'], '') if lang == 'tr' else get_field(['short_description__en'], ''),
-            'thumbnail':  download_image(get_field(['image__drag___drop_here', 'image_markdown'], '')),
-            'featured':   False,
-            'content':    get_field(['full_content__tr'], '') if lang == 'tr' else get_field(['full_content__en'], ''),
-        }
-        template_name = 'news.md.j2'
 
-    print(f"[DEBUG] Final context for lang={lang}:\n", json.dumps(ctx, indent=2))
+        # Image
+        image_field = get_field(["image__drag___drop_here", "image_markdown"])
+        context["thumbnail"] = download_image(image_field) if image_field else ""
 
-    env = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=False)
-    rendered = env.get_template(template_name).render(**ctx)
+        debug_print(f"Final context for lang={lang}:", context)
 
-    raw_title = ctx['title'] or title_en
-    slug = unicodedata.normalize('NFKD', raw_title).encode('ascii','ignore').decode().lower()
-    slug = re.sub(r"[-\s]+", '-', slug)
-    slug = re.sub(r"[^a-z0-9-]", '', slug).strip('-')
-
-    folder = 'events' if is_event else 'news'
-    out_dir = os.path.join('content', folder, f"{date_val}-{slug}")
-    os.makedirs(out_dir, exist_ok=True)
-    filename = f"index.{lang}.md"
-    filepath = os.path.join(out_dir, filename)
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write(rendered)
-
+        # Render & write output
+        output = template.render(context)
+        filename_slug = slugify_title(context["title"])[:64]
+        output_path = Path(OUTPUT_DIR) / f"{filename_slug}.{lang}.md"
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(output, encoding="utf-8")
