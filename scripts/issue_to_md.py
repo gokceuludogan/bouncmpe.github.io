@@ -31,7 +31,6 @@ def parse_fields(body: str) -> dict:
     parsed = {}
     for label, val in pattern.findall(body):
         key = re.sub(r"[^a-z0-9]+", "_", label.lower()).strip("_")
-        # normalize date from form heading
         if "date" in key and "yyyy" in key:
             key = "date"
         parsed[key] = val.strip()
@@ -43,15 +42,12 @@ fields = parse_fields(issue.body)
 
 # ─── UTILITY TO GET FIELD VALUES ────────────────────────────────────────────────
 def get_field(keys, default=""):
-    if isinstance(keys, str):
-        keys = [keys]
+    if isinstance(keys, str): keys = [keys]
     for k in keys:
         if k in fields and fields[k]:
-            if DEBUG:
-                print(f"[DEBUG] get_field '{k}': {fields[k]!r}")
+            if DEBUG: print(f"[DEBUG] get_field '{k}': {fields[k]!r}")
             return fields[k]
-    if DEBUG:
-        print(f"[DEBUG] get_field default for {keys}: {default!r}")
+    if DEBUG: print(f"[DEBUG] get_field default for {keys}: {default!r}")
     return default
 
 # ─── DETERMINE IF ISSUE IS NEWS OR EVENT ─────────────────────────────────────────
@@ -60,8 +56,8 @@ is_event   = bool(event_type)
 print(f"[DEBUG] is_event={is_event}")
 
 # ─── COMMON FIELDS ──────────────────────────────────────────────────────────────
-title_en = get_field('news_title_en' if not is_event else 'event_title_en', issue.title)
-title_tr = get_field('news_title_tr' if not is_event else 'event_title_tr', '')
+title_en = get_field('news_title_en' if not is_event else 'title_en', issue.title)
+title_tr = get_field('news_title_tr' if not is_event else 'title_tr', '')
 
 # Date & time normalization
 date_val = get_field('date', '')
@@ -70,21 +66,15 @@ if raw_time and re.match(r"^\d{2}:\d{2}$", raw_time):
     time_val = raw_time + ":00"
 else:
     time_val = raw_time
-if DEBUG:
-    print(f"[DEBUG] date_val={date_val!r}, time_val={time_val!r}")
+if DEBUG: print(f"[DEBUG] date_val={date_val!r}, time_val={time_val!r}")
 
 # ─── IMAGE HANDLING FOR NEWS ────────────────────────────────────────────────────
 def download_image(md: str) -> str:
-    m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md)
-    if not m:
-        m = re.search(r"src=\"(https?://[^\"]+)\"", md)
-    if not m:
-        return ""
+    m = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", md) or re.search(r"src=\"(https?://[^\"]+)\"", md)
+    if not m: return ""
     url = m.group(1)
-    if DEBUG:
-        print(f"[DEBUG] Downloading image: {url}")
-    resp = requests.get(url, timeout=15)
-    resp.raise_for_status()
+    if DEBUG: print(f"[DEBUG] Downloading image: {url}")
+    resp = requests.get(url, timeout=15); resp.raise_for_status()
     ctype = resp.headers.get('Content-Type','').split(';')[0]
     ext = mimetypes.guess_extension(ctype) or os.path.splitext(url)[1] or '.png'
     fname = os.path.basename(url).split('?')[0] + ext
@@ -92,8 +82,7 @@ def download_image(md: str) -> str:
     path = UPLOADS_DIR / fname
     path.write_bytes(resp.content)
     local = f"uploads/{fname}"
-    if DEBUG:
-        print(f"[DEBUG] Saved image to {path} → '{local}'")
+    if DEBUG: print(f"[DEBUG] Saved image to {path} → '{local}'")
     return local
 
 news_image_md = get_field(['image_markdown', 'image_drag_drop_here'], '')
@@ -106,53 +95,47 @@ slug = re.sub(r"[-\s]+", '-', slug).strip('-')
 subdir = 'events' if is_event else 'news'
 out_dir = CONTENT_DIR / subdir / f"{date_val}-{slug}"
 out_dir.mkdir(parents=True, exist_ok=True)
-if DEBUG:
-    print(f"[DEBUG] out_dir={out_dir}")
+if DEBUG: print(f"[DEBUG] out_dir={out_dir}")
 
 # ─── GENERATE AND WRITE FILES ───────────────────────────────────────────────────
 if not is_event:
     # NEWS: write both languages
-    for lang in ('en', 'tr'):
+    for lang in ('en','tr'):
         desc_key    = f'short_description_{lang}'
         content_key = f'full_content_{lang}'
-        description = get_field(desc_key, '')
-        content     = get_field(content_key, '')
+        desc = get_field(desc_key, '')
+        content = get_field(content_key, '')
         front = [
             '---',
             'type: news',
             f'title: {title_en if lang=='en' else title_tr}',
-            f'description: {description}',
+            f'description: {desc}',
             'featured: false',
             f'date: {date_val}',
             f'thumbnail: {image_md}',
-            '---',
-            ''
+            '---',''
         ]
-        body = front + [content]
         out_file = out_dir / f"index.{lang}.md"
-        if DEBUG:
-            print(f"[DEBUG] Writing news ({lang}) to: {out_file}")
-        out_file.write_text("\n".join(body), encoding='utf-8')
+        if DEBUG: print(f"[DEBUG] Writing news ({lang}) to: {out_file}")
+        out_file.write_text("\n".join(front + [content]), encoding='utf-8')
 else:
-    # EVENT: no images
+    # EVENT: no images, localized
     env = Environment(loader=FileSystemLoader('templates'), autoescape=False)
-    template_path = f"events/{event_type}.md.j2"
-    tmpl = env.get_template(template_path)
-    ctx = {
-        'type':        event_type,
-        'title':       title_en,
-        'date':        date_val,
-        'time':        time_val,
-        'datetime':    f"{date_val}T{time_val}",
-        'speaker':     get_field('name',''),
-        'duration':    get_field('duration',''),
-        'location':    get_field('location_en',''),
-        'description': get_field('description_en','')
-    }
-    if DEBUG:
-        print(f"[DEBUG] Rendering event using {template_path} with context: {ctx}")
-    rendered = tmpl.render(**ctx)
+    tmpl = env.get_template(f"events/{event_type}.md.j2")
     for lang in ('en','tr'):
+        ctx = {
+            'type':        event_type,
+            'title':       title_en if lang=='en' else title_tr,
+            'date':        date_val,
+            'time':        time_val,
+            'datetime':    f"{date_val}T{time_val}",
+            'speaker':     get_field(['name','speaker_presenter_name'], ''),
+            'duration':    get_field('duration',''),
+            'location':    get_field(['location_en','location_tr'], ''),
+            'description': get_field(f'description_{lang}','')
+        }
+        if DEBUG: print(f"[DEBUG] Rendering {lang} event with context: {ctx}")
+        rendered = tmpl.render(**ctx)
         out_file = out_dir / f"index.{lang}.md"
         out_file.write_text(rendered, encoding='utf-8')
         print(f"[DEBUG] Wrote event ({lang}) → {out_file}")
