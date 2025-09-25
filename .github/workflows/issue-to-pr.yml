@@ -21,6 +21,9 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Change directory
+        run: cd .github
+
       - name: Install dependencies
         run: pip install -r requirements.txt
 
