@@ -26,7 +26,7 @@ UPLOADS_DIR = ROOT / "assets" / "uploads"
 CONTENT_DIR = ROOT / "content"
 DEBUG             = True
 
-if not GITHUB_REPOSITORY or not GITHUB_TOKEN or not PROJECT_ROOT or ISSUE_NUMBER == 0:
+if not GITHUB_REPOSITORY or not GITHUB_TOKEN or not ROOT or ISSUE_NUMBER == 0:
     missing = [n for n in ["GITHUB_REPOSITORY","GITHUB_TOKEN", "PROJECT_ROOT", "ISSUE_NUMBER"] if not os.getenv(n)]
     raise RuntimeError(f"Missing required env vars: {', '.join(missing)}")
 
